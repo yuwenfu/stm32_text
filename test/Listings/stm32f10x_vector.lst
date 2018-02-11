@@ -297,7 +297,7 @@ ARM Macro Assembler    Page 5
   292 00000000         
   293 00000000         
   294 00000000                 IMPORT           __main
-  295 00000000 4803            LDR              R0, =__main
+  295 00000000 4800            LDR              R0, =__main
   296 00000002 4700            BX               R0
   297 00000004                 ENDP
   298 00000004         
@@ -309,40 +309,28 @@ ARM Macro Assembler    Page 5
   303 00000004         ;*******************************************************
                        ************************
   304 00000004                 IF               :DEF:__MICROLIB
-  311 00000004         
-  312 00000004                 IMPORT           __use_two_region_memory
-  313 00000004                 EXPORT           __user_initial_stackheap
-  314 00000004         
-  315 00000004         __user_initial_stackheap
-  316 00000004         
-  317 00000004 4803            LDR              R0, =  Heap_Mem
-  318 00000006 4904            LDR              R1, =(Stack_Mem + Stack_Size)
-  319 00000008 4A04            LDR              R2, = (Heap_Mem +  Heap_Size)
-  320 0000000A 4B05            LDR              R3, = Stack_Mem
-  321 0000000C 4770            BX               LR
-  322 0000000E         
-  323 0000000E 00 00           ALIGN
-  324 00000010         
+  305 00000004         
+  306 00000004                 EXPORT           __initial_sp
+  307 00000004                 EXPORT           __heap_base
+  308 00000004                 EXPORT           __heap_limit
+  309 00000004         
+  310 00000004                 ELSE
+  325                          ENDIF
+  326 00000004         
+  327 00000004                 END
+              00000000 
+Command Line: --debug --xref --diag_suppress=9931 --cpu=Cortex-M3 --apcs=interw
+ork --depend=.\stm32f10x_vector.d -o.\stm32f10x_vector.o -IC:\Users\GEEK\Deskto
+p\stm32_text\test\RTE -IE:\Keil_v5\ARM\PACK\Keil\STM32F1xx_DFP\1.0.5\Device\Inc
+lude -IE:\Keil_v5\ARM\CMSIS\Include --predefine="__MICROLIB SETA 1" --predefine
 
 
 
 ARM Macro Assembler    Page 6 
 
 
-  325 00000010                 ENDIF
-  326 00000010         
-  327 00000010                 END
-              00000000 
-              00000000 
-              00000400 
-              00000400 
-              00000000 
-Command Line: --debug --xref --diag_suppress=9931 --cpu=Cortex-M3 --apcs=interw
-ork --depend=.\objects\stm32f10x_vector.d -o.\objects\stm32f10x_vector.o -I.\RT
-E\_Target_1 -IE:\Keil_v5\ARM\PACK\Keil\STM32F1xx_DFP\1.0.5\Device\Include -IE:\
-Keil_v5\ARM\CMSIS\Include --predefine="__UVISION_VERSION SETA 524" --predefine=
-"STM32F10X_HD SETA 1" --list=.\listings\stm32f10x_vector.lst start\stm32f10x_ve
-ctor.s
+="__UVISION_VERSION SETA 520" --predefine="STM32F10X_HD SETA 1" --list=.\listin
+gs\stm32f10x_vector.lst start\stm32f10x_vector.s
 
 
 
@@ -363,9 +351,8 @@ Symbol: Stack_Mem
    Definitions
       At line 41 in file start\stm32f10x_vector.s
    Uses
-      At line 318 in file start\stm32f10x_vector.s
-      At line 320 in file start\stm32f10x_vector.s
-
+      None
+Comment: Stack_Mem unused
 __initial_sp 00000400
 
 Symbol: __initial_sp
@@ -373,7 +360,8 @@ Symbol: __initial_sp
       At line 43 in file start\stm32f10x_vector.s
    Uses
       At line 143 in file start\stm32f10x_vector.s
-Comment: __initial_sp used once
+      At line 306 in file start\stm32f10x_vector.s
+
 3 symbols
 
 
@@ -395,25 +383,24 @@ Symbol: Heap_Mem
    Definitions
       At line 59 in file start\stm32f10x_vector.s
    Uses
-      At line 317 in file start\stm32f10x_vector.s
-      At line 319 in file start\stm32f10x_vector.s
-
+      None
+Comment: Heap_Mem unused
 __heap_base 00000000
 
 Symbol: __heap_base
    Definitions
       At line 58 in file start\stm32f10x_vector.s
    Uses
-      None
-Comment: __heap_base unused
+      At line 307 in file start\stm32f10x_vector.s
+Comment: __heap_base used once
 __heap_limit 00000400
 
 Symbol: __heap_limit
    Definitions
       At line 60 in file start\stm32f10x_vector.s
    Uses
-      None
-Comment: __heap_limit unused
+      At line 308 in file start\stm32f10x_vector.s
+Comment: __heap_limit used once
 4 symbols
 
 
@@ -461,15 +448,7 @@ Symbol: Reset_Handler
       At line 144 in file start\stm32f10x_vector.s
       At line 224 in file start\stm32f10x_vector.s
 
-__user_initial_stackheap 00000004
-
-Symbol: __user_initial_stackheap
-   Definitions
-      At line 315 in file start\stm32f10x_vector.s
-   Uses
-      At line 313 in file start\stm32f10x_vector.s
-Comment: __user_initial_stackheap used once
-3 symbols
+2 symbols
 
 
 
@@ -491,8 +470,7 @@ Symbol: Heap_Size
       At line 55 in file start\stm32f10x_vector.s
    Uses
       At line 59 in file start\stm32f10x_vector.s
-      At line 319 in file start\stm32f10x_vector.s
-
+Comment: Heap_Size used once
 Stack_Size 00000400
 
 Symbol: Stack_Size
@@ -500,8 +478,7 @@ Symbol: Stack_Size
       At line 38 in file start\stm32f10x_vector.s
    Uses
       At line 41 in file start\stm32f10x_vector.s
-      At line 318 in file start\stm32f10x_vector.s
-
+Comment: Stack_Size used once
 3 symbols
 
 
@@ -1123,13 +1100,5 @@ Symbol: __main
    Uses
       At line 295 in file start\stm32f10x_vector.s
 Comment: __main used once
-__use_two_region_memory 00000000
-
-Symbol: __use_two_region_memory
-   Definitions
-      At line 312 in file start\stm32f10x_vector.s
-   Uses
-      None
-Comment: __use_two_region_memory unused
-71 symbols
-422 symbols in table
+70 symbols
+419 symbols in table

@@ -1,0 +1,3137 @@
+L 1 "lib\src\stm32f10x_sdio.c"
+N/******************** (C) COPYRIGHT 2008 STMicroelectronics ********************
+N* File Name          : stm32f10x_sdio.c
+N* Author             : MCD Application Team
+N* Version            : V2.0
+N* Date               : 05/23/2008
+N* Description        : This file provides all the SDIO firmware functions.
+N********************************************************************************
+N* THE PRESENT FIRMWARE WHICH IS FOR GUIDANCE ONLY AIMS AT PROVIDING CUSTOMERS
+N* WITH CODING INFORMATION REGARDING THEIR PRODUCTS IN ORDER FOR THEM TO SAVE TIME.
+N* AS A RESULT, STMICROELECTRONICS SHALL NOT BE HELD LIABLE FOR ANY DIRECT,
+N* INDIRECT OR CONSEQUENTIAL DAMAGES WITH RESPECT TO ANY CLAIMS ARISING FROM THE
+N* CONTENT OF SUCH SOFTWARE AND/OR THE USE MADE BY CUSTOMERS OF THE CODING
+N* INFORMATION CONTAINED HEREIN IN CONNECTION WITH THEIR PRODUCTS.
+N* FOR MORE INFORMATION PLEASE CAREFULLY READ THE LICENSE AGREEMENT FILE LOCATED 
+N* IN THE ROOT DIRECTORY OF THIS FIRMWARE PACKAGE.
+N*******************************************************************************/
+N
+N/* Includes ------------------------------------------------------------------*/
+N#include "stm32f10x_sdio.h"
+L 1 ".\lib\inc\stm32f10x_sdio.h" 1
+N/******************** (C) COPYRIGHT 2008 STMicroelectronics ********************
+N* File Name          : stm32f10x_sdio.h
+N* Author             : MCD Application Team
+N* Version            : V2.0
+N* Date               : 05/23/2008
+N* Description        : This file contains all the functions prototypes for the
+N*                      SDIO firmware library.
+N********************************************************************************
+N* THE PRESENT FIRMWARE WHICH IS FOR GUIDANCE ONLY AIMS AT PROVIDING CUSTOMERS
+N* WITH CODING INFORMATION REGARDING THEIR PRODUCTS IN ORDER FOR THEM TO SAVE TIME.
+N* AS A RESULT, STMICROELECTRONICS SHALL NOT BE HELD LIABLE FOR ANY DIRECT,
+N* INDIRECT OR CONSEQUENTIAL DAMAGES WITH RESPECT TO ANY CLAIMS ARISING FROM THE
+N* CONTENT OF SUCH SOFTWARE AND/OR THE USE MADE BY CUSTOMERS OF THE CODING
+N* INFORMATION CONTAINED HEREIN IN CONNECTION WITH THEIR PRODUCTS.
+N* FOR MORE INFORMATION PLEASE CAREFULLY READ THE LICENSE AGREEMENT FILE LOCATED 
+N* IN THE ROOT DIRECTORY OF THIS FIRMWARE PACKAGE.
+N*******************************************************************************/
+N
+N/* Define to prevent recursive inclusion -------------------------------------*/
+N#ifndef __STM32F10x_SDIO_H
+N#define __STM32F10x_SDIO_H
+N
+N/* Includes ------------------------------------------------------------------*/
+N#include "stm32f10x_map.h"
+L 1 ".\lib\inc\stm32f10x_map.h" 1
+N/******************** (C) COPYRIGHT 2008 STMicroelectronics ********************
+N* File Name          : stm32f10x_map.h
+N* Author             : MCD Application Team
+N* Version            : V2.0
+N* Date               : 05/23/2008
+N* Description        : This file contains all the peripheral register's definitions
+N*                      and memory mapping.
+N********************************************************************************
+N* THE PRESENT FIRMWARE WHICH IS FOR GUIDANCE ONLY AIMS AT PROVIDING CUSTOMERS
+N* WITH CODING INFORMATION REGARDING THEIR PRODUCTS IN ORDER FOR THEM TO SAVE TIME.
+N* AS A RESULT, STMICROELECTRONICS SHALL NOT BE HELD LIABLE FOR ANY DIRECT,
+N* INDIRECT OR CONSEQUENTIAL DAMAGES WITH RESPECT TO ANY CLAIMS ARISING FROM THE
+N* CONTENT OF SUCH SOFTWARE AND/OR THE USE MADE BY CUSTOMERS OF THE CODING
+N* INFORMATION CONTAINED HEREIN IN CONNECTION WITH THEIR PRODUCTS.
+N* FOR MORE INFORMATION PLEASE CAREFULLY READ THE LICENSE AGREEMENT FILE LOCATED 
+N* IN THE ROOT DIRECTORY OF THIS FIRMWARE PACKAGE.
+N*******************************************************************************/
+N
+N/* Define to prevent recursive inclusion -------------------------------------*/
+N#ifndef __STM32F10x_MAP_H
+N#define __STM32F10x_MAP_H
+N
+N#ifndef EXT
+N  #define EXT extern
+N#endif /* EXT */
+N
+N/* Includes ------------------------------------------------------------------*/
+N#include "stm32f10x_conf.h"
+L 1 ".\lib\inc\stm32f10x_conf.h" 1
+N/******************** (C) COPYRIGHT 2008 STMicroelectronics ********************
+N* File Name          : stm32f10x_conf.h
+N* Author             : MCD Application Team
+N* Version            : V2.0
+N* Date               : 05/23/2008
+N* Description        : Library configuration file.
+N********************************************************************************
+N* THE PRESENT FIRMWARE WHICH IS FOR GUIDANCE ONLY AIMS AT PROVIDING CUSTOMERS
+N* WITH CODING INFORMATION REGARDING THEIR PRODUCTS IN ORDER FOR THEM TO SAVE TIME.
+N* AS A RESULT, STMICROELECTRONICS SHALL NOT BE HELD LIABLE FOR ANY DIRECT,
+N* INDIRECT OR CONSEQUENTIAL DAMAGES WITH RESPECT TO ANY CLAIMS ARISING FROM THE
+N* CONTENT OF SUCH SOFTWARE AND/OR THE USE MADE BY CUSTOMERS OF THE CODING
+N* INFORMATION CONTAINED HEREIN IN CONNECTION WITH THEIR PRODUCTS.
+N* FOR MORE INFORMATION PLEASE CAREFULLY READ THE LICENSE AGREEMENT FILE LOCATED 
+N* IN THE ROOT DIRECTORY OF THIS FIRMWARE PACKAGE.
+N*******************************************************************************/
+N
+N/* Define to prevent recursive inclusion -------------------------------------*/
+N#ifndef __STM32F10x_CONF_H
+N#define __STM32F10x_CONF_H
+N
+N/* Includes ------------------------------------------------------------------*/
+N#include "stm32f10x_type.h"
+L 1 ".\lib\inc\stm32f10x_type.h" 1
+N/******************** (C) COPYRIGHT 2008 STMicroelectronics ********************
+N* File Name          : stm32f10x_type.h
+N* Author             : MCD Application Team
+N* Version            : V2.0
+N* Date               : 05/23/2008
+N* Description        : This file contains all the common data types used for the
+N*                      STM32F10x firmware library.
+N********************************************************************************
+N* THE PRESENT FIRMWARE WHICH IS FOR GUIDANCE ONLY AIMS AT PROVIDING CUSTOMERS
+N* WITH CODING INFORMATION REGARDING THEIR PRODUCTS IN ORDER FOR THEM TO SAVE TIME.
+N* AS A RESULT, STMICROELECTRONICS SHALL NOT BE HELD LIABLE FOR ANY DIRECT,
+N* INDIRECT OR CONSEQUENTIAL DAMAGES WITH RESPECT TO ANY CLAIMS ARISING FROM THE
+N* CONTENT OF SUCH SOFTWARE AND/OR THE USE MADE BY CUSTOMERS OF THE CODING
+N* INFORMATION CONTAINED HEREIN IN CONNECTION WITH THEIR PRODUCTS.
+N* FOR MORE INFORMATION PLEASE CAREFULLY READ THE LICENSE AGREEMENT FILE LOCATED 
+N* IN THE ROOT DIRECTORY OF THIS FIRMWARE PACKAGE.
+N*******************************************************************************/
+N
+N/* Define to prevent recursive inclusion -------------------------------------*/
+N#ifndef __STM32F10x_TYPE_H
+N#define __STM32F10x_TYPE_H
+N
+N/* Includes ------------------------------------------------------------------*/
+N/* Exported types ------------------------------------------------------------*/
+Ntypedef signed long  s32;
+Ntypedef signed short s16;
+Ntypedef signed char  s8;
+N
+Ntypedef signed long  const sc32;  /* Read Only */
+Ntypedef signed short const sc16;  /* Read Only */
+Ntypedef signed char  const sc8;   /* Read Only */
+N
+Ntypedef volatile signed long  vs32;
+Ntypedef volatile signed short vs16;
+Ntypedef volatile signed char  vs8;
+N
+Ntypedef volatile signed long  const vsc32;  /* Read Only */
+Ntypedef volatile signed short const vsc16;  /* Read Only */
+Ntypedef volatile signed char  const vsc8;   /* Read Only */
+N
+Ntypedef unsigned long  u32;
+Ntypedef unsigned short u16;
+Ntypedef unsigned char  u8;
+N
+Ntypedef unsigned long  const uc32;  /* Read Only */
+Ntypedef unsigned short const uc16;  /* Read Only */
+Ntypedef unsigned char  const uc8;   /* Read Only */
+N
+Ntypedef volatile unsigned long  vu32;
+Ntypedef volatile unsigned short vu16;
+Ntypedef volatile unsigned char  vu8;
+N
+Ntypedef volatile unsigned long  const vuc32;  /* Read Only */
+Ntypedef volatile unsigned short const vuc16;  /* Read Only */
+Ntypedef volatile unsigned char  const vuc8;   /* Read Only */
+N
+Ntypedef enum {FALSE = 0, TRUE = !FALSE} bool;
+N
+Ntypedef enum {RESET = 0, SET = !RESET} FlagStatus, ITStatus;
+N
+Ntypedef enum {DISABLE = 0, ENABLE = !DISABLE} FunctionalState;
+N#define IS_FUNCTIONAL_STATE(STATE) (((STATE) == DISABLE) || ((STATE) == ENABLE))
+N
+Ntypedef enum {ERROR = 0, SUCCESS = !ERROR} ErrorStatus;
+N
+N#define U8_MAX     ((u8)255)
+N#define S8_MAX     ((s8)127)
+N#define S8_MIN     ((s8)-128)
+N#define U16_MAX    ((u16)65535u)
+N#define S16_MAX    ((s16)32767)
+N#define S16_MIN    ((s16)-32768)
+N#define U32_MAX    ((u32)4294967295uL)
+N#define S32_MAX    ((s32)2147483647)
+N#define S32_MIN    ((s32)-2147483648)
+N
+N/* Exported constants --------------------------------------------------------*/
+N/* Exported macro ------------------------------------------------------------*/
+N/* Exported functions ------------------------------------------------------- */
+N
+N#endif /* __STM32F10x_TYPE_H */
+N
+N/******************* (C) COPYRIGHT 2008 STMicroelectronics *****END OF FILE****/
+L 24 ".\lib\inc\stm32f10x_conf.h" 2
+N
+N/* Exported types ------------------------------------------------------------*/
+N/* Exported constants --------------------------------------------------------*/
+N/* Uncomment the line below to compile the library in DEBUG mode, this will expanse
+N   the "assert_param" macro in the firmware library code (see "Exported macro"
+N   section below) */
+N/* #define DEBUG    1*/
+N
+N/* Comment the line below to disable the specific peripheral inclusion */
+N/************************************* ADC ************************************/
+N#define _ADC
+N#define _ADC1
+N#define _ADC2
+N#define _ADC3
+N
+N/************************************* BKP ************************************/
+N#define _BKP 
+N
+N/************************************* CAN ************************************/
+N#define _CAN
+N
+N/************************************* CRC ************************************/
+N#define _CRC
+N
+N/************************************* DAC ************************************/
+N#define _DAC
+N
+N/************************************* DBGMCU *********************************/
+N#define _DBGMCU
+N
+N/************************************* DMA ************************************/
+N#define _DMA
+N#define _DMA1_Channel1
+N#define _DMA1_Channel2
+N#define _DMA1_Channel3
+N#define _DMA1_Channel4
+N#define _DMA1_Channel5
+N#define _DMA1_Channel6
+N#define _DMA1_Channel7
+N#define _DMA2_Channel1
+N#define _DMA2_Channel2
+N#define _DMA2_Channel3
+N#define _DMA2_Channel4
+N#define _DMA2_Channel5
+N
+N/************************************* EXTI ***********************************/
+N#define _EXTI
+N
+N/************************************* FLASH and Option Bytes *****************/
+N#define _FLASH
+N/* Uncomment the line below to enable FLASH program/erase/protections functions,
+N   otherwise only FLASH configuration (latency, prefetch, half cycle) functions
+N   are enabled */
+N #define _FLASH_PROG 
+N
+N/************************************* FSMC ***********************************/
+N#define _FSMC
+N
+N/************************************* GPIO ***********************************/
+N#define _GPIO
+N#define _GPIOA
+N#define _GPIOB
+N#define _GPIOC
+N#define _GPIOD
+N#define _GPIOE
+N#define _GPIOF
+N#define _GPIOG
+N#define _AFIO
+N
+N/************************************* I2C ************************************/
+N#define _I2C
+N#define _I2C1
+N#define _I2C2
+N
+N/************************************* IWDG ***********************************/
+N#define _IWDG
+N
+N/************************************* NVIC ***********************************/
+N#define _NVIC
+N
+N/************************************* PWR ************************************/
+N#define _PWR
+N
+N/************************************* RCC ************************************/
+N#define _RCC
+N
+N/************************************* RTC ************************************/
+N#define _RTC
+N
+N/************************************* SDIO ***********************************/
+N#define _SDIO
+N
+N/************************************* SPI ************************************/
+N#define _SPI
+N#define _SPI1
+N#define _SPI2
+N#define _SPI3
+N
+N/************************************* SysTick ********************************/
+N#define _SysTick
+N
+N/************************************* TIM1 ***********************************/
+N#define _TIM1
+N
+N/************************************* TIM ************************************/
+N#define _TIM
+N#define _TIM2
+N#define _TIM3
+N#define _TIM4
+N#define _TIM5
+N#define _TIM6
+N#define _TIM7
+N#define _TIM8
+N
+N/************************************* USART **********************************/
+N#define _USART
+N#define _USART1
+N#define _USART2
+N#define _USART3
+N#define _UART4
+N#define _UART5
+N
+N/************************************* WWDG ***********************************/
+N#define _WWDG
+N
+N/* In the following line adjust the value of External High Speed oscillator (HSE)
+N   used in your application */
+N#define HSE_Value    ((u32)8000000) /* Value of the External oscillator in Hz*/
+N
+N/* Exported macro ------------------------------------------------------------*/
+N#ifdef  DEBUG
+S/*******************************************************************************
+S* Macro Name     : assert_param
+S* Description    : The assert_param macro is used for function's parameters check.
+S*                  It is used only if the library is compiled in DEBUG mode. 
+S* Input          : - expr: If expr is false, it calls assert_failed function
+S*                    which reports the name of the source file and the source
+S*                    line number of the call that failed. 
+S*                    If expr is true, it returns no value.
+S* Return         : None
+S*******************************************************************************/ 
+S  #define assert_param(expr) ((expr) ? (void)0 : assert_failed((u8 *)__FILE__, __LINE__))
+S/* Exported functions ------------------------------------------------------- */
+S  void assert_failed(u8* file, u32 line);
+N#else
+N  #define assert_param(expr) ((void)0)
+N#endif /* DEBUG */
+N
+N#endif /* __STM32F10x_CONF_H */
+N
+N/******************* (C) COPYRIGHT 2008 STMicroelectronics *****END OF FILE****/
+L 29 ".\lib\inc\stm32f10x_map.h" 2
+N#include "stm32f10x_type.h"
+N#include "cortexm3_macro.h"
+L 1 ".\lib\inc\cortexm3_macro.h" 1
+N/******************** (C) COPYRIGHT 2008 STMicroelectronics ********************
+N* File Name          : cortexm3_macro.h
+N* Author             : MCD Application Team
+N* Version            : V2.0
+N* Date               : 05/23/2008
+N* Description        : Header file for cortexm3_macro.s.
+N********************************************************************************
+N* THE PRESENT FIRMWARE WHICH IS FOR GUIDANCE ONLY AIMS AT PROVIDING CUSTOMERS
+N* WITH CODING INFORMATION REGARDING THEIR PRODUCTS IN ORDER FOR THEM TO SAVE TIME.
+N* AS A RESULT, STMICROELECTRONICS SHALL NOT BE HELD LIABLE FOR ANY DIRECT,
+N* INDIRECT OR CONSEQUENTIAL DAMAGES WITH RESPECT TO ANY CLAIMS ARISING FROM THE
+N* CONTENT OF SUCH SOFTWARE AND/OR THE USE MADE BY CUSTOMERS OF THE CODING
+N* INFORMATION CONTAINED HEREIN IN CONNECTION WITH THEIR PRODUCTS.
+N* FOR MORE INFORMATION PLEASE CAREFULLY READ THE LICENSE AGREEMENT FILE LOCATED 
+N* IN THE ROOT DIRECTORY OF THIS FIRMWARE PACKAGE.
+N*******************************************************************************/
+N
+N/* Define to prevent recursive inclusion -------------------------------------*/
+N#ifndef __CORTEXM3_MACRO_H
+N#define __CORTEXM3_MACRO_H
+N
+N/* Includes ------------------------------------------------------------------*/
+N#include "stm32f10x_type.h"
+N
+N/* Exported types ------------------------------------------------------------*/
+N/* Exported constants --------------------------------------------------------*/
+N/* Exported macro ------------------------------------------------------------*/
+N/* Exported functions ------------------------------------------------------- */
+Nvoid __WFI(void);
+Nvoid __WFE(void);
+Nvoid __SEV(void);
+Nvoid __ISB(void);
+Nvoid __DSB(void);
+Nvoid __DMB(void);
+Nvoid __SVC(void);
+Nu32 __MRS_CONTROL(void);
+Nvoid __MSR_CONTROL(u32 Control);
+Nu32 __MRS_PSP(void);
+Nvoid __MSR_PSP(u32 TopOfProcessStack);
+Nu32 __MRS_MSP(void);
+Nvoid __MSR_MSP(u32 TopOfMainStack);
+Nvoid __RESETPRIMASK(void);
+Nvoid __SETPRIMASK(void);
+Nu32 __READ_PRIMASK(void);
+Nvoid __RESETFAULTMASK(void);
+Nvoid __SETFAULTMASK(void);
+Nu32 __READ_FAULTMASK(void);
+Nvoid __BASEPRICONFIG(u32 NewPriority);
+Nu32 __GetBASEPRI(void);
+Nu16 __REV_HalfWord(u16 Data);
+Nu32 __REV_Word(u32 Data);
+N
+N#endif /* __CORTEXM3_MACRO_H */
+N
+N/******************* (C) COPYRIGHT 2008 STMicroelectronics *****END OF FILE****/
+L 31 ".\lib\inc\stm32f10x_map.h" 2
+N
+N/* Exported types ------------------------------------------------------------*/
+N/******************************************************************************/
+N/*                         Peripheral registers structures                    */
+N/******************************************************************************/
+N
+N/*------------------------ Analog to Digital Converter -----------------------*/
+Ntypedef struct
+N{
+N  vu32 SR;	  // ADC状态寄存器 ；
+N  vu32 CR1;	  // ADC控制寄存器1 ；
+N  vu32 CR2;	  // ADC控制寄存器2 ；
+N  vu32 SMPR1; // ADC采样时间寄存器1 ；
+N  vu32 SMPR2; // ADC采样时间寄存器2 ；
+N  vu32 JOFR1; // ADC注入通道偏移寄存器1 ；
+N  vu32 JOFR2; // ADC注入通道偏移寄存器2 ；
+N  vu32 JOFR3; // ADC注入通道偏移寄存器3 ；
+N  vu32 JOFR4; // ADC注入通道偏移寄存器4 ；
+N  vu32 HTR;	 // ADC看门狗高阈值寄存器 ；
+N  vu32 LTR;	 // ADC看门狗低阈值寄存器 ；
+N  vu32 SQR1; // ADC规则序列寄存器1 ；
+N  vu32 SQR2; // ADC规则序列寄存器2 ；
+N  vu32 SQR3; // ADC规则序列寄存器3 ；
+N  vu32 JSQR; // ADC注入序列寄存器 ；
+N  vu32 JDR1; // ADC规则数据寄存器1 ；
+N  vu32 JDR2; // ADC规则数据寄存器2 ；
+N  vu32 JDR3; // ADC规则数据寄存器3 ；
+N  vu32 JDR4; // ADC规则数据寄存器4 ；
+N  vu32 DR;	 // 规则数据寄存器 ;
+N} ADC_TypeDef;
+N
+N/*------------------------ Backup Registers ----------------------------------*/
+Ntypedef struct
+N{
+N  u32  RESERVED0;
+N  vu16 DR1;		   // 数据后备寄存器 1 ； 
+N  u16  RESERVED1;
+N  vu16 DR2;		   // 数据后备寄存器 2 ；
+N  u16  RESERVED2;
+N  vu16 DR3;		   // 数据后备寄存器 3 ；
+N  u16  RESERVED3;
+N  vu16 DR4;		   // 数据后备寄存器 4 ；
+N  u16  RESERVED4;
+N  vu16 DR5;		   // 数据后备寄存器 5 ；
+N  u16  RESERVED5;
+N  vu16 DR6;		   // 数据后备寄存器 6 ；
+N  u16  RESERVED6;
+N  vu16 DR7;		   // 数据后备寄存器 7 ；
+N  u16  RESERVED7;
+N  vu16 DR8;		   // 数据后备寄存器 8 ；
+N  u16  RESERVED8;
+N  vu16 DR9;		   // 数据后备寄存器 9 ；
+N  u16  RESERVED9;
+N  vu16 DR10;	   // 数据后备寄存器 10 ；
+N  u16  RESERVED10; 
+N  vu16 RTCCR;	   // RTC时钟校准寄存器 ；
+N  u16  RESERVED11;
+N  vu16 CR;		   // 后备控制寄存器 ；
+N  u16  RESERVED12;
+N  vu16 CSR;		   // 后备控制状态寄存器 ；
+N  u16  RESERVED13[5];
+N  vu16 DR11;
+N  u16  RESERVED14;
+N  vu16 DR12;
+N  u16  RESERVED15;
+N  vu16 DR13;
+N  u16  RESERVED16;
+N  vu16 DR14;
+N  u16  RESERVED17;
+N  vu16 DR15;
+N  u16  RESERVED18;
+N  vu16 DR16;
+N  u16  RESERVED19;
+N  vu16 DR17;
+N  u16  RESERVED20;
+N  vu16 DR18;
+N  u16  RESERVED21;
+N  vu16 DR19;
+N  u16  RESERVED22;
+N  vu16 DR20;				  
+N  u16  RESERVED23;
+N  vu16 DR21;
+N  u16  RESERVED24;
+N  vu16 DR22;
+N  u16  RESERVED25;
+N  vu16 DR23;
+N  u16  RESERVED26;
+N  vu16 DR24;
+N  u16  RESERVED27;
+N  vu16 DR25;
+N  u16  RESERVED28;
+N  vu16 DR26;
+N  u16  RESERVED29;
+N  vu16 DR27;
+N  u16  RESERVED30;
+N  vu16 DR28;
+N  u16  RESERVED31;
+N  vu16 DR29;
+N  u16  RESERVED32;
+N  vu16 DR30;
+N  u16  RESERVED33; 
+N  vu16 DR31;
+N  u16  RESERVED34;
+N  vu16 DR32;
+N  u16  RESERVED35;
+N  vu16 DR33;
+N  u16  RESERVED36;
+N  vu16 DR34;
+N  u16  RESERVED37;
+N  vu16 DR35;
+N  u16  RESERVED38;
+N  vu16 DR36;
+N  u16  RESERVED39;
+N  vu16 DR37;
+N  u16  RESERVED40;
+N  vu16 DR38;
+N  u16  RESERVED41;
+N  vu16 DR39;
+N  u16  RESERVED42;
+N  vu16 DR40;
+N  u16  RESERVED43;
+N  vu16 DR41;
+N  u16  RESERVED44;
+N  vu16 DR42;
+N  u16  RESERVED45;    
+N} BKP_TypeDef;
+N
+N/*------------------------ Controller Area Network ---------------------------*/
+Ntypedef struct
+N{
+N  vu32 TIR;
+N  vu32 TDTR;
+N  vu32 TDLR;
+N  vu32 TDHR;
+N} CAN_TxMailBox_TypeDef;
+N
+Ntypedef struct
+N{
+N  vu32 RIR;
+N  vu32 RDTR;
+N  vu32 RDLR;
+N  vu32 RDHR;
+N} CAN_FIFOMailBox_TypeDef;
+N
+Ntypedef struct
+N{
+N  vu32 FR1;
+N  vu32 FR2;
+N} CAN_FilterRegister_TypeDef;
+N
+Ntypedef struct
+N{
+N  vu32 MCR;
+N  vu32 MSR;
+N  vu32 TSR;
+N  vu32 RF0R;
+N  vu32 RF1R;
+N  vu32 IER;
+N  vu32 ESR;
+N  vu32 BTR;
+N  u32  RESERVED0[88];
+N  CAN_TxMailBox_TypeDef sTxMailBox[3];
+N  CAN_FIFOMailBox_TypeDef sFIFOMailBox[2];
+N  u32  RESERVED1[12];
+N  vu32 FMR;
+N  vu32 FM1R;
+N  u32  RESERVED2;
+N  vu32 FS1R;
+N  u32  RESERVED3;
+N  vu32 FFA1R;
+N  u32  RESERVED4;
+N  vu32 FA1R;
+N  u32  RESERVED5[8];
+N  CAN_FilterRegister_TypeDef sFilterRegister[14];
+N} CAN_TypeDef;
+N
+N/*------------------------ CRC calculation unit ------------------------------*/
+Ntypedef struct
+N{
+N  vu32 DR;
+N  vu8  IDR;
+N  u8   RESERVED0;
+N  u16  RESERVED1;
+N  vu32 CR;
+N} CRC_TypeDef;
+N
+N
+N/*------------------------ Digital to Analog Converter -----------------------*/
+Ntypedef struct
+N{
+N  vu32 CR;
+N  vu32 SWTRIGR;
+N  vu32 DHR12R1;
+N  vu32 DHR12L1;
+N  vu32 DHR8R1;
+N  vu32 DHR12R2;
+N  vu32 DHR12L2;
+N  vu32 DHR8R2;
+N  vu32 DHR12RD;
+N  vu32 DHR12LD;
+N  vu32 DHR8RD;
+N  vu32 DOR1;
+N  vu32 DOR2;
+N} DAC_TypeDef;
+N
+N/*------------------------ Debug MCU -----------------------------------------*/
+Ntypedef struct
+N{
+N  vu32 IDCODE;
+N  vu32 CR;	
+N}DBGMCU_TypeDef;
+N
+N/*------------------------ DMA Controller ------------------------------------*/
+Ntypedef struct
+N{
+N  vu32 CCR;	   // DMA通道X设置寄存器 ；
+N  vu32 CNDTR;  // DMA通道X待传输数据数目寄存器 ；
+N  vu32 CPAR;   // DMA通道X外设地址寄存器 ；
+N  vu32 CMAR;   // DMA通道X内存地址寄存器 ；
+N} DMA_Channel_TypeDef;
+N
+Ntypedef struct
+N{
+N  vu32 ISR;	   // DMA中断状态寄存器 ；
+N  vu32 IFCR;   // DMA中断标志位清除寄存器 ；
+N} DMA_TypeDef;
+N
+N/*------------------------ External Interrupt/Event Controller ---------------*/
+Ntypedef struct
+N{
+N  vu32 IMR;	  // 中断屏蔽寄存器 ；
+N  vu32 EMR;	  // 事件屏蔽寄存器 ；
+N  vu32 RTSR;  // 上升沿触发选择寄存器 ；
+N  vu32 FTSR;  // 下降沿触发选择寄存器 ；
+N  vu32 SWIER; // 软件中断事件寄存器 ；
+N  vu32 PR;	  // 挂起寄存器 ；
+N} EXTI_TypeDef;
+N
+N/*------------------------ FLASH and Option Bytes Registers ------------------*/
+Ntypedef struct
+N{
+N  vu32 ACR;	    // FLASH访问控制寄存器 ；
+N  vu32 KEYR;    // FPEC密钥寄存器 ；
+N  vu32 OPTKEYR;	// 选择字节密钥寄存器 ；
+N  vu32 SR;		// FLASH状态寄存器 ；
+N  vu32 CR;		// FLASH控制寄存器 ；
+N  vu32 AR;		// FLASH地址寄存器 ；
+N  vu32 RESERVED; //
+N  vu32 OBR;		// 选择字节和状态寄存器 ；
+N  vu32 WRPR;	// 选择字节写保护寄存器 ；
+N} FLASH_TypeDef;
+N
+Ntypedef struct
+N{
+N  vu16 RDP;	  // 读出选择字节 ；
+N  vu16 USER;  // 用户选择字节 ；
+N  vu16 Data0; // Data0选择字节 ；
+N  vu16 Data1; // Data1选择字节 ；
+N  vu16 WRP0;  // 写保护0选择字节 ；
+N  vu16 WRP1;  // 写保护1选择字节
+N  vu16 WRP2;  // 写保护2选择字节
+N  vu16 WRP3;  // 写保护3选择字节
+N} OB_TypeDef;
+N
+N/*------------------------ Flexible Static Memory Controller -----------------*/
+Ntypedef struct
+N{
+N  vu32 BTCR[8];   
+N} FSMC_Bank1_TypeDef; 
+N
+Ntypedef struct
+N{
+N  vu32 BWTR[7];
+N} FSMC_Bank1E_TypeDef;
+N
+Ntypedef struct
+N{
+N  vu32 PCR2;
+N  vu32 SR2;
+N  vu32 PMEM2;
+N  vu32 PATT2;
+N  u32  RESERVED0;   
+N  vu32 ECCR2; 
+N} FSMC_Bank2_TypeDef;  
+N
+Ntypedef struct
+N{
+N  vu32 PCR3;
+N  vu32 SR3;
+N  vu32 PMEM3;
+N  vu32 PATT3;
+N  u32  RESERVED0;   
+N  vu32 ECCR3; 
+N} FSMC_Bank3_TypeDef; 
+N
+Ntypedef struct
+N{
+N  vu32 PCR4;
+N  vu32 SR4;
+N  vu32 PMEM4;
+N  vu32 PATT4;
+N  vu32 PIO4; 
+N} FSMC_Bank4_TypeDef; 
+N
+N/*------------------------ General Purpose and Alternate Function IO ---------*/
+Ntypedef struct
+N{
+N  vu32 CRL;	  // 端口配置低寄存器 ；
+N  vu32 CRH;	  // 端口配置高寄存器 ；
+N  vu32 IDR;	  // 端口输入数据寄存器 ；
+N  vu32 ODR;	  // 端口输出数据寄存器 ；
+N  vu32 BSRR;  // 端口位设置/复位寄存器 ；
+N  vu32 BRR;	  // 端口位复位寄存器 ；
+N  vu32 LCKR;  // 端口配置锁定寄存器 ；
+N} GPIO_TypeDef;
+N
+Ntypedef struct
+N{
+N  vu32 EVCR;     // 事件控制寄存器 ；
+N  vu32 MAPR;	 // 复用重映射和调试I/O配置寄存器 ；
+N  vu32 EXTICR[4];// 外部中断线路0-15配置寄存器 ；
+N} AFIO_TypeDef;
+N
+N/*------------------------ Inter-integrated Circuit Interface ----------------*/
+Ntypedef struct
+N{
+N  vu16 CR1;
+N  u16  RESERVED0;
+N  vu16 CR2;
+N  u16  RESERVED1;
+N  vu16 OAR1;
+N  u16  RESERVED2;
+N  vu16 OAR2;
+N  u16  RESERVED3;
+N  vu16 DR;
+N  u16  RESERVED4;
+N  vu16 SR1;
+N  u16  RESERVED5;
+N  vu16 SR2;
+N  u16  RESERVED6;
+N  vu16 CCR;
+N  u16  RESERVED7;
+N  vu16 TRISE;
+N  u16  RESERVED8;
+N} I2C_TypeDef;
+N
+N/*------------------------ Independent WATCHDOG ------------------------------*/
+Ntypedef struct
+N{
+N  vu32 KR;	// IWDG键值寄存器 ；
+N  vu32 PR;	// IWDG预分频寄存器 ；
+N  vu32 RLR;	// IWDG重装载寄存器 ；
+N  vu32 SR;	// IWDG状态寄存器 ；
+N} IWDG_TypeDef;
+N
+N/*------------------------ Nested Vectored Interrupt Controller --------------*/
+Ntypedef struct
+N{
+N  vu32 ISER[2];		  //
+N  u32  RESERVED0[30]; //
+N  vu32 ICER[2];		  //
+N  u32  RSERVED1[30];  //
+N  vu32 ISPR[2];		  //
+N  u32  RESERVED2[30];
+N  vu32 ICPR[2];
+N  u32  RESERVED3[30];
+N  vu32 IABR[2];
+N  u32  RESERVED4[62];
+N  vu32 IPR[15];
+N} NVIC_TypeDef;
+N
+Ntypedef struct
+N{
+N  vuc32 CPUID;	 // CPU ID 基寄存器 ;
+N  vu32 ICSR;	 //
+N  vu32 VTOR;	 //
+N  vu32 AIRCR;	 //
+N  vu32 SCR;
+N  vu32 CCR;
+N  vu32 SHPR[3];
+N  vu32 SHCSR;
+N  vu32 CFSR;
+N  vu32 HFSR;
+N  vu32 DFSR;
+N  vu32 MMFAR;
+N  vu32 BFAR;
+N  vu32 AFSR;
+N} SCB_TypeDef;
+N
+N/*------------------------ Power Control -------------------------------------*/
+Ntypedef struct
+N{
+N  vu32 CR;
+N  vu32 CSR;
+N} PWR_TypeDef;
+N
+N/*------------------------ Reset and Clock Control ---------------------------*/
+Ntypedef struct
+N{
+N  vu32 CR;	     // 时钟控制寄存器 ；
+N  vu32 CFGR;	 // 时钟配置寄存器 ；
+N  vu32 CIR;		 // 时钟中断寄存器 ；
+N  vu32 APB2RSTR; // APB2外设复位寄存器 ；
+N  vu32 APB1RSTR; // APB1外设复位寄存器 ；
+N  vu32 AHBENR;	 // AHB外设时钟使能寄存器 ；
+N  vu32 APB2ENR;	 // APB2外设时钟使能寄存器 ；
+N  vu32 APB1ENR;	 // APB1外设时钟使能寄存器 ；
+N  vu32 BDCR;	 // 备份域控制寄存器 ；
+N  vu32 CSR;		 // 控制/状态寄存器 ；
+N} RCC_TypeDef;
+N
+N/*------------------------ Real-Time Clock -----------------------------------*/
+Ntypedef struct
+N{
+N  vu16 CRH;	      // 控制寄存器高位 ；
+N  u16  RESERVED0; //
+N  vu16 CRL;		  // 控制寄存器低位 ；
+N  u16  RESERVED1; //
+N  vu16 PRLH;	  // 预分频装载寄存器高位 ；
+N  u16  RESERVED2; //
+N  vu16 PRLL;	  // 预分频装载寄存器低位 ；
+N  u16  RESERVED3; //
+N  vu16 DIVH;	  // 预分频分频因子寄存器高位 ；
+N  u16  RESERVED4; //
+N  vu16 DIVL;	  // 预分频分频因子寄存器低位 ；
+N  u16  RESERVED5; //
+N  vu16 CNTH;	  // 计数器寄存器高位 ；
+N  u16  RESERVED6; //
+N  vu16 CNTL;	  // 计数器寄存器低位 ；
+N  u16  RESERVED7; //
+N  vu16 ALRH;	  // 闹钟寄存器高位 ；
+N  u16  RESERVED8; //
+N  vu16 ALRL;	  // 闹钟寄存器低位 ；
+N  u16  RESERVED9; //
+N} RTC_TypeDef;
+N
+N/*------------------------ SD host Interface ---------------------------------*/
+Ntypedef struct
+N{
+N  vu32 POWER;
+N  vu32 CLKCR;
+N  vu32 ARG;
+N  vu32 CMD;
+N  vuc32 RESPCMD;
+N  vuc32 RESP1;
+N  vuc32 RESP2;
+N  vuc32 RESP3;
+N  vuc32 RESP4;
+N  vu32 DTIMER;
+N  vu32 DLEN;
+N  vu32 DCTRL;
+N  vuc32 DCOUNT;
+N  vuc32 STA;
+N  vu32 ICR;
+N  vu32 MASK;
+N  u32  RESERVED0[2];
+N  vuc32 FIFOCNT;
+N  u32  RESERVED1[13];
+N  vu32 FIFO;
+N} SDIO_TypeDef;
+N
+N/*------------------------ Serial Peripheral Interface -----------------------*/
+Ntypedef struct
+N{
+N  vu16 CR1;	      // SPI控制寄存器1 ；
+N  u16  RESERVED0;
+N  vu16 CR2;		  // SPI控制寄存器2 ；
+N  u16  RESERVED1;
+N  vu16 SR;		  // SPI状态寄存器 ；
+N  u16  RESERVED2;
+N  vu16 DR;		  // SPI数据寄存器 ；
+N  u16  RESERVED3;
+N  vu16 CRCPR;	  // SPI CRC多项式寄存器 ；
+N  u16  RESERVED4;
+N  vu16 RXCRCR;	  // SPI接收CRC寄存器 ；
+N  u16  RESERVED5;
+N  vu16 TXCRCR;	  // SPI发送CRC寄存器 ；
+N  u16  RESERVED6;
+N  vu16 I2SCFGR;
+N  u16  RESERVED7;
+N  vu16 I2SPR;
+N  u16  RESERVED8;  
+N} SPI_TypeDef;
+N
+N/*------------------------ SystemTick ----------------------------------------*/
+Ntypedef struct
+N{
+N  vu32 CTRL;   // SysTick控制和状态寄存器 ；
+N  vu32 LOAD;   // SysTick重装载值寄存器 ；
+N  vu32 VAL;	   // SysTick当前值寄存器 ；
+N  vuc32 CALIB; // SysTick校准值寄存器 ；
+N} SysTick_TypeDef;
+N
+N/*------------------------ Advanced Control Timer ----------------------------*/
+Ntypedef struct
+N{
+N  vu16 CR1;		  // 控制寄存器1 ；
+N  u16  RESERVED0; 
+N  vu16 CR2;		  // 控制寄存器2 ；
+N  u16  RESERVED1; 
+N  vu16 SMCR;	  // 从模式控制寄存器 ；
+N  u16  RESERVED2;
+N  vu16 DIER;	  // DMA/中断使能寄存器 ；
+N  u16  RESERVED3;
+N  vu16 SR;		  // 状态寄存器 ；
+N  u16  RESERVED4;
+N  vu16 EGR;		  // 事件产生寄存器 ；
+N  u16  RESERVED5;
+N  vu16 CCMR1;	  // 捕获/比较模式寄存器1 ；
+N  u16  RESERVED6;
+N  vu16 CCMR2;	  // 捕获/比较模式寄存器2 ；
+N  u16  RESERVED7;
+N  vu16 CCER;	  // 捕获/比较使能寄存器 ；
+N  u16  RESERVED8;
+N  vu16 CNT;		  // 计数器寄存器 ；
+N  u16  RESERVED9;
+N  vu16 PSC;		  // 预分频寄存器 ；
+N  u16  RESERVED10;
+N  vu16 ARR;		  // 自动重装载寄存器 ；
+N  u16  RESERVED11;
+N  vu16 RCR;		  // 周期计数寄存器 ；
+N  u16  RESERVED12;
+N  vu16 CCR1;	  // 捕获/比较寄存器1 ；
+N  u16  RESERVED13;
+N  vu16 CCR2;	  // 捕获/比较寄存器2 ；
+N  u16  RESERVED14;
+N  vu16 CCR3;	  // 捕获/比较寄存器3 ；
+N  u16  RESERVED15;
+N  vu16 CCR4;	  // 捕获/比较寄存器4 ；
+N  u16  RESERVED16;
+N  vu16 BDTR;	  // 刹车和死区寄存器 ；
+N  u16  RESERVED17;
+N  vu16 DCR;		  // DMA控制寄存器 ；
+N  u16  RESERVED18;
+N  vu16 DMAR;	  // 连续模式的DMA地址寄存器 ；
+N  u16  RESERVED19;
+N} TIM1_TypeDef;
+N
+N/*------------------------ TIM -----------------------------------------------*/
+Ntypedef struct
+N{
+N  vu16 CR1;		// 控制寄存器1 ；
+N  u16 RESERVED0;
+N  vu16 CR2;	   // 控制寄存器2 ；
+N  u16 RESERVED1;
+N  vu16 SMCR;   // 从模式控制寄存器 ；
+N  u16 RESERVED2;
+N  vu16 DIER;   // DMA/中断使能寄存器 ；
+N  u16 RESERVED3;
+N  vu16 SR;		// 状态寄存器 ；
+N  u16 RESERVED4;
+N  vu16 EGR;		// 事件产生寄存器 ；
+N  u16 RESERVED5;
+N  vu16 CCMR1;  // 捕获/比较模式寄存器1 ；
+N  u16 RESERVED6;
+N  vu16 CCMR2;  // 捕获/比较模式寄存器2 ；
+N  u16 RESERVED7;
+N  vu16 CCER;  // 捕获/比较使能寄存器 ；
+N  u16 RESERVED8;
+N  vu16 CNT;	  // 计数器寄存器 ；
+N  u16 RESERVED9;
+N  vu16 PSC;	  // 预分频寄存器 ；
+N  u16 RESERVED10;
+N  vu16 ARR;	  // 自动重装载寄存器 ；
+N  u16 RESERVED11[3];
+N  vu16 CCR1;  // 捕获/比较寄存器1 ；
+N  u16 RESERVED12;
+N  vu16 CCR2;  // 捕获/比较寄存器2 ；
+N  u16 RESERVED13;
+N  vu16 CCR3;  // 捕获/比较寄存器3 ；
+N  u16 RESERVED14;
+N  vu16 CCR4;  // 捕获/比较寄存器4 ；
+N  u16 RESERVED15[3];
+N  vu16 DCR;	  // DMA控制寄存器 ；
+N  u16 RESERVED16;
+N  vu16 DMAR;  // 连续模式的DMA地址寄存器 ；
+N  u16 RESERVED17; 
+N 
+N  vu16 RCR;		  // 周期计数寄存器 ；
+N  vu16 BDTR;	  // 刹车和死区寄存器 ；
+N} TIM_TypeDef;
+N
+N/*----------------- Universal Synchronous Asynchronous Receiver Transmitter --*/
+Ntypedef struct
+N{
+N  vu16 SR;		 // USART状态寄存器 ；
+N  u16  RESERVED0;
+N  vu16 DR;		 // USART数据寄存器 ；
+N  u16  RESERVED1;
+N  vu16 BRR;		 // USART波特率寄存器 ；
+N  u16  RESERVED2;
+N  vu16 CR1;		 // USART控制寄存器1 ；
+N  u16  RESERVED3;
+N  vu16 CR2;		 // USART控制寄存器2 ；
+N  u16  RESERVED4;
+N  vu16 CR3;		 // USART控制寄存器3 ；
+N  u16  RESERVED5;
+N  vu16 GTPR;	 // USART保护时间和预分频寄存器 ；
+N  u16  RESERVED6;
+N} USART_TypeDef;
+N
+N/*------------------------ Window WATCHDOG -----------------------------------*/
+Ntypedef struct
+N{
+N  vu32 CR;	// WWDG控制寄存器 ；
+N  vu32 CFR;	// WWDG设置寄存器 ；
+N  vu32 SR;  // WWDG状态寄存器 ；
+N} WWDG_TypeDef;
+N
+N/******************************************************************************/
+N/*                         Peripheral memory map                              */
+N/******************************************************************************/
+N/* Peripheral and SRAM base address in the alias region */
+N#define PERIPH_BB_BASE        ((u32)0x42000000)
+N#define SRAM_BB_BASE          ((u32)0x22000000)
+N
+N/* Peripheral and SRAM base address in the bit-band region */
+N#define SRAM_BASE             ((u32)0x20000000)
+N#define PERIPH_BASE           ((u32)0x40000000)
+N
+N/* FSMC registers base address */
+N#define FSMC_R_BASE           ((u32)0xA0000000)
+N
+N/* Peripheral memory map */
+N#define APB1PERIPH_BASE       PERIPH_BASE
+N#define APB2PERIPH_BASE       (PERIPH_BASE + 0x10000)
+N#define AHBPERIPH_BASE        (PERIPH_BASE + 0x20000)
+N
+N#define TIM2_BASE             (APB1PERIPH_BASE + 0x0000)
+N#define TIM3_BASE             (APB1PERIPH_BASE + 0x0400)
+N#define TIM4_BASE             (APB1PERIPH_BASE + 0x0800)
+N#define TIM5_BASE             (APB1PERIPH_BASE + 0x0C00)
+N#define TIM6_BASE             (APB1PERIPH_BASE + 0x1000)
+N#define TIM7_BASE             (APB1PERIPH_BASE + 0x1400)
+N#define RTC_BASE              (APB1PERIPH_BASE + 0x2800)
+N#define WWDG_BASE             (APB1PERIPH_BASE + 0x2C00)
+N#define IWDG_BASE             (APB1PERIPH_BASE + 0x3000)
+N#define SPI2_BASE             (APB1PERIPH_BASE + 0x3800)
+N#define SPI3_BASE             (APB1PERIPH_BASE + 0x3C00)
+N#define USART2_BASE           (APB1PERIPH_BASE + 0x4400)
+N#define USART3_BASE           (APB1PERIPH_BASE + 0x4800)
+N#define UART4_BASE            (APB1PERIPH_BASE + 0x4C00)
+N#define UART5_BASE            (APB1PERIPH_BASE + 0x5000)
+N#define I2C1_BASE             (APB1PERIPH_BASE + 0x5400)
+N#define I2C2_BASE             (APB1PERIPH_BASE + 0x5800)
+N#define CAN_BASE              (APB1PERIPH_BASE + 0x6400)
+N#define BKP_BASE              (APB1PERIPH_BASE + 0x6C00)
+N#define PWR_BASE              (APB1PERIPH_BASE + 0x7000)
+N#define DAC_BASE              (APB1PERIPH_BASE + 0x7400)
+N
+N#define AFIO_BASE             (APB2PERIPH_BASE + 0x0000)
+N#define EXTI_BASE             (APB2PERIPH_BASE + 0x0400)
+N#define GPIOA_BASE            (APB2PERIPH_BASE + 0x0800)
+N#define GPIOB_BASE            (APB2PERIPH_BASE + 0x0C00)
+N#define GPIOC_BASE            (APB2PERIPH_BASE + 0x1000)
+N#define GPIOD_BASE            (APB2PERIPH_BASE + 0x1400)
+N#define GPIOE_BASE            (APB2PERIPH_BASE + 0x1800)
+N#define GPIOF_BASE            (APB2PERIPH_BASE + 0x1C00)
+N#define GPIOG_BASE            (APB2PERIPH_BASE + 0x2000)
+N#define ADC1_BASE             (APB2PERIPH_BASE + 0x2400)
+N#define ADC2_BASE             (APB2PERIPH_BASE + 0x2800)
+N#define TIM1_BASE             (APB2PERIPH_BASE + 0x2C00)
+N#define SPI1_BASE             (APB2PERIPH_BASE + 0x3000)
+N#define TIM8_BASE             (APB2PERIPH_BASE + 0x3400)
+N#define USART1_BASE           (APB2PERIPH_BASE + 0x3800)
+N#define ADC3_BASE             (APB2PERIPH_BASE + 0x3C00)
+N
+N#define SDIO_BASE             (PERIPH_BASE + 0x18000)
+N
+N#define DMA1_BASE             (AHBPERIPH_BASE + 0x0000)
+N#define DMA1_Channel1_BASE    (AHBPERIPH_BASE + 0x0008)
+N#define DMA1_Channel2_BASE    (AHBPERIPH_BASE + 0x001C)
+N#define DMA1_Channel3_BASE    (AHBPERIPH_BASE + 0x0030)
+N#define DMA1_Channel4_BASE    (AHBPERIPH_BASE + 0x0044)
+N#define DMA1_Channel5_BASE    (AHBPERIPH_BASE + 0x0058)
+N#define DMA1_Channel6_BASE    (AHBPERIPH_BASE + 0x006C)
+N#define DMA1_Channel7_BASE    (AHBPERIPH_BASE + 0x0080)
+N#define DMA2_BASE             (AHBPERIPH_BASE + 0x0400)
+N#define DMA2_Channel1_BASE    (AHBPERIPH_BASE + 0x0408)
+N#define DMA2_Channel2_BASE    (AHBPERIPH_BASE + 0x041C)
+N#define DMA2_Channel3_BASE    (AHBPERIPH_BASE + 0x0430)
+N#define DMA2_Channel4_BASE    (AHBPERIPH_BASE + 0x0444)
+N#define DMA2_Channel5_BASE    (AHBPERIPH_BASE + 0x0458)
+N#define RCC_BASE              (AHBPERIPH_BASE + 0x1000)
+N#define CRC_BASE              (AHBPERIPH_BASE + 0x3000)
+N
+N/* Flash registers base address */
+N#define FLASH_R_BASE          (AHBPERIPH_BASE + 0x2000)
+N/* Flash Option Bytes base address */
+N#define OB_BASE               ((u32)0x1FFFF800)
+N
+N/* FSMC Bankx registers base address */
+N#define FSMC_Bank1_R_BASE     (FSMC_R_BASE + 0x0000)
+N#define FSMC_Bank1E_R_BASE    (FSMC_R_BASE + 0x0104)
+N#define FSMC_Bank2_R_BASE     (FSMC_R_BASE + 0x0060)
+N#define FSMC_Bank3_R_BASE     (FSMC_R_BASE + 0x0080)
+N#define FSMC_Bank4_R_BASE     (FSMC_R_BASE + 0x00A0)
+N
+N/* Debug MCU registers base address */
+N#define DBGMCU_BASE          ((u32)0xE0042000)
+N
+N/* System Control Space memory map */
+N#define SCS_BASE              ((u32)0xE000E000)
+N
+N#define SysTick_BASE          (SCS_BASE + 0x0010)
+N#define NVIC_BASE             (SCS_BASE + 0x0100)
+N#define SCB_BASE              (SCS_BASE + 0x0D00)
+N
+N/******************************************************************************/
+N/*                         Peripheral declaration                             */
+N/******************************************************************************/
+N
+N/*------------------------ Non Debug Mode ------------------------------------*/
+N#ifndef DEBUG
+N#ifdef _TIM2
+N  #define TIM2                ((TIM_TypeDef *) TIM2_BASE)
+N#endif /*_TIM2 */
+N
+N#ifdef _TIM3
+N  #define TIM3                ((TIM_TypeDef *) TIM3_BASE)
+N#endif /*_TIM3 */
+N
+N#ifdef _TIM4
+N  #define TIM4                ((TIM_TypeDef *) TIM4_BASE)
+N#endif /*_TIM4 */
+N
+N#ifdef _TIM5
+N  #define TIM5                ((TIM_TypeDef *) TIM5_BASE)
+N#endif /*_TIM5 */
+N
+N#ifdef _TIM6
+N  #define TIM6                ((TIM_TypeDef *) TIM6_BASE)
+N#endif /*_TIM6 */
+N
+N#ifdef _TIM7
+N  #define TIM7                ((TIM_TypeDef *) TIM7_BASE)
+N#endif /*_TIM7 */
+N
+N#ifdef _RTC
+N  #define RTC                 ((RTC_TypeDef *) RTC_BASE)
+N#endif /*_RTC */
+N
+N#ifdef _WWDG
+N  #define WWDG                ((WWDG_TypeDef *) WWDG_BASE)
+N#endif /*_WWDG */
+N
+N#ifdef _IWDG
+N  #define IWDG                ((IWDG_TypeDef *) IWDG_BASE)
+N#endif /*_IWDG */
+N
+N#ifdef _SPI2
+N  #define SPI2                ((SPI_TypeDef *) SPI2_BASE)
+N#endif /*_SPI2 */
+N
+N#ifdef _SPI3
+N  #define SPI3                ((SPI_TypeDef *) SPI3_BASE)
+N#endif /*_SPI3 */
+N
+N#ifdef _USART2
+N  #define USART2              ((USART_TypeDef *) USART2_BASE)
+N#endif /*_USART2 */
+N
+N#ifdef _USART3
+N  #define USART3              ((USART_TypeDef *) USART3_BASE)
+N#endif /*_USART3 */
+N
+N#ifdef _UART4
+N  #define UART4              ((USART_TypeDef *) UART4_BASE)
+N#endif /*_UART4 */
+N
+N#ifdef _UART5
+N  #define UART5              ((USART_TypeDef *) UART5_BASE)
+N#endif /*_USART5 */
+N
+N#ifdef _I2C1
+N  #define I2C1                ((I2C_TypeDef *) I2C1_BASE)
+N#endif /*_I2C1 */
+N
+N#ifdef _I2C2
+N  #define I2C2                ((I2C_TypeDef *) I2C2_BASE)
+N#endif /*_I2C2 */
+N
+N#ifdef _CAN
+N  #define CAN                 ((CAN_TypeDef *) CAN_BASE)
+N#endif /*_CAN */
+N
+N#ifdef _BKP
+N  #define BKP                 ((BKP_TypeDef *) BKP_BASE)
+N#endif /*_BKP */
+N
+N#ifdef _PWR
+N  #define PWR                 ((PWR_TypeDef *) PWR_BASE)
+N#endif /*_PWR */
+N
+N#ifdef _DAC
+N  #define DAC                 ((DAC_TypeDef *) DAC_BASE)
+N#endif /*_DAC */
+N
+N#ifdef _AFIO
+N  #define AFIO                ((AFIO_TypeDef *) AFIO_BASE)
+N#endif /*_AFIO */
+N
+N#ifdef _EXTI
+N  #define EXTI                ((EXTI_TypeDef *) EXTI_BASE)
+N#endif /*_EXTI */
+N
+N#ifdef _GPIOA
+N  #define GPIOA               ((GPIO_TypeDef *) GPIOA_BASE)
+N#endif /*_GPIOA */
+N
+N#ifdef _GPIOB
+N  #define GPIOB               ((GPIO_TypeDef *) GPIOB_BASE)
+N#endif /*_GPIOB */
+N
+N#ifdef _GPIOC
+N  #define GPIOC               ((GPIO_TypeDef *) GPIOC_BASE)
+N#endif /*_GPIOC */
+N
+N#ifdef _GPIOD
+N  #define GPIOD               ((GPIO_TypeDef *) GPIOD_BASE)
+N#endif /*_GPIOD */
+N
+N#ifdef _GPIOE
+N  #define GPIOE               ((GPIO_TypeDef *) GPIOE_BASE)
+N#endif /*_GPIOE */
+N
+N#ifdef _GPIOF
+N  #define GPIOF               ((GPIO_TypeDef *) GPIOF_BASE)
+N#endif /*_GPIOF */
+N
+N#ifdef _GPIOG
+N  #define GPIOG               ((GPIO_TypeDef *) GPIOG_BASE)
+N#endif /*_GPIOG */
+N
+N#ifdef _ADC1
+N  #define ADC1                ((ADC_TypeDef *) ADC1_BASE)
+N#endif /*_ADC1 */
+N
+N#ifdef _ADC2
+N  #define ADC2                ((ADC_TypeDef *) ADC2_BASE)
+N#endif /*_ADC2 */
+N
+N#ifdef _TIM1
+N  #define TIM1                ((TIM1_TypeDef *) TIM1_BASE)
+N#endif /*_TIM1 */
+N
+N#ifdef _SPI1
+N  #define SPI1                ((SPI_TypeDef *) SPI1_BASE)
+N#endif /*_SPI1 */
+N
+N#ifdef _TIM8
+N  #define TIM8                ((TIM_TypeDef *) TIM8_BASE)
+N#endif /*_TIM8 */
+N
+N#ifdef _USART1
+N  #define USART1              ((USART_TypeDef *) USART1_BASE)
+N#endif /*_USART1 */
+N
+N#ifdef _ADC3
+N  #define ADC3                ((ADC_TypeDef *) ADC3_BASE)
+N#endif /*_ADC3 */
+N
+N#ifdef _SDIO
+N  #define SDIO                ((SDIO_TypeDef *) SDIO_BASE)
+N#endif /*_SDIO */
+N
+N#ifdef _DMA
+N  #define DMA1                ((DMA_TypeDef *) DMA1_BASE)
+N  #define DMA2                ((DMA_TypeDef *) DMA2_BASE)
+N#endif /*_DMA */
+N
+N#ifdef _DMA1_Channel1
+N  #define DMA1_Channel1       ((DMA_Channel_TypeDef *) DMA1_Channel1_BASE)
+N#endif /*_DMA1_Channel1 */
+N
+N#ifdef _DMA1_Channel2
+N  #define DMA1_Channel2       ((DMA_Channel_TypeDef *) DMA1_Channel2_BASE)
+N#endif /*_DMA1_Channel2 */
+N
+N#ifdef _DMA1_Channel3
+N  #define DMA1_Channel3       ((DMA_Channel_TypeDef *) DMA1_Channel3_BASE)
+N#endif /*_DMA1_Channel3 */
+N
+N#ifdef _DMA1_Channel4
+N  #define DMA1_Channel4       ((DMA_Channel_TypeDef *) DMA1_Channel4_BASE)
+N#endif /*_DMA1_Channel4 */
+N
+N#ifdef _DMA1_Channel5
+N  #define DMA1_Channel5       ((DMA_Channel_TypeDef *) DMA1_Channel5_BASE)
+N#endif /*_DMA1_Channel5 */
+N
+N#ifdef _DMA1_Channel6
+N  #define DMA1_Channel6       ((DMA_Channel_TypeDef *) DMA1_Channel6_BASE)
+N#endif /*_DMA1_Channel6 */
+N
+N#ifdef _DMA1_Channel7
+N  #define DMA1_Channel7       ((DMA_Channel_TypeDef *) DMA1_Channel7_BASE)
+N#endif /*_DMA1_Channel7 */
+N
+N#ifdef _DMA2_Channel1
+N  #define DMA2_Channel1       ((DMA_Channel_TypeDef *) DMA2_Channel1_BASE)
+N#endif /*_DMA2_Channel1 */
+N
+N#ifdef _DMA2_Channel2
+N  #define DMA2_Channel2       ((DMA_Channel_TypeDef *) DMA2_Channel2_BASE)
+N#endif /*_DMA2_Channel2 */
+N
+N#ifdef _DMA2_Channel3
+N  #define DMA2_Channel3       ((DMA_Channel_TypeDef *) DMA2_Channel3_BASE)
+N#endif /*_DMA2_Channel3 */
+N
+N#ifdef _DMA2_Channel4
+N  #define DMA2_Channel4       ((DMA_Channel_TypeDef *) DMA2_Channel4_BASE)
+N#endif /*_DMA2_Channel4 */
+N
+N#ifdef _DMA2_Channel5
+N  #define DMA2_Channel5       ((DMA_Channel_TypeDef *) DMA2_Channel5_BASE)
+N#endif /*_DMA2_Channel5 */
+N
+N#ifdef _RCC
+N  #define RCC                 ((RCC_TypeDef *) RCC_BASE)
+N#endif /*_RCC */
+N
+N#ifdef _CRC
+N  #define CRC                 ((CRC_TypeDef *) CRC_BASE)
+N#endif /*_CRC */
+N
+N#ifdef _FLASH
+N  #define FLASH               ((FLASH_TypeDef *) FLASH_R_BASE)
+N  #define OB                  ((OB_TypeDef *) OB_BASE) 
+N#endif /*_FLASH */
+N
+N#ifdef _FSMC
+N  #define FSMC_Bank1          ((FSMC_Bank1_TypeDef *) FSMC_Bank1_R_BASE)
+N  #define FSMC_Bank1E         ((FSMC_Bank1E_TypeDef *) FSMC_Bank1E_R_BASE)
+N  #define FSMC_Bank2          ((FSMC_Bank2_TypeDef *) FSMC_Bank2_R_BASE)
+N  #define FSMC_Bank3          ((FSMC_Bank3_TypeDef *) FSMC_Bank3_R_BASE)
+N  #define FSMC_Bank4          ((FSMC_Bank4_TypeDef *) FSMC_Bank4_R_BASE)
+N#endif /*_FSMC */
+N
+N#ifdef _DBGMCU
+N  #define DBGMCU              ((DBGMCU_TypeDef *) DBGMCU_BASE)
+N#endif /*_DBGMCU */
+N
+N#ifdef _SysTick
+N  #define SysTick             ((SysTick_TypeDef *) SysTick_BASE)
+N#endif /*_SysTick */
+N
+N#ifdef _NVIC
+N  #define NVIC                ((NVIC_TypeDef *) NVIC_BASE)
+N  #define SCB                 ((SCB_TypeDef *) SCB_BASE)  
+N#endif /*_NVIC */
+N
+N/*------------------------ Debug Mode ----------------------------------------*/
+N#else   /* DEBUG */
+S#ifdef _TIM2
+S  EXT TIM_TypeDef             *TIM2;
+S#endif /*_TIM2 */
+S
+S#ifdef _TIM3
+S  EXT TIM_TypeDef             *TIM3;
+S#endif /*_TIM3 */
+S
+S#ifdef _TIM4
+S  EXT TIM_TypeDef             *TIM4;
+S#endif /*_TIM4 */
+S
+S#ifdef _TIM5
+S  EXT TIM_TypeDef             *TIM5;
+S#endif /*_TIM5 */
+S
+S#ifdef _TIM6
+S  EXT TIM_TypeDef             *TIM6;
+S#endif /*_TIM6 */
+S
+S#ifdef _TIM7
+S  EXT TIM_TypeDef             *TIM7;
+S#endif /*_TIM7 */
+S
+S#ifdef _RTC
+S  EXT RTC_TypeDef             *RTC;
+S#endif /*_RTC */
+S
+S#ifdef _WWDG
+S  EXT WWDG_TypeDef            *WWDG;
+S#endif /*_WWDG */
+S
+S#ifdef _IWDG
+S  EXT IWDG_TypeDef            *IWDG;
+S#endif /*_IWDG */
+S
+S#ifdef _SPI2
+S  EXT SPI_TypeDef             *SPI2;
+S#endif /*_SPI2 */
+S
+S#ifdef _SPI3
+S  EXT SPI_TypeDef             *SPI3;
+S#endif /*_SPI3 */
+S
+S#ifdef _USART2
+S  EXT USART_TypeDef           *USART2;
+S#endif /*_USART2 */
+S
+S#ifdef _USART3
+S  EXT USART_TypeDef           *USART3;
+S#endif /*_USART3 */
+S
+S#ifdef _UART4
+S  EXT USART_TypeDef           *UART4;
+S#endif /*_UART4 */
+S
+S#ifdef _UART5
+S  EXT USART_TypeDef           *UART5;
+S#endif /*_UART5 */
+S
+S#ifdef _I2C1
+S  EXT I2C_TypeDef             *I2C1;
+S#endif /*_I2C1 */
+S
+S#ifdef _I2C2
+S  EXT I2C_TypeDef             *I2C2;
+S#endif /*_I2C2 */
+S
+S#ifdef _CAN
+S  EXT CAN_TypeDef             *CAN;
+S#endif /*_CAN */
+S
+S#ifdef _BKP
+S  EXT BKP_TypeDef             *BKP;
+S#endif /*_BKP */
+S
+S#ifdef _PWR
+S  EXT PWR_TypeDef             *PWR;
+S#endif /*_PWR */
+S
+S#ifdef _DAC
+S  EXT DAC_TypeDef             *DAC;
+S#endif /*_DAC */
+S
+S#ifdef _AFIO
+S  EXT AFIO_TypeDef            *AFIO;
+S#endif /*_AFIO */
+S
+S#ifdef _EXTI
+S  EXT EXTI_TypeDef            *EXTI;
+S#endif /*_EXTI */
+S
+S#ifdef _GPIOA
+S  EXT GPIO_TypeDef            *GPIOA;
+S#endif /*_GPIOA */
+S
+S#ifdef _GPIOB
+S  EXT GPIO_TypeDef            *GPIOB;
+S#endif /*_GPIOB */
+S
+S#ifdef _GPIOC
+S  EXT GPIO_TypeDef            *GPIOC;
+S#endif /*_GPIOC */
+S
+S#ifdef _GPIOD
+S  EXT GPIO_TypeDef            *GPIOD;
+S#endif /*_GPIOD */
+S
+S#ifdef _GPIOE
+S  EXT GPIO_TypeDef            *GPIOE;
+S#endif /*_GPIOE */
+S
+S#ifdef _GPIOF
+S  EXT GPIO_TypeDef            *GPIOF;
+S#endif /*_GPIOF */
+S
+S#ifdef _GPIOG
+S  EXT GPIO_TypeDef            *GPIOG;
+S#endif /*_GPIOG */
+S
+S#ifdef _ADC1
+S  EXT ADC_TypeDef             *ADC1;
+S#endif /*_ADC1 */
+S
+S#ifdef _ADC2
+S  EXT ADC_TypeDef             *ADC2;
+S#endif /*_ADC2 */
+S
+S#ifdef _TIM1
+S  EXT TIM_TypeDef             *TIM1;
+S#endif /*_TIM1 */
+S
+S#ifdef _SPI1
+S  EXT SPI_TypeDef             *SPI1;
+S#endif /*_SPI1 */
+S
+S#ifdef _TIM8
+S  EXT TIM_TypeDef             *TIM8;
+S#endif /*_TIM8 */
+S
+S#ifdef _USART1
+S  EXT USART_TypeDef           *USART1;
+S#endif /*_USART1 */
+S
+S#ifdef _ADC3
+S  EXT ADC_TypeDef             *ADC3;
+S#endif /*_ADC3 */
+S
+S#ifdef _SDIO
+S  EXT SDIO_TypeDef            *SDIO;
+S#endif /*_SDIO */
+S
+S#ifdef _DMA
+S  EXT DMA_TypeDef             *DMA1;
+S  EXT DMA_TypeDef             *DMA2;
+S#endif /*_DMA */
+S
+S#ifdef _DMA1_Channel1
+S  EXT DMA_Channel_TypeDef     *DMA1_Channel1;
+S#endif /*_DMA1_Channel1 */
+S
+S#ifdef _DMA1_Channel2
+S  EXT DMA_Channel_TypeDef     *DMA1_Channel2;
+S#endif /*_DMA1_Channel2 */
+S
+S#ifdef _DMA1_Channel3
+S  EXT DMA_Channel_TypeDef     *DMA1_Channel3;
+S#endif /*_DMA1_Channel3 */
+S
+S#ifdef _DMA1_Channel4
+S  EXT DMA_Channel_TypeDef     *DMA1_Channel4;
+S#endif /*_DMA1_Channel4 */
+S
+S#ifdef _DMA1_Channel5
+S  EXT DMA_Channel_TypeDef     *DMA1_Channel5;
+S#endif /*_DMA1_Channel5 */
+S
+S#ifdef _DMA1_Channel6
+S  EXT DMA_Channel_TypeDef     *DMA1_Channel6;
+S#endif /*_DMA1_Channel6 */
+S
+S#ifdef _DMA1_Channel7
+S  EXT DMA_Channel_TypeDef     *DMA1_Channel7;
+S#endif /*_DMA1_Channel7 */
+S
+S#ifdef _DMA2_Channel1
+S  EXT DMA_Channel_TypeDef     *DMA2_Channel1;
+S#endif /*_DMA2_Channel1 */
+S
+S#ifdef _DMA2_Channel2
+S  EXT DMA_Channel_TypeDef     *DMA2_Channel2;
+S#endif /*_DMA2_Channel2 */
+S
+S#ifdef _DMA2_Channel3
+S  EXT DMA_Channel_TypeDef     *DMA2_Channel3;
+S#endif /*_DMA2_Channel3 */
+S
+S#ifdef _DMA2_Channel4
+S  EXT DMA_Channel_TypeDef     *DMA2_Channel4;
+S#endif /*_DMA2_Channel4 */
+S
+S#ifdef _DMA2_Channel5
+S  EXT DMA_Channel_TypeDef     *DMA2_Channel5;
+S#endif /*_DMA2_Channel5 */
+S
+S#ifdef _RCC
+S  EXT RCC_TypeDef             *RCC;
+S#endif /*_RCC */
+S
+S#ifdef _CRC
+S  EXT CRC_TypeDef             *CRC;
+S#endif /*_CRC */
+S
+S#ifdef _FLASH
+S  EXT FLASH_TypeDef            *FLASH;
+S  EXT OB_TypeDef               *OB;  
+S#endif /*_FLASH */
+S
+S#ifdef _FSMC
+S  EXT FSMC_Bank1_TypeDef      *FSMC_Bank1;
+S  EXT FSMC_Bank1E_TypeDef     *FSMC_Bank1E;
+S  EXT FSMC_Bank2_TypeDef      *FSMC_Bank2;
+S  EXT FSMC_Bank3_TypeDef      *FSMC_Bank3;
+S  EXT FSMC_Bank4_TypeDef      *FSMC_Bank4;
+S#endif /*_FSMC */
+S
+S#ifdef _DBGMCU
+S  EXT DBGMCU_TypeDef          *DBGMCU;
+S#endif /*_DBGMCU */
+S
+S#ifdef _SysTick
+S  EXT SysTick_TypeDef         *SysTick;
+S#endif /*_SysTick */
+S
+S#ifdef _NVIC
+S  EXT NVIC_TypeDef            *NVIC;
+S  EXT SCB_TypeDef             *SCB;
+S#endif /*_NVIC */
+S
+N#endif  /* DEBUG */
+N
+N/* Exported constants --------------------------------------------------------*/
+N/* Exported macro ------------------------------------------------------------*/
+N/* Exported functions ------------------------------------------------------- */
+N
+N#endif /* __STM32F10x_MAP_H */
+N
+N/******************* (C) COPYRIGHT 2008 STMicroelectronics *****END OF FILE****/
+L 25 ".\lib\inc\stm32f10x_sdio.h" 2
+N
+N/* Exported types ------------------------------------------------------------*/
+Ntypedef struct
+N{
+N  u8 SDIO_ClockDiv;
+N  u32 SDIO_ClockEdge;
+N  u32 SDIO_ClockBypass;
+N  u32 SDIO_ClockPowerSave;
+N  u32 SDIO_BusWide;
+N  u32 SDIO_HardwareFlowControl;
+N} SDIO_InitTypeDef;
+N
+Ntypedef struct
+N{
+N  u32 SDIO_Argument;
+N  u32 SDIO_CmdIndex;
+N  u32 SDIO_Response;
+N  u32 SDIO_Wait;
+N  u32 SDIO_CPSM;
+N} SDIO_CmdInitTypeDef;
+N
+Ntypedef struct
+N{
+N  u32 SDIO_DataTimeOut;
+N  u32 SDIO_DataLength;
+N  u32 SDIO_DataBlockSize;
+N  u32 SDIO_TransferDir;
+N  u32 SDIO_TransferMode;
+N  u32 SDIO_DPSM;
+N} SDIO_DataInitTypeDef;
+N
+N/* Exported constants --------------------------------------------------------*/
+N/* SDIO Clock Edge -----------------------------------------------------------*/
+N#define SDIO_ClockEdge_Rising               ((u32)0x00000000)
+N#define SDIO_ClockEdge_Falling              ((u32)0x00002000)
+N
+N#define IS_SDIO_CLOCK_EDGE(EDGE) (((EDGE) == SDIO_ClockEdge_Rising) || \
+N                                  ((EDGE) == SDIO_ClockEdge_Falling))
+X#define IS_SDIO_CLOCK_EDGE(EDGE) (((EDGE) == SDIO_ClockEdge_Rising) ||                                   ((EDGE) == SDIO_ClockEdge_Falling))
+N/* SDIO Clock Bypass ----------------------------------------------------------*/                                  
+N#define SDIO_ClockBypass_Disable             ((u32)0x00000000)
+N#define SDIO_ClockBypass_Enable              ((u32)0x00000400)    
+N
+N#define IS_SDIO_CLOCK_BYPASS(BYPASS) (((BYPASS) == SDIO_ClockBypass_Disable) || \
+N                                     ((BYPASS) == SDIO_ClockBypass_Enable))                             
+X#define IS_SDIO_CLOCK_BYPASS(BYPASS) (((BYPASS) == SDIO_ClockBypass_Disable) ||                                      ((BYPASS) == SDIO_ClockBypass_Enable))                             
+N
+N/* SDIO Clock Power Save  ----------------------------------------------------*/ 
+N#define SDIO_ClockPowerSave_Disable         ((u32)0x00000000)
+N#define SDIO_ClockPowerSave_Enable          ((u32)0x00000200) 
+N
+N#define IS_SDIO_CLOCK_POWER_SAVE(SAVE) (((SAVE) == SDIO_ClockPowerSave_Disable) || \
+N                                        ((SAVE) == SDIO_ClockPowerSave_Enable))
+X#define IS_SDIO_CLOCK_POWER_SAVE(SAVE) (((SAVE) == SDIO_ClockPowerSave_Disable) ||                                         ((SAVE) == SDIO_ClockPowerSave_Enable))
+N
+N/* SDIO Bus Wide -------------------------------------------------------------*/
+N#define SDIO_BusWide_1b                     ((u32)0x00000000)
+N#define SDIO_BusWide_4b                     ((u32)0x00000800)
+N#define SDIO_BusWide_8b                     ((u32)0x00001000)
+N
+N#define IS_SDIO_BUS_WIDE(WIDE) (((WIDE) == SDIO_BusWide_1b) || ((WIDE) == SDIO_BusWide_4b) || \
+N                                ((WIDE) == SDIO_BusWide_8b))
+X#define IS_SDIO_BUS_WIDE(WIDE) (((WIDE) == SDIO_BusWide_1b) || ((WIDE) == SDIO_BusWide_4b) ||                                 ((WIDE) == SDIO_BusWide_8b))
+N                                
+N/* SDIO Hardware Flow Control  -----------------------------------------------*/ 
+N#define SDIO_HardwareFlowControl_Disable    ((u32)0x00000000)
+N#define SDIO_HardwareFlowControl_Enable     ((u32)0x00004000)
+N
+N#define IS_SDIO_HARDWARE_FLOW_CONTROL(CONTROL) (((CONTROL) == SDIO_HardwareFlowControl_Disable) || \
+N                                                ((CONTROL) == SDIO_HardwareFlowControl_Enable))
+X#define IS_SDIO_HARDWARE_FLOW_CONTROL(CONTROL) (((CONTROL) == SDIO_HardwareFlowControl_Disable) ||                                                 ((CONTROL) == SDIO_HardwareFlowControl_Enable))
+N                                  
+N/* SDIO Power State ----------------------------------------------------------*/
+N#define SDIO_PowerState_OFF                 ((u32)0x00000000)
+N#define SDIO_PowerState_ON                  ((u32)0x00000003)
+N
+N#define IS_SDIO_POWER_STATE(STATE) (((STATE) == SDIO_PowerState_OFF) || ((STATE) == SDIO_PowerState_ON)) 
+N
+N/* SDIO Interrupt soucres ----------------------------------------------------*/
+N#define SDIO_IT_CCRCFAIL                    ((u32)0x00000001)
+N#define SDIO_IT_DCRCFAIL                    ((u32)0x00000002)
+N#define SDIO_IT_CTIMEOUT                    ((u32)0x00000004)
+N#define SDIO_IT_DTIMEOUT                    ((u32)0x00000008)
+N#define SDIO_IT_TXUNDERR                    ((u32)0x00000010)
+N#define SDIO_IT_RXOVERR                     ((u32)0x00000020)
+N#define SDIO_IT_CMDREND                     ((u32)0x00000040)
+N#define SDIO_IT_CMDSENT                     ((u32)0x00000080)
+N#define SDIO_IT_DATAEND                     ((u32)0x00000100)
+N#define SDIO_IT_STBITERR                    ((u32)0x00000200)
+N#define SDIO_IT_DBCKEND                     ((u32)0x00000400)
+N#define SDIO_IT_CMDACT                      ((u32)0x00000800)
+N#define SDIO_IT_TXACT                       ((u32)0x00001000)
+N#define SDIO_IT_RXACT                       ((u32)0x00002000)
+N#define SDIO_IT_TXFIFOHE                    ((u32)0x00004000)
+N#define SDIO_IT_RXFIFOHF                    ((u32)0x00008000)
+N#define SDIO_IT_TXFIFOF                     ((u32)0x00010000)
+N#define SDIO_IT_RXFIFOF                     ((u32)0x00020000)
+N#define SDIO_IT_TXFIFOE                     ((u32)0x00040000)
+N#define SDIO_IT_RXFIFOE                     ((u32)0x00080000)
+N#define SDIO_IT_TXDAVL                      ((u32)0x00100000)
+N#define SDIO_IT_RXDAVL                      ((u32)0x00200000)
+N#define SDIO_IT_SDIOIT                      ((u32)0x00400000)
+N#define SDIO_IT_CEATAEND                    ((u32)0x00800000)
+N
+N#define IS_SDIO_IT(IT) ((((IT) & (u32)0xFF000000) == 0x00) && ((IT) != (u32)0x00))
+N
+N/* SDIO Command Index  -------------------------------------------------------*/
+N#define IS_SDIO_CMD_INDEX(INDEX)            ((INDEX) < 0x40)
+N
+N/* SDIO Response Type --------------------------------------------------------*/
+N#define SDIO_Response_No                    ((u32)0x00000000)
+N#define SDIO_Response_Short                 ((u32)0x00000040)
+N#define SDIO_Response_Long                  ((u32)0x000000C0)
+N
+N#define IS_SDIO_RESPONSE(RESPONSE) (((RESPONSE) == SDIO_Response_No) || \
+N                                    ((RESPONSE) == SDIO_Response_Short) || \
+N                                    ((RESPONSE) == SDIO_Response_Long))
+X#define IS_SDIO_RESPONSE(RESPONSE) (((RESPONSE) == SDIO_Response_No) ||                                     ((RESPONSE) == SDIO_Response_Short) ||                                     ((RESPONSE) == SDIO_Response_Long))
+N
+N/* SDIO Wait Interrupt State -------------------------------------------------*/
+N#define SDIO_Wait_No                        ((u32)0x00000000) /* SDIO No Wait, TimeOut is enabled */
+N#define SDIO_Wait_IT                        ((u32)0x00000100) /* SDIO Wait Interrupt Request */
+N#define SDIO_Wait_Pend                      ((u32)0x00000200) /* SDIO Wait End of transfer */
+N
+N#define IS_SDIO_WAIT(WAIT) (((WAIT) == SDIO_Wait_No) || ((WAIT) == SDIO_Wait_IT) || \
+N                            ((WAIT) == SDIO_Wait_Pend))
+X#define IS_SDIO_WAIT(WAIT) (((WAIT) == SDIO_Wait_No) || ((WAIT) == SDIO_Wait_IT) ||                             ((WAIT) == SDIO_Wait_Pend))
+N
+N/* SDIO CPSM State -----------------------------------------------------------*/
+N#define SDIO_CPSM_Disable                    ((u32)0x00000000)
+N#define SDIO_CPSM_Enable                     ((u32)0x00000400)
+N
+N#define IS_SDIO_CPSM(CPSM) (((CPSM) == SDIO_CPSM_Enable) || ((CPSM) == SDIO_CPSM_Disable))
+N
+N/* SDIO Response Registers ---------------------------------------------------*/
+N#define SDIO_RESP1                          ((u32)0x00000000)
+N#define SDIO_RESP2                          ((u32)0x00000004)
+N#define SDIO_RESP3                          ((u32)0x00000008)
+N#define SDIO_RESP4                          ((u32)0x0000000C)
+N
+N#define IS_SDIO_RESP(RESP) (((RESP) == SDIO_RESP1) || ((RESP) == SDIO_RESP2) || \
+N                            ((RESP) == SDIO_RESP3) || ((RESP) == SDIO_RESP4))
+X#define IS_SDIO_RESP(RESP) (((RESP) == SDIO_RESP1) || ((RESP) == SDIO_RESP2) ||                             ((RESP) == SDIO_RESP3) || ((RESP) == SDIO_RESP4))
+N
+N/* SDIO Data Length ----------------------------------------------------------*/
+N#define IS_SDIO_DATA_LENGTH(LENGTH) ((LENGTH) <= 0x01FFFFFF)
+N
+N/* SDIO Data Block Size ------------------------------------------------------*/
+N#define SDIO_DataBlockSize_1b               ((u32)0x00000000)
+N#define SDIO_DataBlockSize_2b               ((u32)0x00000010)
+N#define SDIO_DataBlockSize_4b               ((u32)0x00000020)
+N#define SDIO_DataBlockSize_8b               ((u32)0x00000030)
+N#define SDIO_DataBlockSize_16b              ((u32)0x00000040)
+N#define SDIO_DataBlockSize_32b              ((u32)0x00000050)
+N#define SDIO_DataBlockSize_64b              ((u32)0x00000060)
+N#define SDIO_DataBlockSize_128b             ((u32)0x00000070)
+N#define SDIO_DataBlockSize_256b             ((u32)0x00000080)
+N#define SDIO_DataBlockSize_512b             ((u32)0x00000090)
+N#define SDIO_DataBlockSize_1024b            ((u32)0x000000A0)
+N#define SDIO_DataBlockSize_2048b            ((u32)0x000000B0)
+N#define SDIO_DataBlockSize_4096b            ((u32)0x000000C0)
+N#define SDIO_DataBlockSize_8192b            ((u32)0x000000D0)
+N#define SDIO_DataBlockSize_16384b           ((u32)0x000000E0)
+N
+N#define IS_SDIO_BLOCK_SIZE(SIZE) (((SIZE) == SDIO_DataBlockSize_1b) || \
+N                                  ((SIZE) == SDIO_DataBlockSize_2b) || \
+N                                  ((SIZE) == SDIO_DataBlockSize_4b) || \
+N                                  ((SIZE) == SDIO_DataBlockSize_8b) || \
+N                                  ((SIZE) == SDIO_DataBlockSize_16b) || \
+N                                  ((SIZE) == SDIO_DataBlockSize_32b) || \
+N                                  ((SIZE) == SDIO_DataBlockSize_64b) || \
+N                                  ((SIZE) == SDIO_DataBlockSize_128b) || \
+N                                  ((SIZE) == SDIO_DataBlockSize_256b) || \
+N                                  ((SIZE) == SDIO_DataBlockSize_512b) || \
+N                                  ((SIZE) == SDIO_DataBlockSize_1024b) || \
+N                                  ((SIZE) == SDIO_DataBlockSize_2048b) || \
+N                                  ((SIZE) == SDIO_DataBlockSize_4096b) || \
+N                                  ((SIZE) == SDIO_DataBlockSize_8192b) || \
+N                                  ((SIZE) == SDIO_DataBlockSize_16384b)) 
+X#define IS_SDIO_BLOCK_SIZE(SIZE) (((SIZE) == SDIO_DataBlockSize_1b) ||                                   ((SIZE) == SDIO_DataBlockSize_2b) ||                                   ((SIZE) == SDIO_DataBlockSize_4b) ||                                   ((SIZE) == SDIO_DataBlockSize_8b) ||                                   ((SIZE) == SDIO_DataBlockSize_16b) ||                                   ((SIZE) == SDIO_DataBlockSize_32b) ||                                   ((SIZE) == SDIO_DataBlockSize_64b) ||                                   ((SIZE) == SDIO_DataBlockSize_128b) ||                                   ((SIZE) == SDIO_DataBlockSize_256b) ||                                   ((SIZE) == SDIO_DataBlockSize_512b) ||                                   ((SIZE) == SDIO_DataBlockSize_1024b) ||                                   ((SIZE) == SDIO_DataBlockSize_2048b) ||                                   ((SIZE) == SDIO_DataBlockSize_4096b) ||                                   ((SIZE) == SDIO_DataBlockSize_8192b) ||                                   ((SIZE) == SDIO_DataBlockSize_16384b)) 
+N
+N/* SDIO Transfer Direction ---------------------------------------------------*/
+N#define SDIO_TransferDir_ToCard             ((u32)0x00000000)
+N#define SDIO_TransferDir_ToSDIO             ((u32)0x00000002)
+N
+N#define IS_SDIO_TRANSFER_DIR(DIR) (((DIR) == SDIO_TransferDir_ToCard) || \
+N                                   ((DIR) == SDIO_TransferDir_ToSDIO))  
+X#define IS_SDIO_TRANSFER_DIR(DIR) (((DIR) == SDIO_TransferDir_ToCard) ||                                    ((DIR) == SDIO_TransferDir_ToSDIO))  
+N
+N/* SDIO Transfer Type --------------------------------------------------------*/
+N#define SDIO_TransferMode_Block             ((u32)0x00000000)
+N#define SDIO_TransferMode_Stream            ((u32)0x00000004)
+N
+N#define IS_SDIO_TRANSFER_MODE(MODE) (((MODE) == SDIO_TransferMode_Stream) || \
+N                                     ((MODE) == SDIO_TransferMode_Block))                                
+X#define IS_SDIO_TRANSFER_MODE(MODE) (((MODE) == SDIO_TransferMode_Stream) ||                                      ((MODE) == SDIO_TransferMode_Block))                                
+N
+N/* SDIO DPSM State -----------------------------------------------------------*/
+N#define SDIO_DPSM_Disable                    ((u32)0x00000000)
+N#define SDIO_DPSM_Enable                     ((u32)0x00000001)
+N
+N#define IS_SDIO_DPSM(DPSM) (((DPSM) == SDIO_DPSM_Enable) || ((DPSM) == SDIO_DPSM_Disable))
+N
+N/* SDIO Flags ----------------------------------------------------------------*/
+N#define SDIO_FLAG_CCRCFAIL                  ((u32)0x00000001)
+N#define SDIO_FLAG_DCRCFAIL                  ((u32)0x00000002)
+N#define SDIO_FLAG_CTIMEOUT                  ((u32)0x00000004)
+N#define SDIO_FLAG_DTIMEOUT                  ((u32)0x00000008)
+N#define SDIO_FLAG_TXUNDERR                  ((u32)0x00000010)
+N#define SDIO_FLAG_RXOVERR                   ((u32)0x00000020)
+N#define SDIO_FLAG_CMDREND                   ((u32)0x00000040)
+N#define SDIO_FLAG_CMDSENT                   ((u32)0x00000080)
+N#define SDIO_FLAG_DATAEND                   ((u32)0x00000100)
+N#define SDIO_FLAG_STBITERR                  ((u32)0x00000200)
+N#define SDIO_FLAG_DBCKEND                   ((u32)0x00000400)
+N#define SDIO_FLAG_CMDACT                    ((u32)0x00000800)
+N#define SDIO_FLAG_TXACT                     ((u32)0x00001000)
+N#define SDIO_FLAG_RXACT                     ((u32)0x00002000)
+N#define SDIO_FLAG_TXFIFOHE                  ((u32)0x00004000)
+N#define SDIO_FLAG_RXFIFOHF                  ((u32)0x00008000)
+N#define SDIO_FLAG_TXFIFOF                   ((u32)0x00010000)
+N#define SDIO_FLAG_RXFIFOF                   ((u32)0x00020000)
+N#define SDIO_FLAG_TXFIFOE                   ((u32)0x00040000)
+N#define SDIO_FLAG_RXFIFOE                   ((u32)0x00080000)
+N#define SDIO_FLAG_TXDAVL                    ((u32)0x00100000)
+N#define SDIO_FLAG_RXDAVL                    ((u32)0x00200000)
+N#define SDIO_FLAG_SDIOIT                    ((u32)0x00400000)
+N#define SDIO_FLAG_CEATAEND                  ((u32)0x00800000)
+N
+N#define IS_SDIO_FLAG(FLAG) (((FLAG)  == SDIO_FLAG_CCRCFAIL) || \
+N                            ((FLAG)  == SDIO_FLAG_DCRCFAIL) || \
+N                            ((FLAG)  == SDIO_FLAG_CTIMEOUT) || \
+N                            ((FLAG)  == SDIO_FLAG_DTIMEOUT) || \
+N                            ((FLAG)  == SDIO_FLAG_TXUNDERR) || \
+N                            ((FLAG)  == SDIO_FLAG_RXOVERR) || \
+N                            ((FLAG)  == SDIO_FLAG_CMDREND) || \
+N                            ((FLAG)  == SDIO_FLAG_CMDSENT) || \
+N                            ((FLAG)  == SDIO_FLAG_DATAEND) || \
+N                            ((FLAG)  == SDIO_FLAG_STBITERR) || \
+N                            ((FLAG)  == SDIO_FLAG_DBCKEND) || \
+N                            ((FLAG)  == SDIO_FLAG_CMDACT) || \
+N                            ((FLAG)  == SDIO_FLAG_TXACT) || \
+N                            ((FLAG)  == SDIO_FLAG_RXACT) || \
+N                            ((FLAG)  == SDIO_FLAG_TXFIFOHE) || \
+N                            ((FLAG)  == SDIO_FLAG_RXFIFOHF) || \
+N                            ((FLAG)  == SDIO_FLAG_TXFIFOF) || \
+N                            ((FLAG)  == SDIO_FLAG_RXFIFOF) || \
+N                            ((FLAG)  == SDIO_FLAG_TXFIFOE) || \
+N                            ((FLAG)  == SDIO_FLAG_RXFIFOE) || \
+N                            ((FLAG)  == SDIO_FLAG_TXDAVL) || \
+N                            ((FLAG)  == SDIO_FLAG_RXDAVL) || \
+N                            ((FLAG)  == SDIO_FLAG_SDIOIT) || \
+N                            ((FLAG)  == SDIO_FLAG_CEATAEND))
+X#define IS_SDIO_FLAG(FLAG) (((FLAG)  == SDIO_FLAG_CCRCFAIL) ||                             ((FLAG)  == SDIO_FLAG_DCRCFAIL) ||                             ((FLAG)  == SDIO_FLAG_CTIMEOUT) ||                             ((FLAG)  == SDIO_FLAG_DTIMEOUT) ||                             ((FLAG)  == SDIO_FLAG_TXUNDERR) ||                             ((FLAG)  == SDIO_FLAG_RXOVERR) ||                             ((FLAG)  == SDIO_FLAG_CMDREND) ||                             ((FLAG)  == SDIO_FLAG_CMDSENT) ||                             ((FLAG)  == SDIO_FLAG_DATAEND) ||                             ((FLAG)  == SDIO_FLAG_STBITERR) ||                             ((FLAG)  == SDIO_FLAG_DBCKEND) ||                             ((FLAG)  == SDIO_FLAG_CMDACT) ||                             ((FLAG)  == SDIO_FLAG_TXACT) ||                             ((FLAG)  == SDIO_FLAG_RXACT) ||                             ((FLAG)  == SDIO_FLAG_TXFIFOHE) ||                             ((FLAG)  == SDIO_FLAG_RXFIFOHF) ||                             ((FLAG)  == SDIO_FLAG_TXFIFOF) ||                             ((FLAG)  == SDIO_FLAG_RXFIFOF) ||                             ((FLAG)  == SDIO_FLAG_TXFIFOE) ||                             ((FLAG)  == SDIO_FLAG_RXFIFOE) ||                             ((FLAG)  == SDIO_FLAG_TXDAVL) ||                             ((FLAG)  == SDIO_FLAG_RXDAVL) ||                             ((FLAG)  == SDIO_FLAG_SDIOIT) ||                             ((FLAG)  == SDIO_FLAG_CEATAEND))
+N
+N#define IS_SDIO_CLEAR_FLAG(FLAG) ((((FLAG) & (u32)0xFF3FF800) == 0x00) && ((FLAG) != (u32)0x00))
+N
+N#define IS_SDIO_GET_IT(IT) (((IT)  == SDIO_IT_CCRCFAIL) || \
+N                            ((IT)  == SDIO_IT_DCRCFAIL) || \
+N                            ((IT)  == SDIO_IT_CTIMEOUT) || \
+N                            ((IT)  == SDIO_IT_DTIMEOUT) || \
+N                            ((IT)  == SDIO_IT_TXUNDERR) || \
+N                            ((IT)  == SDIO_IT_RXOVERR) || \
+N                            ((IT)  == SDIO_IT_CMDREND) || \
+N                            ((IT)  == SDIO_IT_CMDSENT) || \
+N                            ((IT)  == SDIO_IT_DATAEND) || \
+N                            ((IT)  == SDIO_IT_STBITERR) || \
+N                            ((IT)  == SDIO_IT_DBCKEND) || \
+N                            ((IT)  == SDIO_IT_CMDACT) || \
+N                            ((IT)  == SDIO_IT_TXACT) || \
+N                            ((IT)  == SDIO_IT_RXACT) || \
+N                            ((IT)  == SDIO_IT_TXFIFOHE) || \
+N                            ((IT)  == SDIO_IT_RXFIFOHF) || \
+N                            ((IT)  == SDIO_IT_TXFIFOF) || \
+N                            ((IT)  == SDIO_IT_RXFIFOF) || \
+N                            ((IT)  == SDIO_IT_TXFIFOE) || \
+N                            ((IT)  == SDIO_IT_RXFIFOE) || \
+N                            ((IT)  == SDIO_IT_TXDAVL) || \
+N                            ((IT)  == SDIO_IT_RXDAVL) || \
+N                            ((IT)  == SDIO_IT_SDIOIT) || \
+N                            ((IT)  == SDIO_IT_CEATAEND))
+X#define IS_SDIO_GET_IT(IT) (((IT)  == SDIO_IT_CCRCFAIL) ||                             ((IT)  == SDIO_IT_DCRCFAIL) ||                             ((IT)  == SDIO_IT_CTIMEOUT) ||                             ((IT)  == SDIO_IT_DTIMEOUT) ||                             ((IT)  == SDIO_IT_TXUNDERR) ||                             ((IT)  == SDIO_IT_RXOVERR) ||                             ((IT)  == SDIO_IT_CMDREND) ||                             ((IT)  == SDIO_IT_CMDSENT) ||                             ((IT)  == SDIO_IT_DATAEND) ||                             ((IT)  == SDIO_IT_STBITERR) ||                             ((IT)  == SDIO_IT_DBCKEND) ||                             ((IT)  == SDIO_IT_CMDACT) ||                             ((IT)  == SDIO_IT_TXACT) ||                             ((IT)  == SDIO_IT_RXACT) ||                             ((IT)  == SDIO_IT_TXFIFOHE) ||                             ((IT)  == SDIO_IT_RXFIFOHF) ||                             ((IT)  == SDIO_IT_TXFIFOF) ||                             ((IT)  == SDIO_IT_RXFIFOF) ||                             ((IT)  == SDIO_IT_TXFIFOE) ||                             ((IT)  == SDIO_IT_RXFIFOE) ||                             ((IT)  == SDIO_IT_TXDAVL) ||                             ((IT)  == SDIO_IT_RXDAVL) ||                             ((IT)  == SDIO_IT_SDIOIT) ||                             ((IT)  == SDIO_IT_CEATAEND))
+N
+N#define IS_SDIO_CLEAR_IT(IT) ((((IT) & (u32)0xFF3FF800) == 0x00) && ((IT) != (u32)0x00))
+N                                                        
+N/* SDIO Read Wait Mode -------------------------------------------------------*/
+N#define SDIO_ReadWaitMode_CLK               ((u32)0x00000000)
+N#define SDIO_ReadWaitMode_DATA2             ((u32)0x00000001)
+N
+N#define IS_SDIO_READWAIT_MODE(MODE) (((MODE) == SDIO_ReadWaitMode_CLK) || \
+N                                     ((MODE) == SDIO_ReadWaitMode_DATA2))  
+X#define IS_SDIO_READWAIT_MODE(MODE) (((MODE) == SDIO_ReadWaitMode_CLK) ||                                      ((MODE) == SDIO_ReadWaitMode_DATA2))  
+N
+N/* Exported macro ------------------------------------------------------------*/
+N/* Exported functions ------------------------------------------------------- */
+Nvoid SDIO_DeInit(void);
+Nvoid SDIO_Init(SDIO_InitTypeDef* SDIO_InitStruct);
+Nvoid SDIO_StructInit(SDIO_InitTypeDef* SDIO_InitStruct);
+Nvoid SDIO_ClockCmd(FunctionalState NewState);
+Nvoid SDIO_SetPowerState(u32 SDIO_PowerState);
+Nu32 SDIO_GetPowerState(void);
+Nvoid SDIO_ITConfig(u32 SDIO_IT, FunctionalState NewState);
+Nvoid SDIO_DMACmd(FunctionalState NewState);
+Nvoid SDIO_SendCommand(SDIO_CmdInitTypeDef *SDIO_CmdInitStruct);
+Nvoid SDIO_CmdStructInit(SDIO_CmdInitTypeDef* SDIO_CmdInitStruct);
+Nu8 SDIO_GetCommandResponse(void);
+Nu32 SDIO_GetResponse(u32 SDIO_RESP);
+Nvoid SDIO_DataConfig(SDIO_DataInitTypeDef* SDIO_DataInitStruct);
+Nvoid SDIO_DataStructInit(SDIO_DataInitTypeDef* SDIO_DataInitStruct);
+Nu32 SDIO_GetDataCounter(void);
+Nu32 SDIO_ReadData(void);
+Nvoid SDIO_WriteData(u32 Data);
+Nu32 SDIO_GetFIFOCount(void);
+Nvoid SDIO_StartSDIOReadWait(FunctionalState NewState);
+Nvoid SDIO_StopSDIOReadWait(FunctionalState NewState);
+Nvoid SDIO_SetSDIOReadWaitMode(u32 SDIO_ReadWaitMode);
+Nvoid SDIO_SetSDIOOperation(FunctionalState NewState);
+Nvoid SDIO_SendSDIOSuspendCmd(FunctionalState NewState);
+Nvoid SDIO_CommandCompletionCmd(FunctionalState NewState);
+Nvoid SDIO_CEATAITCmd(FunctionalState NewState);
+Nvoid SDIO_SendCEATACmd(FunctionalState NewState);
+NFlagStatus SDIO_GetFlagStatus(u32 SDIO_FLAG);
+Nvoid SDIO_ClearFlag(u32 SDIO_FLAG);
+NITStatus SDIO_GetITStatus(u32 SDIO_IT);
+Nvoid SDIO_ClearITPendingBit(u32 SDIO_IT);
+N
+N#endif /* __STM32F10x_SDIO_H */
+N
+N/******************* (C) COPYRIGHT 2008 STMicroelectronics *****END OF FILE****/
+L 20 "lib\src\stm32f10x_sdio.c" 2
+N#include "stm32f10x_rcc.h"
+L 1 ".\lib\inc\stm32f10x_rcc.h" 1
+N/******************** (C) COPYRIGHT 2008 STMicroelectronics ********************
+N* File Name          : stm32f10x_rcc.h
+N* Author             : MCD Application Team
+N* Version            : V2.0
+N* Date               : 05/23/2008
+N* Description        : This file contains all the functions prototypes for the
+N*                      RCC firmware library.
+N********************************************************************************
+N* THE PRESENT FIRMWARE WHICH IS FOR GUIDANCE ONLY AIMS AT PROVIDING CUSTOMERS
+N* WITH CODING INFORMATION REGARDING THEIR PRODUCTS IN ORDER FOR THEM TO SAVE TIME.
+N* AS A RESULT, STMICROELECTRONICS SHALL NOT BE HELD LIABLE FOR ANY DIRECT,
+N* INDIRECT OR CONSEQUENTIAL DAMAGES WITH RESPECT TO ANY CLAIMS ARISING FROM THE
+N* CONTENT OF SUCH SOFTWARE AND/OR THE USE MADE BY CUSTOMERS OF THE CODING
+N* INFORMATION CONTAINED HEREIN IN CONNECTION WITH THEIR PRODUCTS.
+N* FOR MORE INFORMATION PLEASE CAREFULLY READ THE LICENSE AGREEMENT FILE LOCATED 
+N* IN THE ROOT DIRECTORY OF THIS FIRMWARE PACKAGE.
+N*******************************************************************************/
+N
+N/* Define to prevent recursive inclusion -------------------------------------*/
+N#ifndef __STM32F10x_RCC_H
+N#define __STM32F10x_RCC_H
+N
+N/* Includes ------------------------------------------------------------------*/
+N#include "stm32f10x_map.h"
+N
+N/* Exported types ------------------------------------------------------------*/
+Ntypedef struct
+N{
+N  u32 SYSCLK_Frequency;
+N  u32 HCLK_Frequency;
+N  u32 PCLK1_Frequency;
+N  u32 PCLK2_Frequency;
+N  u32 ADCCLK_Frequency;
+N}RCC_ClocksTypeDef;
+N
+N/* Exported constants --------------------------------------------------------*/
+N/* HSE configuration */
+N#define RCC_HSE_OFF                      ((u32)0x00000000)
+N#define RCC_HSE_ON                       ((u32)0x00010000)
+N#define RCC_HSE_Bypass                   ((u32)0x00040000)
+N
+N#define IS_RCC_HSE(HSE) (((HSE) == RCC_HSE_OFF) || ((HSE) == RCC_HSE_ON) || \
+N                         ((HSE) == RCC_HSE_Bypass))
+X#define IS_RCC_HSE(HSE) (((HSE) == RCC_HSE_OFF) || ((HSE) == RCC_HSE_ON) ||                          ((HSE) == RCC_HSE_Bypass))
+N
+N/* PLL entry clock source */
+N#define RCC_PLLSource_HSI_Div2           ((u32)0x00000000)	// PLL的输入时钟 = HSI时钟频率除以2 ；
+N#define RCC_PLLSource_HSE_Div1           ((u32)0x00010000)	// PLL的输入时钟 = HSE时钟频率 ；
+N#define RCC_PLLSource_HSE_Div2           ((u32)0x00030000)	// PLL的输入时钟 = HSE时钟频率除以2 ；
+N
+N#define IS_RCC_PLL_SOURCE(SOURCE) (((SOURCE) == RCC_PLLSource_HSI_Div2) || \
+N                                   ((SOURCE) == RCC_PLLSource_HSE_Div1) || \
+N                                   ((SOURCE) == RCC_PLLSource_HSE_Div2))
+X#define IS_RCC_PLL_SOURCE(SOURCE) (((SOURCE) == RCC_PLLSource_HSI_Div2) ||                                    ((SOURCE) == RCC_PLLSource_HSE_Div1) ||                                    ((SOURCE) == RCC_PLLSource_HSE_Div2))
+N
+N/* PLL multiplication factor */
+N#define RCC_PLLMul_2                     ((u32)0x00000000)	// PLL 输入时钟 * 2
+N#define RCC_PLLMul_3                     ((u32)0x00040000)	// PLL 输入时钟 * 3
+N#define RCC_PLLMul_4                     ((u32)0x00080000)	// PLL 输入时钟 * 4
+N#define RCC_PLLMul_5                     ((u32)0x000C0000)	// PLL 输入时钟 * 5
+N#define RCC_PLLMul_6                     ((u32)0x00100000)	// PLL 输入时钟 * 6
+N#define RCC_PLLMul_7                     ((u32)0x00140000)	// PLL 输入时钟 * 7
+N#define RCC_PLLMul_8                     ((u32)0x00180000)	// PLL 输入时钟 * 8
+N#define RCC_PLLMul_9                     ((u32)0x001C0000)	// PLL 输入时钟 * 9
+N#define RCC_PLLMul_10                    ((u32)0x00200000)	// PLL 输入时钟 * 10
+N#define RCC_PLLMul_11                    ((u32)0x00240000)	// PLL 输入时钟 * 11
+N#define RCC_PLLMul_12                    ((u32)0x00280000)	// PLL 输入时钟 * 12
+N#define RCC_PLLMul_13                    ((u32)0x002C0000)	// PLL 输入时钟 * 13
+N#define RCC_PLLMul_14                    ((u32)0x00300000)	// PLL 输入时钟 * 14
+N#define RCC_PLLMul_15                    ((u32)0x00340000)	// PLL 输入时钟 * 15
+N#define RCC_PLLMul_16                    ((u32)0x00380000)	// PLL 输入时钟 * 16
+N
+N#define IS_RCC_PLL_MUL(MUL) (((MUL) == RCC_PLLMul_2) || ((MUL) == RCC_PLLMul_3)   || \
+N                             ((MUL) == RCC_PLLMul_4) || ((MUL) == RCC_PLLMul_5)   || \
+N                             ((MUL) == RCC_PLLMul_6) || ((MUL) == RCC_PLLMul_7)   || \
+N                             ((MUL) == RCC_PLLMul_8) || ((MUL) == RCC_PLLMul_9)   || \
+N                             ((MUL) == RCC_PLLMul_10) || ((MUL) == RCC_PLLMul_11) || \
+N                             ((MUL) == RCC_PLLMul_12) || ((MUL) == RCC_PLLMul_13) || \
+N                             ((MUL) == RCC_PLLMul_14) || ((MUL) == RCC_PLLMul_15) || \
+N                             ((MUL) == RCC_PLLMul_16))
+X#define IS_RCC_PLL_MUL(MUL) (((MUL) == RCC_PLLMul_2) || ((MUL) == RCC_PLLMul_3)   ||                              ((MUL) == RCC_PLLMul_4) || ((MUL) == RCC_PLLMul_5)   ||                              ((MUL) == RCC_PLLMul_6) || ((MUL) == RCC_PLLMul_7)   ||                              ((MUL) == RCC_PLLMul_8) || ((MUL) == RCC_PLLMul_9)   ||                              ((MUL) == RCC_PLLMul_10) || ((MUL) == RCC_PLLMul_11) ||                              ((MUL) == RCC_PLLMul_12) || ((MUL) == RCC_PLLMul_13) ||                              ((MUL) == RCC_PLLMul_14) || ((MUL) == RCC_PLLMul_15) ||                              ((MUL) == RCC_PLLMul_16))
+N
+N/* System clock source */
+N#define RCC_SYSCLKSource_HSI             ((u32)0x00000000)
+N#define RCC_SYSCLKSource_HSE             ((u32)0x00000001)
+N#define RCC_SYSCLKSource_PLLCLK          ((u32)0x00000002)
+N
+N#define IS_RCC_SYSCLK_SOURCE(SOURCE) (((SOURCE) == RCC_SYSCLKSource_HSI) || \
+N                                      ((SOURCE) == RCC_SYSCLKSource_HSE) || \
+N                                      ((SOURCE) == RCC_SYSCLKSource_PLLCLK))
+X#define IS_RCC_SYSCLK_SOURCE(SOURCE) (((SOURCE) == RCC_SYSCLKSource_HSI) ||                                       ((SOURCE) == RCC_SYSCLKSource_HSE) ||                                       ((SOURCE) == RCC_SYSCLKSource_PLLCLK))
+N
+N/* AHB clock source */
+N#define RCC_SYSCLK_Div1                  ((u32)0x00000000) // AHB 时钟 = 系统时钟 ；
+N#define RCC_SYSCLK_Div2                  ((u32)0x00000080) // AHB 时钟 = 系统时钟/2 ；
+N#define RCC_SYSCLK_Div4                  ((u32)0x00000090) // AHB 时钟 = 系统时钟/4 ；
+N#define RCC_SYSCLK_Div8                  ((u32)0x000000A0) // AHB 时钟 = 系统时钟/8 ；
+N#define RCC_SYSCLK_Div16                 ((u32)0x000000B0) // AHB 时钟 = 系统时钟/16 ；
+N#define RCC_SYSCLK_Div64                 ((u32)0x000000C0) // AHB 时钟 = 系统时钟/64 ；
+N#define RCC_SYSCLK_Div128                ((u32)0x000000D0) // AHB 时钟 = 系统时钟/128 ；
+N#define RCC_SYSCLK_Div256                ((u32)0x000000E0) // AHB 时钟 = 系统时钟/256 ；
+N#define RCC_SYSCLK_Div512                ((u32)0x000000F0) // AHB 时钟 = 系统时钟/512 ；
+N
+N#define IS_RCC_HCLK(HCLK) (((HCLK) == RCC_SYSCLK_Div1) || ((HCLK) == RCC_SYSCLK_Div2) || \
+N                           ((HCLK) == RCC_SYSCLK_Div4) || ((HCLK) == RCC_SYSCLK_Div8) || \
+N                           ((HCLK) == RCC_SYSCLK_Div16) || ((HCLK) == RCC_SYSCLK_Div64) || \
+N                           ((HCLK) == RCC_SYSCLK_Div128) || ((HCLK) == RCC_SYSCLK_Div256) || \
+N                           ((HCLK) == RCC_SYSCLK_Div512))
+X#define IS_RCC_HCLK(HCLK) (((HCLK) == RCC_SYSCLK_Div1) || ((HCLK) == RCC_SYSCLK_Div2) ||                            ((HCLK) == RCC_SYSCLK_Div4) || ((HCLK) == RCC_SYSCLK_Div8) ||                            ((HCLK) == RCC_SYSCLK_Div16) || ((HCLK) == RCC_SYSCLK_Div64) ||                            ((HCLK) == RCC_SYSCLK_Div128) || ((HCLK) == RCC_SYSCLK_Div256) ||                            ((HCLK) == RCC_SYSCLK_Div512))
+N
+N/* APB1/APB2 clock source */
+N#define RCC_HCLK_Div1                    ((u32)0x00000000) // APBx 时钟 = HCLK ；
+N#define RCC_HCLK_Div2                    ((u32)0x00000400) // APBx 时钟 = HCLK/2 ；
+N#define RCC_HCLK_Div4                    ((u32)0x00000500) // APBx 时钟 = HCLK/4 ；
+N#define RCC_HCLK_Div8                    ((u32)0x00000600) // APBx 时钟 = HCLK/8 ；
+N#define RCC_HCLK_Div16                   ((u32)0x00000700) // APBx 时钟 = HCLK/16 ；
+N
+N#define IS_RCC_PCLK(PCLK) (((PCLK) == RCC_HCLK_Div1) || ((PCLK) == RCC_HCLK_Div2) || \
+N                           ((PCLK) == RCC_HCLK_Div4) || ((PCLK) == RCC_HCLK_Div8) || \
+N                           ((PCLK) == RCC_HCLK_Div16))
+X#define IS_RCC_PCLK(PCLK) (((PCLK) == RCC_HCLK_Div1) || ((PCLK) == RCC_HCLK_Div2) ||                            ((PCLK) == RCC_HCLK_Div4) || ((PCLK) == RCC_HCLK_Div8) ||                            ((PCLK) == RCC_HCLK_Div16))
+N
+N/* RCC Interrupt source */
+N#define RCC_IT_LSIRDY                    ((u8)0x01)	 // LSI晶振就绪中断 ；
+N#define RCC_IT_LSERDY                    ((u8)0x02)	 // LSE晶振就绪中断 ；
+N#define RCC_IT_HSIRDY                    ((u8)0x04)	 // HSI晶振就绪中断 ；
+N#define RCC_IT_HSERDY                    ((u8)0x08)	 // HSE晶振就绪中断 ；
+N#define RCC_IT_PLLRDY                    ((u8)0x10)	 // PLL就绪中断 ；
+N#define RCC_IT_CSS                       ((u8)0x80)	 // 时钟安全系统时钟 ；
+N
+N#define IS_RCC_IT(IT) ((((IT) & (u8)0xE0) == 0x00) && ((IT) != 0x00))
+N#define IS_RCC_GET_IT(IT) (((IT) == RCC_IT_LSIRDY) || ((IT) == RCC_IT_LSERDY) || \
+N                           ((IT) == RCC_IT_HSIRDY) || ((IT) == RCC_IT_HSERDY) || \
+N                           ((IT) == RCC_IT_PLLRDY) || ((IT) == RCC_IT_CSS))
+X#define IS_RCC_GET_IT(IT) (((IT) == RCC_IT_LSIRDY) || ((IT) == RCC_IT_LSERDY) ||                            ((IT) == RCC_IT_HSIRDY) || ((IT) == RCC_IT_HSERDY) ||                            ((IT) == RCC_IT_PLLRDY) || ((IT) == RCC_IT_CSS))
+N#define IS_RCC_CLEAR_IT(IT) ((((IT) & (u8)0x60) == 0x00) && ((IT) != 0x00))
+N
+N/* USB clock source */
+N#define RCC_USBCLKSource_PLLCLK_1Div5    ((u8)0x00)	 // USB 时钟 = PLL时钟除以1.5 ；
+N#define RCC_USBCLKSource_PLLCLK_Div1     ((u8)0x01)	 // USB 时钟 = PLL时钟	；
+N
+N#define IS_RCC_USBCLK_SOURCE(SOURCE) (((SOURCE) == RCC_USBCLKSource_PLLCLK_1Div5) || \
+N                                      ((SOURCE) == RCC_USBCLKSource_PLLCLK_Div1))
+X#define IS_RCC_USBCLK_SOURCE(SOURCE) (((SOURCE) == RCC_USBCLKSource_PLLCLK_1Div5) ||                                       ((SOURCE) == RCC_USBCLKSource_PLLCLK_Div1))
+N
+N/* ADC clock source */
+N#define RCC_PCLK2_Div2                   ((u32)0x00000000) // ADC 时钟 = PCLK/2 ；
+N#define RCC_PCLK2_Div4                   ((u32)0x00004000) // ADC 时钟 = PCLK/4 ；
+N#define RCC_PCLK2_Div6                   ((u32)0x00008000) // ADC 时钟 = PCLK/6 ；
+N#define RCC_PCLK2_Div8                   ((u32)0x0000C000) // ADC 时钟 = PCLK/8 ；
+N
+N#define IS_RCC_ADCCLK(ADCCLK) (((ADCCLK) == RCC_PCLK2_Div2) || ((ADCCLK) == RCC_PCLK2_Div4) || \
+N                               ((ADCCLK) == RCC_PCLK2_Div6) || ((ADCCLK) == RCC_PCLK2_Div8))
+X#define IS_RCC_ADCCLK(ADCCLK) (((ADCCLK) == RCC_PCLK2_Div2) || ((ADCCLK) == RCC_PCLK2_Div4) ||                                ((ADCCLK) == RCC_PCLK2_Div6) || ((ADCCLK) == RCC_PCLK2_Div8))
+N
+N/* LSE configuration */
+N#define RCC_LSE_OFF                      ((u8)0x00)	  // LSE晶振 OFF ；
+N#define RCC_LSE_ON                       ((u8)0x01)	  // LSE晶振 ON  ；
+N#define RCC_LSE_Bypass                   ((u8)0x04)	  // LSE晶振被外部时钟旁路 ；
+N
+N#define IS_RCC_LSE(LSE) (((LSE) == RCC_LSE_OFF) || ((LSE) == RCC_LSE_ON) || \
+N                         ((LSE) == RCC_LSE_Bypass))
+X#define IS_RCC_LSE(LSE) (((LSE) == RCC_LSE_OFF) || ((LSE) == RCC_LSE_ON) ||                          ((LSE) == RCC_LSE_Bypass))
+N
+N/* RTC clock source */
+N#define RCC_RTCCLKSource_LSE             ((u32)0x00000100) // 选者LSE作为RTC时钟 ；
+N#define RCC_RTCCLKSource_LSI             ((u32)0x00000200) // 选者LSI作为RTC时钟 ；
+N#define RCC_RTCCLKSource_HSE_Div128      ((u32)0x00000300) // 选择HSE时钟频率除以128作为RTC时钟 ；
+N
+N#define IS_RCC_RTCCLK_SOURCE(SOURCE) (((SOURCE) == RCC_RTCCLKSource_LSE) || \
+N                                      ((SOURCE) == RCC_RTCCLKSource_LSI) || \
+N                                      ((SOURCE) == RCC_RTCCLKSource_HSE_Div128))
+X#define IS_RCC_RTCCLK_SOURCE(SOURCE) (((SOURCE) == RCC_RTCCLKSource_LSE) ||                                       ((SOURCE) == RCC_RTCCLKSource_LSI) ||                                       ((SOURCE) == RCC_RTCCLKSource_HSE_Div128))
+N
+N/* AHB peripheral */
+N#define RCC_AHBPeriph_DMA1               ((u32)0x00000001)	// DMA时钟 ；
+N#define RCC_AHBPeriph_DMA2               ((u32)0x00000002)
+N#define RCC_AHBPeriph_SRAM               ((u32)0x00000004)	// SRAM时钟 ；
+N#define RCC_AHBPeriph_FLITF              ((u32)0x00000010)	// FLITF时钟 ；
+N#define RCC_AHBPeriph_CRC                ((u32)0x00000040)
+N#define RCC_AHBPeriph_FSMC               ((u32)0x00000100)
+N#define RCC_AHBPeriph_SDIO               ((u32)0x00000400)
+N
+N#define IS_RCC_AHB_PERIPH(PERIPH) ((((PERIPH) & 0xFFFFFAA8) == 0x00) && ((PERIPH) != 0x00))
+N
+N/* APB2 peripheral */
+N#define RCC_APB2Periph_AFIO              ((u32)0x00000001)  // 功能复用IO时钟 ；
+N#define RCC_APB2Periph_GPIOA             ((u32)0x00000004)	// GPIOA 时钟 ；
+N#define RCC_APB2Periph_GPIOB             ((u32)0x00000008)	// GPIOB 时钟 ；
+N#define RCC_APB2Periph_GPIOC             ((u32)0x00000010)	// GPIOC 时钟 ；
+N#define RCC_APB2Periph_GPIOD             ((u32)0x00000020)	// GPIOD 时钟 ；
+N#define RCC_APB2Periph_GPIOE             ((u32)0x00000040)	// GPIOE 时钟 ；
+N#define RCC_APB2Periph_GPIOF             ((u32)0x00000080)	// GPIOF 时钟 ；
+N#define RCC_APB2Periph_GPIOG             ((u32)0x00000100)	// GPIOG 时钟 ；
+N#define RCC_APB2Periph_ADC1              ((u32)0x00000200)	// ADC1 时钟 ；
+N#define RCC_APB2Periph_ADC2              ((u32)0x00000400)	// ADC2 时钟 ；
+N#define RCC_APB2Periph_TIM1              ((u32)0x00000800)	// TIM1 时钟 ；
+N#define RCC_APB2Periph_SPI1              ((u32)0x00001000)	// SPI1 时钟 ；
+N#define RCC_APB2Periph_TIM8              ((u32)0x00002000)	// TIM8 时钟 ；
+N#define RCC_APB2Periph_USART1            ((u32)0x00004000)	// USART1 时钟 ；
+N#define RCC_APB2Periph_ADC3              ((u32)0x00008000)	// ADC3 时钟 ；
+N#define RCC_APB2Periph_ALL               ((u32)0x0000FFFD)	// 全部APB2外设时钟 ；
+N
+N#define IS_RCC_APB2_PERIPH(PERIPH) ((((PERIPH) & 0xFFFF0002) == 0x00) && ((PERIPH) != 0x00))
+N
+N/* APB1 peripheral */
+N#define RCC_APB1Periph_TIM2              ((u32)0x00000001)  // TIM2 时钟 ；
+N#define RCC_APB1Periph_TIM3              ((u32)0x00000002)	// TIM3 时钟 ；
+N#define RCC_APB1Periph_TIM4              ((u32)0x00000004)	// TIM4 时钟 ；
+N#define RCC_APB1Periph_TIM5              ((u32)0x00000008)  // TIM5 时钟 ；
+N#define RCC_APB1Periph_TIM6              ((u32)0x00000010)	// TIM6 时钟 ；
+N#define RCC_APB1Periph_TIM7              ((u32)0x00000020)	// TIM7 时钟 ；
+N#define RCC_APB1Periph_WWDG              ((u32)0x00000800)	// WWDG 时钟 ；
+N#define RCC_APB1Periph_SPI2              ((u32)0x00004000)	// SPI2 时钟 ；
+N#define RCC_APB1Periph_SPI3              ((u32)0x00008000)	// SPI3 时钟 ；
+N#define RCC_APB1Periph_USART2            ((u32)0x00020000)	// USART2 时钟 ；
+N#define RCC_APB1Periph_USART3            ((u32)0x00040000)	// USART3 时钟 ；
+N#define RCC_APB1Periph_UART4             ((u32)0x00080000)	// UART4 时钟 ；
+N#define RCC_APB1Periph_UART5             ((u32)0x00100000)	// UART5 时钟 ；
+N#define RCC_APB1Periph_I2C1              ((u32)0x00200000)  // I2C1 时钟 ；
+N#define RCC_APB1Periph_I2C2              ((u32)0x00400000)	// I2C2 时钟 ；
+N#define RCC_APB1Periph_USB               ((u32)0x00800000)	// USB 时钟 ；
+N#define RCC_APB1Periph_CAN               ((u32)0x02000000)	// CAN 时钟 ；
+N#define RCC_APB1Periph_BKP               ((u32)0x08000000)	// BKP 时钟 ；
+N#define RCC_APB1Periph_PWR               ((u32)0x10000000)	// PWR 时钟 ；
+N#define RCC_APB1Periph_DAC               ((u32)0x20000000)  // DAC 时钟 ；
+N#define RCC_APB1Periph_ALL               ((u32)0x3AFEC83F)	// 全部APB1外设时钟 ；
+N
+N#define IS_RCC_APB1_PERIPH(PERIPH) ((((PERIPH) & 0xC50137C0) == 0x00) && ((PERIPH) != 0x00))
+N
+N/* Clock source to output on MCO pin */
+N#define RCC_MCO_NoClock                  ((u8)0x00)	 // 无时钟被选中 ；
+N#define RCC_MCO_SYSCLK                   ((u8)0x04)	 // 选中系统时钟 ；
+N#define RCC_MCO_HSI                      ((u8)0x05)	 // 选中HSI ；
+N#define RCC_MCO_HSE                      ((u8)0x06)	 // 选中HSE ；
+N#define RCC_MCO_PLLCLK_Div2              ((u8)0x07)	 // 选中PLL时钟除以2 ；
+N
+N#define IS_RCC_MCO(MCO) (((MCO) == RCC_MCO_NoClock) || ((MCO) == RCC_MCO_HSI) || \
+N                         ((MCO) == RCC_MCO_SYSCLK)  || ((MCO) == RCC_MCO_HSE) || \
+N                         ((MCO) == RCC_MCO_PLLCLK_Div2))
+X#define IS_RCC_MCO(MCO) (((MCO) == RCC_MCO_NoClock) || ((MCO) == RCC_MCO_HSI) ||                          ((MCO) == RCC_MCO_SYSCLK)  || ((MCO) == RCC_MCO_HSE) ||                          ((MCO) == RCC_MCO_PLLCLK_Div2))
+N
+N/* RCC Flag */
+N#define RCC_FLAG_HSIRDY                  ((u8)0x20)	 // HSI晶振就绪 ；
+N#define RCC_FLAG_HSERDY                  ((u8)0x31)	 // HSE晶振就绪 ；
+N#define RCC_FLAG_PLLRDY                  ((u8)0x39)	 // PLL 就绪 ；
+N#define RCC_FLAG_LSERDY                  ((u8)0x41)	 // LSI晶振就绪 ；
+N#define RCC_FLAG_LSIRDY                  ((u8)0x61)	 // LSE晶振就绪 ；
+N#define RCC_FLAG_PINRST                  ((u8)0x7A)	 // 管脚复位 ；
+N#define RCC_FLAG_PORRST                  ((u8)0x7B)	 // POR/PDR复位 ；
+N#define RCC_FLAG_SFTRST                  ((u8)0x7C)	 // 软件复位 ；
+N#define RCC_FLAG_IWDGRST                 ((u8)0x7D)	 // IWDG复位 ；
+N#define RCC_FLAG_WWDGRST                 ((u8)0x7E)	 // WWDG复位 ；
+N#define RCC_FLAG_LPWRRST                 ((u8)0x7F)	 // 低功耗复位 ；
+N
+N#define IS_RCC_FLAG(FLAG) (((FLAG) == RCC_FLAG_HSIRDY) || ((FLAG) == RCC_FLAG_HSERDY) || \
+N                           ((FLAG) == RCC_FLAG_PLLRDY) || ((FLAG) == RCC_FLAG_LSERDY) || \
+N                           ((FLAG) == RCC_FLAG_LSIRDY) || ((FLAG) == RCC_FLAG_PINRST) || \
+N                           ((FLAG) == RCC_FLAG_PORRST) || ((FLAG) == RCC_FLAG_SFTRST) || \
+N                           ((FLAG) == RCC_FLAG_IWDGRST)|| ((FLAG) == RCC_FLAG_WWDGRST)|| \
+N                           ((FLAG) == RCC_FLAG_LPWRRST))
+X#define IS_RCC_FLAG(FLAG) (((FLAG) == RCC_FLAG_HSIRDY) || ((FLAG) == RCC_FLAG_HSERDY) ||                            ((FLAG) == RCC_FLAG_PLLRDY) || ((FLAG) == RCC_FLAG_LSERDY) ||                            ((FLAG) == RCC_FLAG_LSIRDY) || ((FLAG) == RCC_FLAG_PINRST) ||                            ((FLAG) == RCC_FLAG_PORRST) || ((FLAG) == RCC_FLAG_SFTRST) ||                            ((FLAG) == RCC_FLAG_IWDGRST)|| ((FLAG) == RCC_FLAG_WWDGRST)||                            ((FLAG) == RCC_FLAG_LPWRRST))
+N
+N#define IS_RCC_CALIBRATION_VALUE(VALUE) ((VALUE) <= 0x1F)
+N
+N/* Exported macro ------------------------------------------------------------*/
+N/* Exported functions ------------------------------------------------------- */
+Nvoid RCC_DeInit(void);
+Nvoid RCC_HSEConfig(u32 RCC_HSE);
+NErrorStatus RCC_WaitForHSEStartUp(void);
+Nvoid RCC_AdjustHSICalibrationValue(u8 HSICalibrationValue);
+Nvoid RCC_HSICmd(FunctionalState NewState);
+Nvoid RCC_PLLConfig(u32 RCC_PLLSource, u32 RCC_PLLMul);
+Nvoid RCC_PLLCmd(FunctionalState NewState);
+Nvoid RCC_SYSCLKConfig(u32 RCC_SYSCLKSource);
+Nu8 RCC_GetSYSCLKSource(void);
+Nvoid RCC_HCLKConfig(u32 RCC_SYSCLK);
+Nvoid RCC_PCLK1Config(u32 RCC_HCLK);
+Nvoid RCC_PCLK2Config(u32 RCC_HCLK);
+Nvoid RCC_ITConfig(u8 RCC_IT, FunctionalState NewState);
+Nvoid RCC_USBCLKConfig(u32 RCC_USBCLKSource);
+Nvoid RCC_ADCCLKConfig(u32 RCC_PCLK2);
+Nvoid RCC_LSEConfig(u8 RCC_LSE);
+Nvoid RCC_LSICmd(FunctionalState NewState);
+Nvoid RCC_RTCCLKConfig(u32 RCC_RTCCLKSource);
+Nvoid RCC_RTCCLKCmd(FunctionalState NewState);
+Nvoid RCC_GetClocksFreq(RCC_ClocksTypeDef* RCC_Clocks);
+Nvoid RCC_AHBPeriphClockCmd(u32 RCC_AHBPeriph, FunctionalState NewState);
+Nvoid RCC_APB2PeriphClockCmd(u32 RCC_APB2Periph, FunctionalState NewState);
+Nvoid RCC_APB1PeriphClockCmd(u32 RCC_APB1Periph, FunctionalState NewState);
+Nvoid RCC_APB2PeriphResetCmd(u32 RCC_APB2Periph, FunctionalState NewState);
+Nvoid RCC_APB1PeriphResetCmd(u32 RCC_APB1Periph, FunctionalState NewState);
+Nvoid RCC_BackupResetCmd(FunctionalState NewState);
+Nvoid RCC_ClockSecuritySystemCmd(FunctionalState NewState);
+Nvoid RCC_MCOConfig(u8 RCC_MCO);
+NFlagStatus RCC_GetFlagStatus(u8 RCC_FLAG);
+Nvoid RCC_ClearFlag(void);
+NITStatus RCC_GetITStatus(u8 RCC_IT);
+Nvoid RCC_ClearITPendingBit(u8 RCC_IT);
+N
+N#endif /* __STM32F10x_RCC_H */
+N
+N/******************* (C) COPYRIGHT 2008 STMicroelectronics *****END OF FILE****/
+L 21 "lib\src\stm32f10x_sdio.c" 2
+N
+N/* Private typedef -----------------------------------------------------------*/
+N/* ------------ SDIO registers bit address in the alias region ----------- */
+N#define SDIO_OFFSET                (SDIO_BASE - PERIPH_BASE)
+N
+N/* --- CLKCR Register ---*/
+N/* Alias word address of CLKEN bit */
+N#define CLKCR_OFFSET              (SDIO_OFFSET + 0x04)
+N#define CLKEN_BitNumber           0x08
+N#define CLKCR_CLKEN_BB            (PERIPH_BB_BASE + (CLKCR_OFFSET * 32) + (CLKEN_BitNumber * 4))
+N
+N/* --- CMD Register ---*/
+N/* Alias word address of SDIOSUSPEND bit */
+N#define CMD_OFFSET                (SDIO_OFFSET + 0x0C)
+N#define SDIOSUSPEND_BitNumber     0x0B
+N#define CMD_SDIOSUSPEND_BB        (PERIPH_BB_BASE + (CMD_OFFSET * 32) + (SDIOSUSPEND_BitNumber * 4))
+N
+N/* Alias word address of ENCMDCOMPL bit */
+N#define ENCMDCOMPL_BitNumber      0x0C
+N#define CMD_ENCMDCOMPL_BB         (PERIPH_BB_BASE + (CMD_OFFSET * 32) + (ENCMDCOMPL_BitNumber * 4))
+N
+N/* Alias word address of NIEN bit */
+N#define NIEN_BitNumber            0x0D
+N#define CMD_NIEN_BB               (PERIPH_BB_BASE + (CMD_OFFSET * 32) + (NIEN_BitNumber * 4))
+N
+N/* Alias word address of ATACMD bit */
+N#define ATACMD_BitNumber          0x0E
+N#define CMD_ATACMD_BB             (PERIPH_BB_BASE + (CMD_OFFSET * 32) + (ATACMD_BitNumber * 4))
+N
+N/* --- DCTRL Register ---*/
+N/* Alias word address of DMAEN bit */
+N#define DCTRL_OFFSET              (SDIO_OFFSET + 0x2C)
+N#define DMAEN_BitNumber           0x03
+N#define DCTRL_DMAEN_BB            (PERIPH_BB_BASE + (DCTRL_OFFSET * 32) + (DMAEN_BitNumber * 4))
+N
+N/* Alias word address of RWSTART bit */
+N#define RWSTART_BitNumber         0x08
+N#define DCTRL_RWSTART_BB          (PERIPH_BB_BASE + (DCTRL_OFFSET * 32) + (RWSTART_BitNumber * 4))
+N
+N/* Alias word address of RWSTOP bit */
+N#define RWSTOP_BitNumber          0x09
+N#define DCTRL_RWSTOP_BB           (PERIPH_BB_BASE + (DCTRL_OFFSET * 32) + (RWSTOP_BitNumber * 4))
+N
+N/* Alias word address of RWMOD bit */
+N#define RWMOD_BitNumber           0x0A
+N#define DCTRL_RWMOD_BB            (PERIPH_BB_BASE + (DCTRL_OFFSET * 32) + (RWMOD_BitNumber * 4))
+N
+N/* Alias word address of SDIOEN bit */
+N#define SDIOEN_BitNumber          0x0B
+N#define DCTRL_SDIOEN_BB           (PERIPH_BB_BASE + (DCTRL_OFFSET * 32) + (SDIOEN_BitNumber * 4))
+N
+N
+N/* ---------------------- SDIO registers bit mask ------------------------ */
+N/* --- CLKCR Register ---*/
+N/* CLKCR register clear mask */
+N#define CLKCR_CLEAR_MASK         ((u32)0xFFFF8100) 
+N
+N/* --- PWRCTRL Register ---*/
+N/* SDIO PWRCTRL Mask */
+N#define PWR_PWRCTRL_MASK         ((u32)0xFFFFFFFC)
+N
+N/* --- DCTRL Register ---*/
+N/* SDIO DCTRL Clear Mask */
+N#define DCTRL_CLEAR_MASK         ((u32)0xFFFFFF08)
+N
+N/* --- CMD Register ---*/
+N/* CMD Register clear mask */
+N#define CMD_CLEAR_MASK           ((u32)0xFFFFF800)
+N
+N/* SDIO RESP Registers Address */
+N#define SDIO_RESP_ADDR           ((u32)(SDIO_BASE + 0x14))
+N
+N/* Private define ------------------------------------------------------------*/
+N/* Private macro -------------------------------------------------------------*/
+N/* Private variables ---------------------------------------------------------*/
+N/* Private function prototypes -----------------------------------------------*/
+N/* Private functions ---------------------------------------------------------*/
+N
+N/*******************************************************************************
+N* Function Name  : SDIO_DeInit
+N* Description    : Deinitializes the SDIO peripheral registers to their default
+N*                  reset values.
+N* Input          : None
+N* Output         : None
+N* Return         : None
+N*******************************************************************************/
+Nvoid SDIO_DeInit(void)
+N{
+N  SDIO->POWER = 0x00000000;
+X  ((SDIO_TypeDef *) (((u32)0x40000000) + 0x18000))->POWER = 0x00000000;
+N  SDIO->CLKCR = 0x00000000;
+X  ((SDIO_TypeDef *) (((u32)0x40000000) + 0x18000))->CLKCR = 0x00000000;
+N  SDIO->ARG = 0x00000000;
+X  ((SDIO_TypeDef *) (((u32)0x40000000) + 0x18000))->ARG = 0x00000000;
+N  SDIO->CMD = 0x00000000;
+X  ((SDIO_TypeDef *) (((u32)0x40000000) + 0x18000))->CMD = 0x00000000;
+N  SDIO->DTIMER = 0x00000000;
+X  ((SDIO_TypeDef *) (((u32)0x40000000) + 0x18000))->DTIMER = 0x00000000;
+N  SDIO->DLEN = 0x00000000;
+X  ((SDIO_TypeDef *) (((u32)0x40000000) + 0x18000))->DLEN = 0x00000000;
+N  SDIO->DCTRL = 0x00000000;
+X  ((SDIO_TypeDef *) (((u32)0x40000000) + 0x18000))->DCTRL = 0x00000000;
+N  SDIO->ICR = 0x00C007FF;
+X  ((SDIO_TypeDef *) (((u32)0x40000000) + 0x18000))->ICR = 0x00C007FF;
+N  SDIO->MASK = 0x00000000;
+X  ((SDIO_TypeDef *) (((u32)0x40000000) + 0x18000))->MASK = 0x00000000;
+N}
+N
+N/*******************************************************************************
+N* Function Name  : SDIO_Init
+N* Description    : Initializes the SDIO peripheral according to the specified 
+N*                  parameters in the SDIO_InitStruct.
+N* Input          : SDIO_InitStruct : pointer to a SDIO_InitTypeDef structure 
+N*                  that contains the configuration information for the SDIO 
+N*                  peripheral.
+N* Output         : None
+N* Return         : None
+N*******************************************************************************/
+Nvoid SDIO_Init(SDIO_InitTypeDef* SDIO_InitStruct)
+N{
+N  u32 tmpreg = 0;
+N    
+N  /* Check the parameters */
+N  assert_param(IS_SDIO_CLOCK_EDGE(SDIO_InitStruct->SDIO_ClockEdge));
+X  ((void)0);
+N  assert_param(IS_SDIO_CLOCK_BYPASS(SDIO_InitStruct->SDIO_ClockBypass));
+X  ((void)0);
+N  assert_param(IS_SDIO_CLOCK_POWER_SAVE(SDIO_InitStruct->SDIO_ClockPowerSave));
+X  ((void)0);
+N  assert_param(IS_SDIO_BUS_WIDE(SDIO_InitStruct->SDIO_BusWide));
+X  ((void)0);
+N  assert_param(IS_SDIO_HARDWARE_FLOW_CONTROL(SDIO_InitStruct->SDIO_HardwareFlowControl)); 
+X  ((void)0); 
+N   
+N/*---------------------------- SDIO CLKCR Configuration ------------------------*/  
+N  /* Get the SDIO CLKCR value */
+N  tmpreg = SDIO->CLKCR;
+X  tmpreg = ((SDIO_TypeDef *) (((u32)0x40000000) + 0x18000))->CLKCR;
+N  
+N  /* Clear CLKDIV, PWRSAV, BYPASS, WIDBUS, NEGEDGE, HWFC_EN bits */
+N  tmpreg &= CLKCR_CLEAR_MASK;
+X  tmpreg &= ((u32)0xFFFF8100);
+N  
+N  /* Set CLKDIV bits according to SDIO_ClockDiv value */
+N  /* Set PWRSAV bit according to SDIO_ClockPowerSave value */
+N  /* Set BYPASS bit according to SDIO_ClockBypass value */
+N  /* Set WIDBUS bits according to SDIO_BusWide value */
+N  /* Set NEGEDGE bits according to SDIO_ClockEdge value */
+N  /* Set HWFC_EN bits according to SDIO_HardwareFlowControl value */
+N  tmpreg |= (SDIO_InitStruct->SDIO_ClockDiv  | SDIO_InitStruct->SDIO_ClockPowerSave |
+N             SDIO_InitStruct->SDIO_ClockBypass | SDIO_InitStruct->SDIO_BusWide |
+N             SDIO_InitStruct->SDIO_ClockEdge | SDIO_InitStruct->SDIO_HardwareFlowControl); 
+N  
+N  /* Write to SDIO CLKCR */
+N  SDIO->CLKCR = tmpreg;             
+X  ((SDIO_TypeDef *) (((u32)0x40000000) + 0x18000))->CLKCR = tmpreg;             
+N}
+N
+N/*******************************************************************************
+N* Function Name  : SDIO_StructInit
+N* Description    : Fills each SDIO_InitStruct member with its default value.
+N* Input          : SDIO_InitStruct: pointer to an SDIO_InitTypeDef structure which 
+N*                  will be initialized.
+N* Output         : None
+N* Return         : None
+N*******************************************************************************/
+Nvoid SDIO_StructInit(SDIO_InitTypeDef* SDIO_InitStruct)
+N{
+N  /* SDIO_InitStruct members default value */
+N  SDIO_InitStruct->SDIO_ClockDiv = 0x00;
+N  SDIO_InitStruct->SDIO_ClockEdge = SDIO_ClockEdge_Rising;
+X  SDIO_InitStruct->SDIO_ClockEdge = ((u32)0x00000000);
+N  SDIO_InitStruct->SDIO_ClockBypass = SDIO_ClockBypass_Disable;
+X  SDIO_InitStruct->SDIO_ClockBypass = ((u32)0x00000000);
+N  SDIO_InitStruct->SDIO_ClockPowerSave = SDIO_ClockPowerSave_Disable;
+X  SDIO_InitStruct->SDIO_ClockPowerSave = ((u32)0x00000000);
+N  SDIO_InitStruct->SDIO_BusWide = SDIO_BusWide_1b;
+X  SDIO_InitStruct->SDIO_BusWide = ((u32)0x00000000);
+N  SDIO_InitStruct->SDIO_HardwareFlowControl = SDIO_HardwareFlowControl_Disable;
+X  SDIO_InitStruct->SDIO_HardwareFlowControl = ((u32)0x00000000);
+N}
+N
+N/*******************************************************************************
+N* Function Name  : SDIO_ClockCmd
+N* Description    : Enables or disables the SDIO Clock.
+N* Input          : NewState: new state of the SDIO Clock.
+N*                  This parameter can be: ENABLE or DISABLE.
+N* Output         : None
+N* Return         : None
+N*******************************************************************************/
+Nvoid SDIO_ClockCmd(FunctionalState NewState)
+N{
+N  /* Check the parameters */
+N  assert_param(IS_FUNCTIONAL_STATE(NewState));
+X  ((void)0);
+N  
+N  *(vu32 *) CLKCR_CLKEN_BB = (u32)NewState;
+X  *(vu32 *) (((u32)0x42000000) + ((((((u32)0x40000000) + 0x18000) - ((u32)0x40000000)) + 0x04) * 32) + (0x08 * 4)) = (u32)NewState;
+N}
+N
+N/*******************************************************************************
+N* Function Name  : SDIO_SetPowerState
+N* Description    : Sets the power status of the controller.
+N* Input          : SDIO_PowerState: new state of the Power state. 
+N*                  This parameter can be one of the following values:
+N*                   - SDIO_PowerState_OFF
+N*                   - SDIO_PowerState_ON
+N* Output         : None
+N* Return         : None
+N*******************************************************************************/
+Nvoid SDIO_SetPowerState(u32 SDIO_PowerState)
+N{
+N  /* Check the parameters */
+N  assert_param(IS_SDIO_POWER_STATE(SDIO_PowerState));
+X  ((void)0);
+N  
+N  SDIO->POWER &= PWR_PWRCTRL_MASK;
+X  ((SDIO_TypeDef *) (((u32)0x40000000) + 0x18000))->POWER &= ((u32)0xFFFFFFFC);
+N  SDIO->POWER |= SDIO_PowerState;
+X  ((SDIO_TypeDef *) (((u32)0x40000000) + 0x18000))->POWER |= SDIO_PowerState;
+N}
+N
+N/*******************************************************************************
+N* Function Name  : SDIO_GetPowerState
+N* Description    : Gets the power status of the controller.
+N* Input          : None
+N* Output         : None
+N* Return         : Power status of the controller. The returned value can
+N*                  be one of the following:
+N*                       - 0x00: Power OFF
+N*                       - 0x02: Power UP
+N*                       - 0x03: Power ON 
+N*******************************************************************************/
+Nu32 SDIO_GetPowerState(void)
+N{
+N  return (SDIO->POWER & (~PWR_PWRCTRL_MASK));
+X  return (((SDIO_TypeDef *) (((u32)0x40000000) + 0x18000))->POWER & (~((u32)0xFFFFFFFC)));
+N}
+N
+N/*******************************************************************************
+N* Function Name  : SDIO_ITConfig
+N* Description    : Enables or disables the SDIO interrupts.
+N* Input          : - SDIO_IT: specifies the SDIO interrupt sources to be 
+N*                    enabled or disabled.
+N*                    This parameter can be one or a combination of the following
+N*                    values:
+N*                      - SDIO_IT_CCRCFAIL: Command response received (CRC check
+N*                                          failed) interrupt    
+N*                      - SDIO_IT_DCRCFAIL: Data block sent/received (CRC check 
+N*                                          failed) interrupt    
+N*                      - SDIO_IT_CTIMEOUT: Command response timeout interrupt    
+N*                      - SDIO_IT_DTIMEOUT: Data timeout interrupt    
+N*                      - SDIO_IT_TXUNDERR: Transmit FIFO underrun error interrupt    
+N*                      - SDIO_IT_RXOVERR:  Received FIFO overrun error interrupt     
+N*                      - SDIO_IT_CMDREND:  Command response received (CRC check 
+N*                                          passed) interrupt     
+N*                      - SDIO_IT_CMDSENT:  Command sent (no response required) 
+N*                                          interrupt     
+N*                      - SDIO_IT_DATAEND:  Data end (data counter, SDIDCOUNT, is 
+N*                                          zero) interrupt     
+N*                      - SDIO_IT_STBITERR: Start bit not detected on all data 
+N*                                          signals in wide bus mode interrupt    
+N*                      - SDIO_IT_DBCKEND:  Data block sent/received (CRC check 
+N*                                          passed) interrupt    
+N*                      - SDIO_IT_CMDACT:   Command transfer in progress interrupt     
+N*                      - SDIO_IT_TXACT:    Data transmit in progress interrupt       
+N*                      - SDIO_IT_RXACT:    Data receive in progress interrupt      
+N*                      - SDIO_IT_TXFIFOHE: Transmit FIFO Half Empty interrupt    
+N*                      - SDIO_IT_RXFIFOHF: Receive FIFO Half Full interrupt   
+N*                      - SDIO_IT_TXFIFOF:  Transmit FIFO full interrupt     
+N*                      - SDIO_IT_RXFIFOF:  Receive FIFO full interrupt     
+N*                      - SDIO_IT_TXFIFOE:  Transmit FIFO empty interrupt      
+N*                      - SDIO_IT_RXFIFOE:  Receive FIFO empty interrupt     
+N*                      - SDIO_IT_TXDAVL:   Data available in transmit FIFO interrupt      
+N*                      - SDIO_IT_RXDAVL:   Data available in receive FIFO interrupt      
+N*                      - SDIO_IT_SDIOIT:   SD I/O interrupt received interrupt      
+N*                      - SDIO_IT_CEATAEND: CE-ATA command completion signal 
+N*                                          received for CMD61 interrupt
+N*                  - NewState: new state of the specified SDIO interrupts.
+N*                  This parameter can be: ENABLE or DISABLE.  
+N* Output         : None
+N* Return         : None 
+N*******************************************************************************/
+Nvoid SDIO_ITConfig(u32 SDIO_IT, FunctionalState NewState)
+N{
+N  /* Check the parameters */
+N  assert_param(IS_SDIO_IT(SDIO_IT));
+X  ((void)0);
+N  assert_param(IS_FUNCTIONAL_STATE(NewState));
+X  ((void)0);
+N  
+N  if (NewState != DISABLE)
+N  {
+N    /* Enable the SDIO interrupts */
+N    SDIO->MASK |= SDIO_IT;
+X    ((SDIO_TypeDef *) (((u32)0x40000000) + 0x18000))->MASK |= SDIO_IT;
+N  }
+N  else
+N  {
+N    /* Disable the SDIO interrupts */
+N    SDIO->MASK &= ~SDIO_IT;
+X    ((SDIO_TypeDef *) (((u32)0x40000000) + 0x18000))->MASK &= ~SDIO_IT;
+N  } 
+N}
+N
+N/*******************************************************************************
+N* Function Name  : SDIO_DMACmd
+N* Description    : Enables or disables the SDIO DMA request.
+N* Input          : NewState: new state of the selected SDIO DMA request.
+N*                  This parameter can be: ENABLE or DISABLE.
+N* Output         : None
+N* Return         : None
+N*******************************************************************************/
+Nvoid SDIO_DMACmd(FunctionalState NewState)
+N{
+N  /* Check the parameters */
+N  assert_param(IS_FUNCTIONAL_STATE(NewState));
+X  ((void)0);
+N  
+N  *(vu32 *) DCTRL_DMAEN_BB = (u32)NewState;
+X  *(vu32 *) (((u32)0x42000000) + ((((((u32)0x40000000) + 0x18000) - ((u32)0x40000000)) + 0x2C) * 32) + (0x03 * 4)) = (u32)NewState;
+N}
+N
+N/*******************************************************************************
+N* Function Name  : SDIO_SendCommand
+N* Description    : Initializes the SDIO Command according to the specified 
+N*                  parameters in the SDIO_CmdInitStruct and send the command.
+N* Input          : SDIO_CmdInitStruct : pointer to a SDIO_CmdInitTypeDef 
+N*                  structure that contains the configuration information 
+N*                  for the SDIO command.
+N* Output         : None
+N* Return         : None
+N*******************************************************************************/
+Nvoid SDIO_SendCommand(SDIO_CmdInitTypeDef *SDIO_CmdInitStruct)
+N{
+N  u32 tmpreg = 0;
+N  
+N  /* Check the parameters */
+N  assert_param(IS_SDIO_CMD_INDEX(SDIO_CmdInitStruct->SDIO_CmdIndex));
+X  ((void)0);
+N  assert_param(IS_SDIO_RESPONSE(SDIO_CmdInitStruct->SDIO_Response));
+X  ((void)0);
+N  assert_param(IS_SDIO_WAIT(SDIO_CmdInitStruct->SDIO_Wait));
+X  ((void)0);
+N  assert_param(IS_SDIO_CPSM(SDIO_CmdInitStruct->SDIO_CPSM));
+X  ((void)0);
+N  
+N/*---------------------------- SDIO ARG Configuration ------------------------*/
+N  /* Set the SDIO Argument value */
+N  SDIO->ARG = SDIO_CmdInitStruct->SDIO_Argument;
+X  ((SDIO_TypeDef *) (((u32)0x40000000) + 0x18000))->ARG = SDIO_CmdInitStruct->SDIO_Argument;
+N  
+N/*---------------------------- SDIO CMD Configuration ------------------------*/  
+N  /* Get the SDIO CMD value */
+N  tmpreg = SDIO->CMD;
+X  tmpreg = ((SDIO_TypeDef *) (((u32)0x40000000) + 0x18000))->CMD;
+N
+N  /* Clear CMDINDEX, WAITRESP, WAITINT, WAITPEND, CPSMEN bits */
+N  tmpreg &= CMD_CLEAR_MASK;
+X  tmpreg &= ((u32)0xFFFFF800);
+N  /* Set CMDINDEX bits according to SDIO_CmdIndex value */
+N  /* Set WAITRESP bits according to SDIO_Response value */
+N  /* Set WAITINT and WAITPEND bits according to SDIO_Wait value */
+N  /* Set CPSMEN bits according to SDIO_CPSM value */
+N  tmpreg |= (u32)SDIO_CmdInitStruct->SDIO_CmdIndex | SDIO_CmdInitStruct->SDIO_Response
+N           | SDIO_CmdInitStruct->SDIO_Wait | SDIO_CmdInitStruct->SDIO_CPSM;
+N  
+N  /* Write to SDIO CMD */
+N  SDIO->CMD = tmpreg;
+X  ((SDIO_TypeDef *) (((u32)0x40000000) + 0x18000))->CMD = tmpreg;
+N}
+N
+N/*******************************************************************************
+N* Function Name  : SDIO_CmdStructInit
+N* Description    : Fills each SDIO_CmdInitStruct member with its default value.
+N* Input          : SDIO_CmdInitStruct: pointer to an SDIO_CmdInitTypeDef 
+N*                  structure which will be initialized.
+N* Output         : None
+N* Return         : None
+N*******************************************************************************/
+Nvoid SDIO_CmdStructInit(SDIO_CmdInitTypeDef* SDIO_CmdInitStruct)
+N{
+N  /* SDIO_CmdInitStruct members default value */
+N  SDIO_CmdInitStruct->SDIO_Argument = 0x00;
+N  SDIO_CmdInitStruct->SDIO_CmdIndex = 0x00;
+N  SDIO_CmdInitStruct->SDIO_Response = SDIO_Response_No;
+X  SDIO_CmdInitStruct->SDIO_Response = ((u32)0x00000000);
+N  SDIO_CmdInitStruct->SDIO_Wait = SDIO_Wait_No;
+X  SDIO_CmdInitStruct->SDIO_Wait = ((u32)0x00000000);
+N  SDIO_CmdInitStruct->SDIO_CPSM = SDIO_CPSM_Disable;
+X  SDIO_CmdInitStruct->SDIO_CPSM = ((u32)0x00000000);
+N}
+N
+N/*******************************************************************************
+N* Function Name  : SDIO_GetCommandResponse
+N* Description    : Returns command index of last command for which response 
+N*                  received.
+N* Input          : None
+N* Output         : None
+N* Return         : Returns the command index of the last command response received.
+N*******************************************************************************/
+Nu8 SDIO_GetCommandResponse(void)
+N{
+N  return (u8)(SDIO->RESPCMD);
+X  return (u8)(((SDIO_TypeDef *) (((u32)0x40000000) + 0x18000))->RESPCMD);
+N}
+N
+N/*******************************************************************************
+N* Function Name  : SDIO_GetResponse
+N* Description    : Returns response received from the card for the last command.
+N* Input          : - SDIO_RESP: Specifies the SDIO response register. 
+N*                     This parameter can be one of the following values:
+N*                       - SDIO_RESP1: Response Register 1
+N*                       - SDIO_RESP2: Response Register 2
+N*                       - SDIO_RESP3: Response Register 3
+N*                       - SDIO_RESP4: Response Register 4                       
+N* Output         : None
+N* Return         : The Corresponding response register value.
+N*******************************************************************************/
+Nu32 SDIO_GetResponse(u32 SDIO_RESP)
+N{
+N  /* Check the parameters */
+N  assert_param(IS_SDIO_RESP(SDIO_RESP));
+X  ((void)0);
+N  
+N  return (*(vu32 *)(SDIO_RESP_ADDR + SDIO_RESP)); 
+X  return (*(vu32 *)(((u32)((((u32)0x40000000) + 0x18000) + 0x14)) + SDIO_RESP)); 
+N}
+N
+N/*******************************************************************************
+N* Function Name  : SDIO_DataConfig
+N* Description    : Initializes the SDIO data path according to the specified 
+N*                  parameters in the SDIO_DataInitStruct.
+N* Input          : SDIO_DataInitStruct : pointer to a SDIO_DataInitTypeDef 
+N*                  structure that contains the configuration information 
+N*                  for the SDIO command.
+N* Output         : None
+N* Return         : None
+N*******************************************************************************/
+Nvoid SDIO_DataConfig(SDIO_DataInitTypeDef* SDIO_DataInitStruct)
+N{
+N  u32 tmpreg = 0;
+N  
+N  /* Check the parameters */
+N  assert_param(IS_SDIO_DATA_LENGTH(SDIO_DataInitStruct->SDIO_DataLength));
+X  ((void)0);
+N  assert_param(IS_SDIO_BLOCK_SIZE(SDIO_DataInitStruct->SDIO_DataBlockSize));
+X  ((void)0);
+N  assert_param(IS_SDIO_TRANSFER_DIR(SDIO_DataInitStruct->SDIO_TransferDir));
+X  ((void)0);
+N  assert_param(IS_SDIO_TRANSFER_MODE(SDIO_DataInitStruct->SDIO_TransferMode));
+X  ((void)0);
+N  assert_param(IS_SDIO_DPSM(SDIO_DataInitStruct->SDIO_DPSM));
+X  ((void)0);
+N
+N/*---------------------------- SDIO DTIMER Configuration ---------------------*/
+N  /* Set the SDIO Data TimeOut value */
+N  SDIO->DTIMER = SDIO_DataInitStruct->SDIO_DataTimeOut;
+X  ((SDIO_TypeDef *) (((u32)0x40000000) + 0x18000))->DTIMER = SDIO_DataInitStruct->SDIO_DataTimeOut;
+N    
+N/*---------------------------- SDIO DLEN Configuration -----------------------*/
+N  /* Set the SDIO DataLength value */
+N  SDIO->DLEN = SDIO_DataInitStruct->SDIO_DataLength;
+X  ((SDIO_TypeDef *) (((u32)0x40000000) + 0x18000))->DLEN = SDIO_DataInitStruct->SDIO_DataLength;
+N  
+N/*---------------------------- SDIO DCTRL Configuration ----------------------*/  
+N  /* Get the SDIO DCTRL value */
+N  tmpreg = SDIO->DCTRL;
+X  tmpreg = ((SDIO_TypeDef *) (((u32)0x40000000) + 0x18000))->DCTRL;
+N
+N  /* Clear DEN, DTMODE, DTDIR and DBCKSIZE bits */
+N  tmpreg &= DCTRL_CLEAR_MASK;
+X  tmpreg &= ((u32)0xFFFFFF08);
+N  /* Set DEN bit according to SDIO_DPSM value */
+N  /* Set DTMODE bit according to SDIO_TransferMode value */
+N  /* Set DTDIR bit according to SDIO_TransferDir value */
+N  /* Set DBCKSIZE bits according to SDIO_DataBlockSize value */
+N  tmpreg |= (u32)SDIO_DataInitStruct->SDIO_DataBlockSize | SDIO_DataInitStruct->SDIO_TransferDir
+N           | SDIO_DataInitStruct->SDIO_TransferMode | SDIO_DataInitStruct->SDIO_DPSM;
+N  
+N  /* Write to SDIO DCTRL */
+N  SDIO->DCTRL = tmpreg;
+X  ((SDIO_TypeDef *) (((u32)0x40000000) + 0x18000))->DCTRL = tmpreg;
+N}
+N
+N/*******************************************************************************
+N* Function Name  : SDIO_DataStructInit
+N* Description    : Fills each SDIO_DataInitStruct member with its default value.
+N* Input          : SDIO_DataInitStruct: pointer to an SDIO_DataInitTypeDef 
+N*                  structure which will be initialized.
+N* Output         : None
+N* Return         : None
+N*******************************************************************************/
+Nvoid SDIO_DataStructInit(SDIO_DataInitTypeDef* SDIO_DataInitStruct)
+N{
+N  /* SDIO_DataInitStruct members default value */
+N  SDIO_DataInitStruct->SDIO_DataTimeOut = 0xFFFFFFFF;
+N  SDIO_DataInitStruct->SDIO_DataLength = 0x00;
+N  SDIO_DataInitStruct->SDIO_DataBlockSize = SDIO_DataBlockSize_1b;
+X  SDIO_DataInitStruct->SDIO_DataBlockSize = ((u32)0x00000000);
+N  SDIO_DataInitStruct->SDIO_TransferDir = SDIO_TransferDir_ToCard;
+X  SDIO_DataInitStruct->SDIO_TransferDir = ((u32)0x00000000);
+N  SDIO_DataInitStruct->SDIO_TransferMode = SDIO_TransferMode_Block;  
+X  SDIO_DataInitStruct->SDIO_TransferMode = ((u32)0x00000000);  
+N  SDIO_DataInitStruct->SDIO_DPSM = SDIO_DPSM_Disable;
+X  SDIO_DataInitStruct->SDIO_DPSM = ((u32)0x00000000);
+N}
+N
+N/*******************************************************************************
+N* Function Name  : SDIO_GetDataCounter
+N* Description    : Returns number of remaining data bytes to be transferred.
+N* Input          : None
+N* Output         : None
+N* Return         : Number of remaining data bytes to be transferred
+N*******************************************************************************/
+Nu32 SDIO_GetDataCounter(void)
+N{ 
+N  return SDIO->DCOUNT;
+X  return ((SDIO_TypeDef *) (((u32)0x40000000) + 0x18000))->DCOUNT;
+N}
+N
+N/*******************************************************************************
+N* Function Name  : SDIO_ReadData
+N* Description    : Read one data word from Rx FIFO.
+N* Input          : None
+N* Output         : None
+N* Return         : Data received
+N*******************************************************************************/
+Nu32 SDIO_ReadData(void)
+N{ 
+N  return SDIO->FIFO;
+X  return ((SDIO_TypeDef *) (((u32)0x40000000) + 0x18000))->FIFO;
+N}
+N
+N/*******************************************************************************
+N* Function Name  : SDIO_WriteData
+N* Description    : Write one data word to Tx FIFO.
+N* Input          : Data: 32-bit data word to write.
+N* Output         : None
+N* Return         : None
+N*******************************************************************************/
+Nvoid SDIO_WriteData(u32 Data)
+N{ 
+N  SDIO->FIFO = Data;
+X  ((SDIO_TypeDef *) (((u32)0x40000000) + 0x18000))->FIFO = Data;
+N}
+N
+N/*******************************************************************************
+N* Function Name  : SDIO_GetFIFOCount
+N* Description    : Returns the number of words left to be written to or read
+N*                  from FIFO.	
+N* Input          : None
+N* Output         : None
+N* Return         : Remaining number of words.
+N*******************************************************************************/
+Nu32 SDIO_GetFIFOCount(void)
+N{ 
+N  return SDIO->FIFOCNT;
+X  return ((SDIO_TypeDef *) (((u32)0x40000000) + 0x18000))->FIFOCNT;
+N}
+N
+N/*******************************************************************************
+N* Function Name  : SDIO_StartSDIOReadWait
+N* Description    : Starts the SD I/O Read Wait operation.	
+N* Input          : NewState: new state of the Start SDIO Read Wait operation. 
+N*                  This parameter can be: ENABLE or DISABLE.
+N* Output         : None
+N* Return         : None
+N*******************************************************************************/
+Nvoid SDIO_StartSDIOReadWait(FunctionalState NewState)
+N{ 
+N  /* Check the parameters */
+N  assert_param(IS_FUNCTIONAL_STATE(NewState));
+X  ((void)0);
+N  
+N  *(vu32 *) DCTRL_RWSTART_BB = (u32) NewState;
+X  *(vu32 *) (((u32)0x42000000) + ((((((u32)0x40000000) + 0x18000) - ((u32)0x40000000)) + 0x2C) * 32) + (0x08 * 4)) = (u32) NewState;
+N}
+N
+N/*******************************************************************************
+N* Function Name  : SDIO_StopSDIOReadWait
+N* Description    : Stops the SD I/O Read Wait operation.	
+N* Input          : NewState: new state of the Stop SDIO Read Wait operation. 
+N*                  This parameter can be: ENABLE or DISABLE.
+N* Output         : None
+N* Return         : None
+N*******************************************************************************/
+Nvoid SDIO_StopSDIOReadWait(FunctionalState NewState)
+N{ 
+N  /* Check the parameters */
+N  assert_param(IS_FUNCTIONAL_STATE(NewState));
+X  ((void)0);
+N  
+N  *(vu32 *) DCTRL_RWSTOP_BB = (u32) NewState;
+X  *(vu32 *) (((u32)0x42000000) + ((((((u32)0x40000000) + 0x18000) - ((u32)0x40000000)) + 0x2C) * 32) + (0x09 * 4)) = (u32) NewState;
+N}
+N
+N/*******************************************************************************
+N* Function Name  : SDIO_SetSDIOReadWaitMode
+N* Description    : Sets one of the two options of inserting read wait interval.	
+N* Input          : SDIOReadWaitMode: SD I/O Read Wait operation mode.
+N*                  This parametre can be:
+N*                    - SDIO_ReadWaitMode_CLK: Read Wait control by stopping SDIOCLK
+N*                    - SDIO_ReadWaitMode_DATA2: Read Wait control using SDIO_DATA2
+N* Output         : None
+N* Return         : None
+N*******************************************************************************/
+Nvoid SDIO_SetSDIOReadWaitMode(u32 SDIO_ReadWaitMode)
+N{
+N  /* Check the parameters */
+N  assert_param(IS_SDIO_READWAIT_MODE(SDIO_ReadWaitMode));
+X  ((void)0);
+N  
+N  *(vu32 *) DCTRL_RWMOD_BB = SDIO_ReadWaitMode;
+X  *(vu32 *) (((u32)0x42000000) + ((((((u32)0x40000000) + 0x18000) - ((u32)0x40000000)) + 0x2C) * 32) + (0x0A * 4)) = SDIO_ReadWaitMode;
+N}
+N
+N/*******************************************************************************
+N* Function Name  : SDIO_SetSDIOOperation
+N* Description    : Enables or disables the SD I/O Mode Operation.	
+N* Input          : NewState: new state of SDIO specific operation. 
+N*                  This parameter can be: ENABLE or DISABLE.
+N* Output         : None
+N* Return         : None
+N*******************************************************************************/
+Nvoid SDIO_SetSDIOOperation(FunctionalState NewState)
+N{ 
+N  /* Check the parameters */
+N  assert_param(IS_FUNCTIONAL_STATE(NewState));
+X  ((void)0);
+N  
+N  *(vu32 *) DCTRL_SDIOEN_BB = (u32)NewState;
+X  *(vu32 *) (((u32)0x42000000) + ((((((u32)0x40000000) + 0x18000) - ((u32)0x40000000)) + 0x2C) * 32) + (0x0B * 4)) = (u32)NewState;
+N}
+N
+N/*******************************************************************************
+N* Function Name  : SDIO_SendSDIOSuspendCmd
+N* Description    : Enables or disables the SD I/O Mode suspend command sending.
+N* Input          : NewState: new state of the SD I/O Mode suspend command.
+N*                  This parameter can be: ENABLE or DISABLE.
+N* Output         : None
+N* Return         : None
+N*******************************************************************************/
+Nvoid SDIO_SendSDIOSuspendCmd(FunctionalState NewState)
+N{ 
+N  /* Check the parameters */
+N  assert_param(IS_FUNCTIONAL_STATE(NewState));
+X  ((void)0);
+N  
+N  *(vu32 *) CMD_SDIOSUSPEND_BB = (u32)NewState;
+X  *(vu32 *) (((u32)0x42000000) + ((((((u32)0x40000000) + 0x18000) - ((u32)0x40000000)) + 0x0C) * 32) + (0x0B * 4)) = (u32)NewState;
+N}
+N
+N/*******************************************************************************
+N* Function Name  : SDIO_CommandCompletionCmd
+N* Description    : Enables or disables the command completion signal.
+N* Input          : NewState: new state of command completion signal. 
+N*                  This parameter can be: ENABLE or DISABLE.
+N* Output         : None
+N* Return         : None
+N*******************************************************************************/
+Nvoid SDIO_CommandCompletionCmd(FunctionalState NewState)
+N{ 
+N  /* Check the parameters */
+N  assert_param(IS_FUNCTIONAL_STATE(NewState));
+X  ((void)0);
+N  
+N  *(vu32 *) CMD_ENCMDCOMPL_BB = (u32)NewState;
+X  *(vu32 *) (((u32)0x42000000) + ((((((u32)0x40000000) + 0x18000) - ((u32)0x40000000)) + 0x0C) * 32) + (0x0C * 4)) = (u32)NewState;
+N}
+N
+N/*******************************************************************************
+N* Function Name  : SDIO_CEATAITCmd
+N* Description    : Enables or disables the CE-ATA interrupt.
+N* Input          : NewState: new state of CE-ATA interrupt. 
+N*                  This parameter can be: ENABLE or DISABLE.
+N* Output         : None
+N* Return         : None
+N*******************************************************************************/
+Nvoid SDIO_CEATAITCmd(FunctionalState NewState)
+N{ 
+N  /* Check the parameters */
+N  assert_param(IS_FUNCTIONAL_STATE(NewState));
+X  ((void)0);
+N  
+N  *(vu32 *) CMD_NIEN_BB = (u32)((~((u32)NewState)) & ((u32)0x1));
+X  *(vu32 *) (((u32)0x42000000) + ((((((u32)0x40000000) + 0x18000) - ((u32)0x40000000)) + 0x0C) * 32) + (0x0D * 4)) = (u32)((~((u32)NewState)) & ((u32)0x1));
+N}
+N
+N/*******************************************************************************
+N* Function Name  : SDIO_SendCEATACmd
+N* Description    : Sends CE-ATA command (CMD61).
+N* Input          : NewState: new state of CE-ATA command. 
+N*                  This parameter can be: ENABLE or DISABLE.
+N* Output         : None
+N* Return         : None
+N*******************************************************************************/
+Nvoid SDIO_SendCEATACmd(FunctionalState NewState)
+N{ 
+N  /* Check the parameters */
+N  assert_param(IS_FUNCTIONAL_STATE(NewState));
+X  ((void)0);
+N  
+N  *(vu32 *) CMD_ATACMD_BB = (u32)NewState;
+X  *(vu32 *) (((u32)0x42000000) + ((((((u32)0x40000000) + 0x18000) - ((u32)0x40000000)) + 0x0C) * 32) + (0x0E * 4)) = (u32)NewState;
+N}
+N
+N/*******************************************************************************
+N* Function Name  : SDIO_GetFlagStatus
+N* Description    : Checks whether the specified SDIO flag is set or not.	
+N* Input          : SDIO_FLAG: specifies the flag to check. 
+N*                  This parameter can be one of the following values:
+N*                     - SDIO_FLAG_CCRCFAIL: Command response received (CRC check
+N*                                           failed)    
+N*                     - SDIO_FLAG_DCRCFAIL: Data block sent/received (CRC check 
+N*                                           failed)    
+N*                     - SDIO_FLAG_CTIMEOUT: Command response timeout    
+N*                     - SDIO_FLAG_DTIMEOUT: Data timeou   
+N*                     - SDIO_FLAG_TXUNDERR: Transmit FIFO underrun error   
+N*                     - SDIO_FLAG_RXOVERR:  Received FIFO overrun error    
+N*                     - SDIO_FLAG_CMDREND:  Command response received (CRC check 
+N*                                           passed)    
+N*                     - SDIO_FLAG_CMDSENT:  Command sent (no response required)    
+N*                     - SDIO_FLAG_DATAEND:  Data end (data counter, SDIDCOUNT, is
+N*                                           zero)    
+N*                     - SDIO_FLAG_STBITERR: Start bit not detected on all data 
+N*                                           signals in wide bus mode   
+N*                     - SDIO_FLAG_DBCKEND:  Data block sent/received (CRC check 
+N*                                           passed)    
+N*                     - SDIO_FLAG_CMDACT:   Command transfer in progress     
+N*                     - SDIO_FLAG_TXACT:    Data transmit in progress      
+N*                     - SDIO_FLAG_RXACT:    Data receive in progress      
+N*                     - SDIO_FLAG_TXFIFOHE: Transmit FIFO Half Empty   
+N*                     - SDIO_FLAG_RXFIFOHF: Receive FIFO Half Full   
+N*                     - SDIO_FLAG_TXFIFOF:  Transmit FIFO full    
+N*                     - SDIO_FLAG_RXFIFOF:  Receive FIFO full     
+N*                     - SDIO_FLAG_TXFIFOE:  Transmit FIFO empty    
+N*                     - SDIO_FLAG_RXFIFOE:  Receive FIFO empty    
+N*                     - SDIO_FLAG_TXDAVL:   Data available in transmit FIFO     
+N*                     - SDIO_FLAG_RXDAVL:   Data available in receive FIFO     
+N*                     - SDIO_FLAG_SDIOIT:   SD I/O interrupt received     
+N*                     - SDIO_FLAG_CEATAEND: CE-ATA command completion signal 
+N*                                           received for CMD61    
+N* Output         : None
+N* Return         : The new state of SDIO_FLAG (SET or RESET).
+N*******************************************************************************/
+NFlagStatus SDIO_GetFlagStatus(u32 SDIO_FLAG)
+N{ 
+N  FlagStatus bitstatus = RESET;
+N  
+N  /* Check the parameters */
+N  assert_param(IS_SDIO_FLAG(SDIO_FLAG));
+X  ((void)0);
+N  
+N  if ((SDIO->STA & SDIO_FLAG) != (u32)RESET)
+X  if ((((SDIO_TypeDef *) (((u32)0x40000000) + 0x18000))->STA & SDIO_FLAG) != (u32)RESET)
+N  {
+N    bitstatus = SET;
+N  }
+N  else
+N  {
+N    bitstatus = RESET;
+N  }
+N  return bitstatus;
+N}
+N
+N/*******************************************************************************
+N* Function Name  : SDIO_ClearFlag
+N* Description    : Clears the SDIO's pending flags.	
+N* Input          : SDIO_FLAG: specifies the flag to clear.  
+N*                  This parameter can be one or a combination of the following
+N*                  values:
+N*                     - SDIO_FLAG_CCRCFAIL: Command response received (CRC check
+N*                                           failed)    
+N*                     - SDIO_FLAG_DCRCFAIL: Data block sent/received (CRC check 
+N*                                           failed)    
+N*                     - SDIO_FLAG_CTIMEOUT: Command response timeout    
+N*                     - SDIO_FLAG_DTIMEOUT: Data timeou   
+N*                     - SDIO_FLAG_TXUNDERR: Transmit FIFO underrun error   
+N*                     - SDIO_FLAG_RXOVERR:  Received FIFO overrun error    
+N*                     - SDIO_FLAG_CMDREND:  Command response received (CRC check 
+N*                                           passed)    
+N*                     - SDIO_FLAG_CMDSENT:  Command sent (no response required)    
+N*                     - SDIO_FLAG_DATAEND:  Data end (data counter, SDIDCOUNT, is
+N*                                           zero)    
+N*                     - SDIO_FLAG_STBITERR: Start bit not detected on all data 
+N*                                           signals in wide bus mode   
+N*                     - SDIO_FLAG_DBCKEND:  Data block sent/received (CRC check 
+N*                                           passed)         
+N*                     - SDIO_FLAG_SDIOIT:   SD I/O interrupt received     
+N*                     - SDIO_FLAG_CEATAEND: CE-ATA command completion signal 
+N*                                           received for CMD61    
+N* Output         : None
+N* Return         : None
+N*******************************************************************************/
+Nvoid SDIO_ClearFlag(u32 SDIO_FLAG)
+N{ 
+N  /* Check the parameters */
+N  assert_param(IS_SDIO_CLEAR_FLAG(SDIO_FLAG));
+X  ((void)0);
+N   
+N  SDIO->ICR = SDIO_FLAG;
+X  ((SDIO_TypeDef *) (((u32)0x40000000) + 0x18000))->ICR = SDIO_FLAG;
+N}
+N
+N/*******************************************************************************
+N* Function Name  : SDIO_GetITStatus
+N* Description    : Checks whether the specified SDIO interrupt has occurred or not.	
+N* Input          : SDIO_IT: specifies the SDIO interrupt source to check. 
+N*                  This parameter can be one of the following values:
+N*                      - SDIO_IT_CCRCFAIL: Command response received (CRC check
+N*                                          failed) interrupt    
+N*                      - SDIO_IT_DCRCFAIL: Data block sent/received (CRC check 
+N*                                          failed) interrupt    
+N*                      - SDIO_IT_CTIMEOUT: Command response timeout interrupt    
+N*                      - SDIO_IT_DTIMEOUT: Data timeout interrupt    
+N*                      - SDIO_IT_TXUNDERR: Transmit FIFO underrun error interrupt    
+N*                      - SDIO_IT_RXOVERR:  Received FIFO overrun error interrupt     
+N*                      - SDIO_IT_CMDREND:  Command response received (CRC check 
+N*                                          passed) interrupt     
+N*                      - SDIO_IT_CMDSENT:  Command sent (no response required) 
+N*                                          interrupt     
+N*                      - SDIO_IT_DATAEND:  Data end (data counter, SDIDCOUNT, is 
+N*                                          zero) interrupt     
+N*                      - SDIO_IT_STBITERR: Start bit not detected on all data 
+N*                                          signals in wide bus mode interrupt    
+N*                      - SDIO_IT_DBCKEND:  Data block sent/received (CRC check 
+N*                                          passed) interrupt    
+N*                      - SDIO_IT_CMDACT:   Command transfer in progress interrupt     
+N*                      - SDIO_IT_TXACT:    Data transmit in progress interrupt       
+N*                      - SDIO_IT_RXACT:    Data receive in progress interrupt      
+N*                      - SDIO_IT_TXFIFOHE: Transmit FIFO Half Empty interrupt    
+N*                      - SDIO_IT_RXFIFOHF: Receive FIFO Half Full interrupt   
+N*                      - SDIO_IT_TXFIFOF:  Transmit FIFO full interrupt     
+N*                      - SDIO_IT_RXFIFOF:  Receive FIFO full interrupt     
+N*                      - SDIO_IT_TXFIFOE:  Transmit FIFO empty interrupt      
+N*                      - SDIO_IT_RXFIFOE:  Receive FIFO empty interrupt     
+N*                      - SDIO_IT_TXDAVL:   Data available in transmit FIFO interrupt      
+N*                      - SDIO_IT_RXDAVL:   Data available in receive FIFO interrupt      
+N*                      - SDIO_IT_SDIOIT:   SD I/O interrupt received interrupt      
+N*                      - SDIO_IT_CEATAEND: CE-ATA command completion signal 
+N*                                          received for CMD61 interrupt
+N* Output         : None
+N* Return         : The new state of SDIO_IT (SET or RESET).
+N*******************************************************************************/
+NITStatus SDIO_GetITStatus(u32 SDIO_IT)
+N{ 
+N  ITStatus bitstatus = RESET;
+N  
+N  /* Check the parameters */
+N  assert_param(IS_SDIO_GET_IT(SDIO_IT));
+X  ((void)0);
+N
+N  if ((SDIO->STA & SDIO_IT) != (u32)RESET)  
+X  if ((((SDIO_TypeDef *) (((u32)0x40000000) + 0x18000))->STA & SDIO_IT) != (u32)RESET)  
+N  {
+N    bitstatus = SET;
+N  }
+N  else
+N  {
+N    bitstatus = RESET;
+N  }
+N  return bitstatus;
+N}
+N
+N/*******************************************************************************
+N* Function Name  : SDIO_ClearITPendingBit
+N* Description    : Clears the SDIO抯 interrupt pending bits.	
+N* Input          : SDIO_IT: specifies the interrupt pending bit to clear. 
+N*                   This parameter can be one or a combination of the following
+N*                   values:
+N*                      - SDIO_IT_CCRCFAIL: Command response received (CRC check
+N*                                          failed) interrupt    
+N*                      - SDIO_IT_DCRCFAIL: Data block sent/received (CRC check 
+N*                                          failed) interrupt    
+N*                      - SDIO_IT_CTIMEOUT: Command response timeout interrupt    
+N*                      - SDIO_IT_DTIMEOUT: Data timeout interrupt    
+N*                      - SDIO_IT_TXUNDERR: Transmit FIFO underrun error interrupt    
+N*                      - SDIO_IT_RXOVERR:  Received FIFO overrun error interrupt     
+N*                      - SDIO_IT_CMDREND:  Command response received (CRC check 
+N*                                          passed) interrupt     
+N*                      - SDIO_IT_CMDSENT:  Command sent (no response required) 
+N*                                          interrupt     
+N*                      - SDIO_IT_DATAEND:  Data end (data counter, SDIDCOUNT, is 
+N*                                          zero) interrupt     
+N*                      - SDIO_IT_STBITERR: Start bit not detected on all data 
+N*                                          signals in wide bus mode interrupt          
+N*                      - SDIO_IT_SDIOIT:   SD I/O interrupt received interrupt      
+N*                      - SDIO_IT_CEATAEND: CE-ATA command completion signal 
+N*                                          received for CMD61 
+N* Output         : None
+N* Return         : None
+N*******************************************************************************/
+Nvoid SDIO_ClearITPendingBit(u32 SDIO_IT)
+N{ 
+N  /* Check the parameters */
+N  assert_param(IS_SDIO_CLEAR_IT(SDIO_IT));
+X  ((void)0);
+N   
+N  SDIO->ICR = SDIO_IT;
+X  ((SDIO_TypeDef *) (((u32)0x40000000) + 0x18000))->ICR = SDIO_IT;
+N}
+N
+N/******************* (C) COPYRIGHT 2008 STMicroelectronics *****END OF FILE****/

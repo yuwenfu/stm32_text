@@ -430,10 +430,11 @@ ARM Macro Assembler    Page 7
   301 0000007A         
   302 0000007A                 END
 Command Line: --debug --xref --diag_suppress=9931 --cpu=Cortex-M3 --apcs=interw
-ork --depend=.\objects\cortexm3_macro.d -o.\objects\cortexm3_macro.o -I.\RTE\_T
-arget_1 -IE:\Keil_v5\ARM\PACK\Keil\STM32F1xx_DFP\1.0.5\Device\Include -IE:\Keil
-_v5\ARM\CMSIS\Include --predefine="__UVISION_VERSION SETA 524" --predefine="STM
-32F10X_HD SETA 1" --list=.\listings\cortexm3_macro.lst start\cortexm3_macro.s
+ork --depend=.\cortexm3_macro.d -o.\cortexm3_macro.o -IC:\Users\GEEK\Desktop\st
+m32_text\test\RTE -IE:\Keil_v5\ARM\PACK\Keil\STM32F1xx_DFP\1.0.5\Device\Include
+ -IE:\Keil_v5\ARM\CMSIS\Include --predefine="__MICROLIB SETA 1" --predefine="__
+UVISION_VERSION SETA 520" --predefine="STM32F10X_HD SETA 1" --list=.\listings\c
+ortexm3_macro.lst start\cortexm3_macro.s
 
 
 
@@ -651,4 +652,4 @@ Symbol: __WFI
       At line 24 in file start\cortexm3_macro.s
 Comment: __WFI used once
 24 symbols
-356 symbols in table
+357 symbols in table

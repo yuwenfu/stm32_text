@@ -1,0 +1,3232 @@
+L 1 "lib\src\stm32f10x_can.c"
+N/******************** (C) COPYRIGHT 2008 STMicroelectronics ********************
+N* File Name          : stm32f10x_can.c
+N* Author             : MCD Application Team
+N* Version            : V2.0
+N* Date               : 05/23/2008
+N* Description        : This file provides all the CAN firmware functions.
+N********************************************************************************
+N* THE PRESENT FIRMWARE WHICH IS FOR GUIDANCE ONLY AIMS AT PROVIDING CUSTOMERS
+N* WITH CODING INFORMATION REGARDING THEIR PRODUCTS IN ORDER FOR THEM TO SAVE TIME.
+N* AS A RESULT, STMICROELECTRONICS SHALL NOT BE HELD LIABLE FOR ANY DIRECT,
+N* INDIRECT OR CONSEQUENTIAL DAMAGES WITH RESPECT TO ANY CLAIMS ARISING FROM THE
+N* CONTENT OF SUCH SOFTWARE AND/OR THE USE MADE BY CUSTOMERS OF THE CODING
+N* INFORMATION CONTAINED HEREIN IN CONNECTION WITH THEIR PRODUCTS.
+N* FOR MORE INFORMATION PLEASE CAREFULLY READ THE LICENSE AGREEMENT FILE LOCATED 
+N* IN THE ROOT DIRECTORY OF THIS FIRMWARE PACKAGE.
+N*******************************************************************************/
+N
+N/* Includes ------------------------------------------------------------------*/
+N#include "stm32f10x_can.h"
+L 1 ".\lib\inc\stm32f10x_can.h" 1
+N/******************** (C) COPYRIGHT 2008 STMicroelectronics ********************
+N* File Name          : stm32f10x_can.h
+N* Author             : MCD Application Team
+N* Version            : V2.0
+N* Date               : 05/23/2008
+N* Description        : This file contains all the functions prototypes for the
+N*                      CAN firmware library.
+N********************************************************************************
+N* THE PRESENT FIRMWARE WHICH IS FOR GUIDANCE ONLY AIMS AT PROVIDING CUSTOMERS
+N* WITH CODING INFORMATION REGARDING THEIR PRODUCTS IN ORDER FOR THEM TO SAVE TIME.
+N* AS A RESULT, STMICROELECTRONICS SHALL NOT BE HELD LIABLE FOR ANY DIRECT,
+N* INDIRECT OR CONSEQUENTIAL DAMAGES WITH RESPECT TO ANY CLAIMS ARISING FROM THE
+N* CONTENT OF SUCH SOFTWARE AND/OR THE USE MADE BY CUSTOMERS OF THE CODING
+N* INFORMATION CONTAINED HEREIN IN CONNECTION WITH THEIR PRODUCTS.
+N* FOR MORE INFORMATION PLEASE CAREFULLY READ THE LICENSE AGREEMENT FILE LOCATED 
+N* IN THE ROOT DIRECTORY OF THIS FIRMWARE PACKAGE.
+N*******************************************************************************/
+N
+N/* Define to prevent recursive inclusion -------------------------------------*/
+N#ifndef __STM32F10x_CAN_H
+N#define __STM32F10x_CAN_H
+N
+N/* Includes ------------------------------------------------------------------*/
+N#include "stm32f10x_map.h"
+L 1 ".\lib\inc\stm32f10x_map.h" 1
+N/******************** (C) COPYRIGHT 2008 STMicroelectronics ********************
+N* File Name          : stm32f10x_map.h
+N* Author             : MCD Application Team
+N* Version            : V2.0
+N* Date               : 05/23/2008
+N* Description        : This file contains all the peripheral register's definitions
+N*                      and memory mapping.
+N********************************************************************************
+N* THE PRESENT FIRMWARE WHICH IS FOR GUIDANCE ONLY AIMS AT PROVIDING CUSTOMERS
+N* WITH CODING INFORMATION REGARDING THEIR PRODUCTS IN ORDER FOR THEM TO SAVE TIME.
+N* AS A RESULT, STMICROELECTRONICS SHALL NOT BE HELD LIABLE FOR ANY DIRECT,
+N* INDIRECT OR CONSEQUENTIAL DAMAGES WITH RESPECT TO ANY CLAIMS ARISING FROM THE
+N* CONTENT OF SUCH SOFTWARE AND/OR THE USE MADE BY CUSTOMERS OF THE CODING
+N* INFORMATION CONTAINED HEREIN IN CONNECTION WITH THEIR PRODUCTS.
+N* FOR MORE INFORMATION PLEASE CAREFULLY READ THE LICENSE AGREEMENT FILE LOCATED 
+N* IN THE ROOT DIRECTORY OF THIS FIRMWARE PACKAGE.
+N*******************************************************************************/
+N
+N/* Define to prevent recursive inclusion -------------------------------------*/
+N#ifndef __STM32F10x_MAP_H
+N#define __STM32F10x_MAP_H
+N
+N#ifndef EXT
+N  #define EXT extern
+N#endif /* EXT */
+N
+N/* Includes ------------------------------------------------------------------*/
+N#include "stm32f10x_conf.h"
+L 1 ".\lib\inc\stm32f10x_conf.h" 1
+N/******************** (C) COPYRIGHT 2008 STMicroelectronics ********************
+N* File Name          : stm32f10x_conf.h
+N* Author             : MCD Application Team
+N* Version            : V2.0
+N* Date               : 05/23/2008
+N* Description        : Library configuration file.
+N********************************************************************************
+N* THE PRESENT FIRMWARE WHICH IS FOR GUIDANCE ONLY AIMS AT PROVIDING CUSTOMERS
+N* WITH CODING INFORMATION REGARDING THEIR PRODUCTS IN ORDER FOR THEM TO SAVE TIME.
+N* AS A RESULT, STMICROELECTRONICS SHALL NOT BE HELD LIABLE FOR ANY DIRECT,
+N* INDIRECT OR CONSEQUENTIAL DAMAGES WITH RESPECT TO ANY CLAIMS ARISING FROM THE
+N* CONTENT OF SUCH SOFTWARE AND/OR THE USE MADE BY CUSTOMERS OF THE CODING
+N* INFORMATION CONTAINED HEREIN IN CONNECTION WITH THEIR PRODUCTS.
+N* FOR MORE INFORMATION PLEASE CAREFULLY READ THE LICENSE AGREEMENT FILE LOCATED 
+N* IN THE ROOT DIRECTORY OF THIS FIRMWARE PACKAGE.
+N*******************************************************************************/
+N
+N/* Define to prevent recursive inclusion -------------------------------------*/
+N#ifndef __STM32F10x_CONF_H
+N#define __STM32F10x_CONF_H
+N
+N/* Includes ------------------------------------------------------------------*/
+N#include "stm32f10x_type.h"
+L 1 ".\lib\inc\stm32f10x_type.h" 1
+N/******************** (C) COPYRIGHT 2008 STMicroelectronics ********************
+N* File Name          : stm32f10x_type.h
+N* Author             : MCD Application Team
+N* Version            : V2.0
+N* Date               : 05/23/2008
+N* Description        : This file contains all the common data types used for the
+N*                      STM32F10x firmware library.
+N********************************************************************************
+N* THE PRESENT FIRMWARE WHICH IS FOR GUIDANCE ONLY AIMS AT PROVIDING CUSTOMERS
+N* WITH CODING INFORMATION REGARDING THEIR PRODUCTS IN ORDER FOR THEM TO SAVE TIME.
+N* AS A RESULT, STMICROELECTRONICS SHALL NOT BE HELD LIABLE FOR ANY DIRECT,
+N* INDIRECT OR CONSEQUENTIAL DAMAGES WITH RESPECT TO ANY CLAIMS ARISING FROM THE
+N* CONTENT OF SUCH SOFTWARE AND/OR THE USE MADE BY CUSTOMERS OF THE CODING
+N* INFORMATION CONTAINED HEREIN IN CONNECTION WITH THEIR PRODUCTS.
+N* FOR MORE INFORMATION PLEASE CAREFULLY READ THE LICENSE AGREEMENT FILE LOCATED 
+N* IN THE ROOT DIRECTORY OF THIS FIRMWARE PACKAGE.
+N*******************************************************************************/
+N
+N/* Define to prevent recursive inclusion -------------------------------------*/
+N#ifndef __STM32F10x_TYPE_H
+N#define __STM32F10x_TYPE_H
+N
+N/* Includes ------------------------------------------------------------------*/
+N/* Exported types ------------------------------------------------------------*/
+Ntypedef signed long  s32;
+Ntypedef signed short s16;
+Ntypedef signed char  s8;
+N
+Ntypedef signed long  const sc32;  /* Read Only */
+Ntypedef signed short const sc16;  /* Read Only */
+Ntypedef signed char  const sc8;   /* Read Only */
+N
+Ntypedef volatile signed long  vs32;
+Ntypedef volatile signed short vs16;
+Ntypedef volatile signed char  vs8;
+N
+Ntypedef volatile signed long  const vsc32;  /* Read Only */
+Ntypedef volatile signed short const vsc16;  /* Read Only */
+Ntypedef volatile signed char  const vsc8;   /* Read Only */
+N
+Ntypedef unsigned long  u32;
+Ntypedef unsigned short u16;
+Ntypedef unsigned char  u8;
+N
+Ntypedef unsigned long  const uc32;  /* Read Only */
+Ntypedef unsigned short const uc16;  /* Read Only */
+Ntypedef unsigned char  const uc8;   /* Read Only */
+N
+Ntypedef volatile unsigned long  vu32;
+Ntypedef volatile unsigned short vu16;
+Ntypedef volatile unsigned char  vu8;
+N
+Ntypedef volatile unsigned long  const vuc32;  /* Read Only */
+Ntypedef volatile unsigned short const vuc16;  /* Read Only */
+Ntypedef volatile unsigned char  const vuc8;   /* Read Only */
+N
+Ntypedef enum {FALSE = 0, TRUE = !FALSE} bool;
+N
+Ntypedef enum {RESET = 0, SET = !RESET} FlagStatus, ITStatus;
+N
+Ntypedef enum {DISABLE = 0, ENABLE = !DISABLE} FunctionalState;
+N#define IS_FUNCTIONAL_STATE(STATE) (((STATE) == DISABLE) || ((STATE) == ENABLE))
+N
+Ntypedef enum {ERROR = 0, SUCCESS = !ERROR} ErrorStatus;
+N
+N#define U8_MAX     ((u8)255)
+N#define S8_MAX     ((s8)127)
+N#define S8_MIN     ((s8)-128)
+N#define U16_MAX    ((u16)65535u)
+N#define S16_MAX    ((s16)32767)
+N#define S16_MIN    ((s16)-32768)
+N#define U32_MAX    ((u32)4294967295uL)
+N#define S32_MAX    ((s32)2147483647)
+N#define S32_MIN    ((s32)-2147483648)
+N
+N/* Exported constants --------------------------------------------------------*/
+N/* Exported macro ------------------------------------------------------------*/
+N/* Exported functions ------------------------------------------------------- */
+N
+N#endif /* __STM32F10x_TYPE_H */
+N
+N/******************* (C) COPYRIGHT 2008 STMicroelectronics *****END OF FILE****/
+L 24 ".\lib\inc\stm32f10x_conf.h" 2
+N
+N/* Exported types ------------------------------------------------------------*/
+N/* Exported constants --------------------------------------------------------*/
+N/* Uncomment the line below to compile the library in DEBUG mode, this will expanse
+N   the "assert_param" macro in the firmware library code (see "Exported macro"
+N   section below) */
+N/* #define DEBUG    1*/
+N
+N/* Comment the line below to disable the specific peripheral inclusion */
+N/************************************* ADC ************************************/
+N#define _ADC
+N#define _ADC1
+N#define _ADC2
+N#define _ADC3
+N
+N/************************************* BKP ************************************/
+N#define _BKP 
+N
+N/************************************* CAN ************************************/
+N#define _CAN
+N
+N/************************************* CRC ************************************/
+N#define _CRC
+N
+N/************************************* DAC ************************************/
+N#define _DAC
+N
+N/************************************* DBGMCU *********************************/
+N#define _DBGMCU
+N
+N/************************************* DMA ************************************/
+N#define _DMA
+N#define _DMA1_Channel1
+N#define _DMA1_Channel2
+N#define _DMA1_Channel3
+N#define _DMA1_Channel4
+N#define _DMA1_Channel5
+N#define _DMA1_Channel6
+N#define _DMA1_Channel7
+N#define _DMA2_Channel1
+N#define _DMA2_Channel2
+N#define _DMA2_Channel3
+N#define _DMA2_Channel4
+N#define _DMA2_Channel5
+N
+N/************************************* EXTI ***********************************/
+N#define _EXTI
+N
+N/************************************* FLASH and Option Bytes *****************/
+N#define _FLASH
+N/* Uncomment the line below to enable FLASH program/erase/protections functions,
+N   otherwise only FLASH configuration (latency, prefetch, half cycle) functions
+N   are enabled */
+N #define _FLASH_PROG 
+N
+N/************************************* FSMC ***********************************/
+N#define _FSMC
+N
+N/************************************* GPIO ***********************************/
+N#define _GPIO
+N#define _GPIOA
+N#define _GPIOB
+N#define _GPIOC
+N#define _GPIOD
+N#define _GPIOE
+N#define _GPIOF
+N#define _GPIOG
+N#define _AFIO
+N
+N/************************************* I2C ************************************/
+N#define _I2C
+N#define _I2C1
+N#define _I2C2
+N
+N/************************************* IWDG ***********************************/
+N#define _IWDG
+N
+N/************************************* NVIC ***********************************/
+N#define _NVIC
+N
+N/************************************* PWR ************************************/
+N#define _PWR
+N
+N/************************************* RCC ************************************/
+N#define _RCC
+N
+N/************************************* RTC ************************************/
+N#define _RTC
+N
+N/************************************* SDIO ***********************************/
+N#define _SDIO
+N
+N/************************************* SPI ************************************/
+N#define _SPI
+N#define _SPI1
+N#define _SPI2
+N#define _SPI3
+N
+N/************************************* SysTick ********************************/
+N#define _SysTick
+N
+N/************************************* TIM1 ***********************************/
+N#define _TIM1
+N
+N/************************************* TIM ************************************/
+N#define _TIM
+N#define _TIM2
+N#define _TIM3
+N#define _TIM4
+N#define _TIM5
+N#define _TIM6
+N#define _TIM7
+N#define _TIM8
+N
+N/************************************* USART **********************************/
+N#define _USART
+N#define _USART1
+N#define _USART2
+N#define _USART3
+N#define _UART4
+N#define _UART5
+N
+N/************************************* WWDG ***********************************/
+N#define _WWDG
+N
+N/* In the following line adjust the value of External High Speed oscillator (HSE)
+N   used in your application */
+N#define HSE_Value    ((u32)8000000) /* Value of the External oscillator in Hz*/
+N
+N/* Exported macro ------------------------------------------------------------*/
+N#ifdef  DEBUG
+S/*******************************************************************************
+S* Macro Name     : assert_param
+S* Description    : The assert_param macro is used for function's parameters check.
+S*                  It is used only if the library is compiled in DEBUG mode. 
+S* Input          : - expr: If expr is false, it calls assert_failed function
+S*                    which reports the name of the source file and the source
+S*                    line number of the call that failed. 
+S*                    If expr is true, it returns no value.
+S* Return         : None
+S*******************************************************************************/ 
+S  #define assert_param(expr) ((expr) ? (void)0 : assert_failed((u8 *)__FILE__, __LINE__))
+S/* Exported functions ------------------------------------------------------- */
+S  void assert_failed(u8* file, u32 line);
+N#else
+N  #define assert_param(expr) ((void)0)
+N#endif /* DEBUG */
+N
+N#endif /* __STM32F10x_CONF_H */
+N
+N/******************* (C) COPYRIGHT 2008 STMicroelectronics *****END OF FILE****/
+L 29 ".\lib\inc\stm32f10x_map.h" 2
+N#include "stm32f10x_type.h"
+N#include "cortexm3_macro.h"
+L 1 ".\lib\inc\cortexm3_macro.h" 1
+N/******************** (C) COPYRIGHT 2008 STMicroelectronics ********************
+N* File Name          : cortexm3_macro.h
+N* Author             : MCD Application Team
+N* Version            : V2.0
+N* Date               : 05/23/2008
+N* Description        : Header file for cortexm3_macro.s.
+N********************************************************************************
+N* THE PRESENT FIRMWARE WHICH IS FOR GUIDANCE ONLY AIMS AT PROVIDING CUSTOMERS
+N* WITH CODING INFORMATION REGARDING THEIR PRODUCTS IN ORDER FOR THEM TO SAVE TIME.
+N* AS A RESULT, STMICROELECTRONICS SHALL NOT BE HELD LIABLE FOR ANY DIRECT,
+N* INDIRECT OR CONSEQUENTIAL DAMAGES WITH RESPECT TO ANY CLAIMS ARISING FROM THE
+N* CONTENT OF SUCH SOFTWARE AND/OR THE USE MADE BY CUSTOMERS OF THE CODING
+N* INFORMATION CONTAINED HEREIN IN CONNECTION WITH THEIR PRODUCTS.
+N* FOR MORE INFORMATION PLEASE CAREFULLY READ THE LICENSE AGREEMENT FILE LOCATED 
+N* IN THE ROOT DIRECTORY OF THIS FIRMWARE PACKAGE.
+N*******************************************************************************/
+N
+N/* Define to prevent recursive inclusion -------------------------------------*/
+N#ifndef __CORTEXM3_MACRO_H
+N#define __CORTEXM3_MACRO_H
+N
+N/* Includes ------------------------------------------------------------------*/
+N#include "stm32f10x_type.h"
+N
+N/* Exported types ------------------------------------------------------------*/
+N/* Exported constants --------------------------------------------------------*/
+N/* Exported macro ------------------------------------------------------------*/
+N/* Exported functions ------------------------------------------------------- */
+Nvoid __WFI(void);
+Nvoid __WFE(void);
+Nvoid __SEV(void);
+Nvoid __ISB(void);
+Nvoid __DSB(void);
+Nvoid __DMB(void);
+Nvoid __SVC(void);
+Nu32 __MRS_CONTROL(void);
+Nvoid __MSR_CONTROL(u32 Control);
+Nu32 __MRS_PSP(void);
+Nvoid __MSR_PSP(u32 TopOfProcessStack);
+Nu32 __MRS_MSP(void);
+Nvoid __MSR_MSP(u32 TopOfMainStack);
+Nvoid __RESETPRIMASK(void);
+Nvoid __SETPRIMASK(void);
+Nu32 __READ_PRIMASK(void);
+Nvoid __RESETFAULTMASK(void);
+Nvoid __SETFAULTMASK(void);
+Nu32 __READ_FAULTMASK(void);
+Nvoid __BASEPRICONFIG(u32 NewPriority);
+Nu32 __GetBASEPRI(void);
+Nu16 __REV_HalfWord(u16 Data);
+Nu32 __REV_Word(u32 Data);
+N
+N#endif /* __CORTEXM3_MACRO_H */
+N
+N/******************* (C) COPYRIGHT 2008 STMicroelectronics *****END OF FILE****/
+L 31 ".\lib\inc\stm32f10x_map.h" 2
+N
+N/* Exported types ------------------------------------------------------------*/
+N/******************************************************************************/
+N/*                         Peripheral registers structures                    */
+N/******************************************************************************/
+N
+N/*------------------------ Analog to Digital Converter -----------------------*/
+Ntypedef struct
+N{
+N  vu32 SR;	  // ADC状态寄存器 ；
+N  vu32 CR1;	  // ADC控制寄存器1 ；
+N  vu32 CR2;	  // ADC控制寄存器2 ；
+N  vu32 SMPR1; // ADC采样时间寄存器1 ；
+N  vu32 SMPR2; // ADC采样时间寄存器2 ；
+N  vu32 JOFR1; // ADC注入通道偏移寄存器1 ；
+N  vu32 JOFR2; // ADC注入通道偏移寄存器2 ；
+N  vu32 JOFR3; // ADC注入通道偏移寄存器3 ；
+N  vu32 JOFR4; // ADC注入通道偏移寄存器4 ；
+N  vu32 HTR;	 // ADC看门狗高阈值寄存器 ；
+N  vu32 LTR;	 // ADC看门狗低阈值寄存器 ；
+N  vu32 SQR1; // ADC规则序列寄存器1 ；
+N  vu32 SQR2; // ADC规则序列寄存器2 ；
+N  vu32 SQR3; // ADC规则序列寄存器3 ；
+N  vu32 JSQR; // ADC注入序列寄存器 ；
+N  vu32 JDR1; // ADC规则数据寄存器1 ；
+N  vu32 JDR2; // ADC规则数据寄存器2 ；
+N  vu32 JDR3; // ADC规则数据寄存器3 ；
+N  vu32 JDR4; // ADC规则数据寄存器4 ；
+N  vu32 DR;	 // 规则数据寄存器 ;
+N} ADC_TypeDef;
+N
+N/*------------------------ Backup Registers ----------------------------------*/
+Ntypedef struct
+N{
+N  u32  RESERVED0;
+N  vu16 DR1;		   // 数据后备寄存器 1 ； 
+N  u16  RESERVED1;
+N  vu16 DR2;		   // 数据后备寄存器 2 ；
+N  u16  RESERVED2;
+N  vu16 DR3;		   // 数据后备寄存器 3 ；
+N  u16  RESERVED3;
+N  vu16 DR4;		   // 数据后备寄存器 4 ；
+N  u16  RESERVED4;
+N  vu16 DR5;		   // 数据后备寄存器 5 ；
+N  u16  RESERVED5;
+N  vu16 DR6;		   // 数据后备寄存器 6 ；
+N  u16  RESERVED6;
+N  vu16 DR7;		   // 数据后备寄存器 7 ；
+N  u16  RESERVED7;
+N  vu16 DR8;		   // 数据后备寄存器 8 ；
+N  u16  RESERVED8;
+N  vu16 DR9;		   // 数据后备寄存器 9 ；
+N  u16  RESERVED9;
+N  vu16 DR10;	   // 数据后备寄存器 10 ；
+N  u16  RESERVED10; 
+N  vu16 RTCCR;	   // RTC时钟校准寄存器 ；
+N  u16  RESERVED11;
+N  vu16 CR;		   // 后备控制寄存器 ；
+N  u16  RESERVED12;
+N  vu16 CSR;		   // 后备控制状态寄存器 ；
+N  u16  RESERVED13[5];
+N  vu16 DR11;
+N  u16  RESERVED14;
+N  vu16 DR12;
+N  u16  RESERVED15;
+N  vu16 DR13;
+N  u16  RESERVED16;
+N  vu16 DR14;
+N  u16  RESERVED17;
+N  vu16 DR15;
+N  u16  RESERVED18;
+N  vu16 DR16;
+N  u16  RESERVED19;
+N  vu16 DR17;
+N  u16  RESERVED20;
+N  vu16 DR18;
+N  u16  RESERVED21;
+N  vu16 DR19;
+N  u16  RESERVED22;
+N  vu16 DR20;				  
+N  u16  RESERVED23;
+N  vu16 DR21;
+N  u16  RESERVED24;
+N  vu16 DR22;
+N  u16  RESERVED25;
+N  vu16 DR23;
+N  u16  RESERVED26;
+N  vu16 DR24;
+N  u16  RESERVED27;
+N  vu16 DR25;
+N  u16  RESERVED28;
+N  vu16 DR26;
+N  u16  RESERVED29;
+N  vu16 DR27;
+N  u16  RESERVED30;
+N  vu16 DR28;
+N  u16  RESERVED31;
+N  vu16 DR29;
+N  u16  RESERVED32;
+N  vu16 DR30;
+N  u16  RESERVED33; 
+N  vu16 DR31;
+N  u16  RESERVED34;
+N  vu16 DR32;
+N  u16  RESERVED35;
+N  vu16 DR33;
+N  u16  RESERVED36;
+N  vu16 DR34;
+N  u16  RESERVED37;
+N  vu16 DR35;
+N  u16  RESERVED38;
+N  vu16 DR36;
+N  u16  RESERVED39;
+N  vu16 DR37;
+N  u16  RESERVED40;
+N  vu16 DR38;
+N  u16  RESERVED41;
+N  vu16 DR39;
+N  u16  RESERVED42;
+N  vu16 DR40;
+N  u16  RESERVED43;
+N  vu16 DR41;
+N  u16  RESERVED44;
+N  vu16 DR42;
+N  u16  RESERVED45;    
+N} BKP_TypeDef;
+N
+N/*------------------------ Controller Area Network ---------------------------*/
+Ntypedef struct
+N{
+N  vu32 TIR;
+N  vu32 TDTR;
+N  vu32 TDLR;
+N  vu32 TDHR;
+N} CAN_TxMailBox_TypeDef;
+N
+Ntypedef struct
+N{
+N  vu32 RIR;
+N  vu32 RDTR;
+N  vu32 RDLR;
+N  vu32 RDHR;
+N} CAN_FIFOMailBox_TypeDef;
+N
+Ntypedef struct
+N{
+N  vu32 FR1;
+N  vu32 FR2;
+N} CAN_FilterRegister_TypeDef;
+N
+Ntypedef struct
+N{
+N  vu32 MCR;
+N  vu32 MSR;
+N  vu32 TSR;
+N  vu32 RF0R;
+N  vu32 RF1R;
+N  vu32 IER;
+N  vu32 ESR;
+N  vu32 BTR;
+N  u32  RESERVED0[88];
+N  CAN_TxMailBox_TypeDef sTxMailBox[3];
+N  CAN_FIFOMailBox_TypeDef sFIFOMailBox[2];
+N  u32  RESERVED1[12];
+N  vu32 FMR;
+N  vu32 FM1R;
+N  u32  RESERVED2;
+N  vu32 FS1R;
+N  u32  RESERVED3;
+N  vu32 FFA1R;
+N  u32  RESERVED4;
+N  vu32 FA1R;
+N  u32  RESERVED5[8];
+N  CAN_FilterRegister_TypeDef sFilterRegister[14];
+N} CAN_TypeDef;
+N
+N/*------------------------ CRC calculation unit ------------------------------*/
+Ntypedef struct
+N{
+N  vu32 DR;
+N  vu8  IDR;
+N  u8   RESERVED0;
+N  u16  RESERVED1;
+N  vu32 CR;
+N} CRC_TypeDef;
+N
+N
+N/*------------------------ Digital to Analog Converter -----------------------*/
+Ntypedef struct
+N{
+N  vu32 CR;
+N  vu32 SWTRIGR;
+N  vu32 DHR12R1;
+N  vu32 DHR12L1;
+N  vu32 DHR8R1;
+N  vu32 DHR12R2;
+N  vu32 DHR12L2;
+N  vu32 DHR8R2;
+N  vu32 DHR12RD;
+N  vu32 DHR12LD;
+N  vu32 DHR8RD;
+N  vu32 DOR1;
+N  vu32 DOR2;
+N} DAC_TypeDef;
+N
+N/*------------------------ Debug MCU -----------------------------------------*/
+Ntypedef struct
+N{
+N  vu32 IDCODE;
+N  vu32 CR;	
+N}DBGMCU_TypeDef;
+N
+N/*------------------------ DMA Controller ------------------------------------*/
+Ntypedef struct
+N{
+N  vu32 CCR;	   // DMA通道X设置寄存器 ；
+N  vu32 CNDTR;  // DMA通道X待传输数据数目寄存器 ；
+N  vu32 CPAR;   // DMA通道X外设地址寄存器 ；
+N  vu32 CMAR;   // DMA通道X内存地址寄存器 ；
+N} DMA_Channel_TypeDef;
+N
+Ntypedef struct
+N{
+N  vu32 ISR;	   // DMA中断状态寄存器 ；
+N  vu32 IFCR;   // DMA中断标志位清除寄存器 ；
+N} DMA_TypeDef;
+N
+N/*------------------------ External Interrupt/Event Controller ---------------*/
+Ntypedef struct
+N{
+N  vu32 IMR;	  // 中断屏蔽寄存器 ；
+N  vu32 EMR;	  // 事件屏蔽寄存器 ；
+N  vu32 RTSR;  // 上升沿触发选择寄存器 ；
+N  vu32 FTSR;  // 下降沿触发选择寄存器 ；
+N  vu32 SWIER; // 软件中断事件寄存器 ；
+N  vu32 PR;	  // 挂起寄存器 ；
+N} EXTI_TypeDef;
+N
+N/*------------------------ FLASH and Option Bytes Registers ------------------*/
+Ntypedef struct
+N{
+N  vu32 ACR;	    // FLASH访问控制寄存器 ；
+N  vu32 KEYR;    // FPEC密钥寄存器 ；
+N  vu32 OPTKEYR;	// 选择字节密钥寄存器 ；
+N  vu32 SR;		// FLASH状态寄存器 ；
+N  vu32 CR;		// FLASH控制寄存器 ；
+N  vu32 AR;		// FLASH地址寄存器 ；
+N  vu32 RESERVED; //
+N  vu32 OBR;		// 选择字节和状态寄存器 ；
+N  vu32 WRPR;	// 选择字节写保护寄存器 ；
+N} FLASH_TypeDef;
+N
+Ntypedef struct
+N{
+N  vu16 RDP;	  // 读出选择字节 ；
+N  vu16 USER;  // 用户选择字节 ；
+N  vu16 Data0; // Data0选择字节 ；
+N  vu16 Data1; // Data1选择字节 ；
+N  vu16 WRP0;  // 写保护0选择字节 ；
+N  vu16 WRP1;  // 写保护1选择字节
+N  vu16 WRP2;  // 写保护2选择字节
+N  vu16 WRP3;  // 写保护3选择字节
+N} OB_TypeDef;
+N
+N/*------------------------ Flexible Static Memory Controller -----------------*/
+Ntypedef struct
+N{
+N  vu32 BTCR[8];   
+N} FSMC_Bank1_TypeDef; 
+N
+Ntypedef struct
+N{
+N  vu32 BWTR[7];
+N} FSMC_Bank1E_TypeDef;
+N
+Ntypedef struct
+N{
+N  vu32 PCR2;
+N  vu32 SR2;
+N  vu32 PMEM2;
+N  vu32 PATT2;
+N  u32  RESERVED0;   
+N  vu32 ECCR2; 
+N} FSMC_Bank2_TypeDef;  
+N
+Ntypedef struct
+N{
+N  vu32 PCR3;
+N  vu32 SR3;
+N  vu32 PMEM3;
+N  vu32 PATT3;
+N  u32  RESERVED0;   
+N  vu32 ECCR3; 
+N} FSMC_Bank3_TypeDef; 
+N
+Ntypedef struct
+N{
+N  vu32 PCR4;
+N  vu32 SR4;
+N  vu32 PMEM4;
+N  vu32 PATT4;
+N  vu32 PIO4; 
+N} FSMC_Bank4_TypeDef; 
+N
+N/*------------------------ General Purpose and Alternate Function IO ---------*/
+Ntypedef struct
+N{
+N  vu32 CRL;	  // 端口配置低寄存器 ；
+N  vu32 CRH;	  // 端口配置高寄存器 ；
+N  vu32 IDR;	  // 端口输入数据寄存器 ；
+N  vu32 ODR;	  // 端口输出数据寄存器 ；
+N  vu32 BSRR;  // 端口位设置/复位寄存器 ；
+N  vu32 BRR;	  // 端口位复位寄存器 ；
+N  vu32 LCKR;  // 端口配置锁定寄存器 ；
+N} GPIO_TypeDef;
+N
+Ntypedef struct
+N{
+N  vu32 EVCR;     // 事件控制寄存器 ；
+N  vu32 MAPR;	 // 复用重映射和调试I/O配置寄存器 ；
+N  vu32 EXTICR[4];// 外部中断线路0-15配置寄存器 ；
+N} AFIO_TypeDef;
+N
+N/*------------------------ Inter-integrated Circuit Interface ----------------*/
+Ntypedef struct
+N{
+N  vu16 CR1;
+N  u16  RESERVED0;
+N  vu16 CR2;
+N  u16  RESERVED1;
+N  vu16 OAR1;
+N  u16  RESERVED2;
+N  vu16 OAR2;
+N  u16  RESERVED3;
+N  vu16 DR;
+N  u16  RESERVED4;
+N  vu16 SR1;
+N  u16  RESERVED5;
+N  vu16 SR2;
+N  u16  RESERVED6;
+N  vu16 CCR;
+N  u16  RESERVED7;
+N  vu16 TRISE;
+N  u16  RESERVED8;
+N} I2C_TypeDef;
+N
+N/*------------------------ Independent WATCHDOG ------------------------------*/
+Ntypedef struct
+N{
+N  vu32 KR;	// IWDG键值寄存器 ；
+N  vu32 PR;	// IWDG预分频寄存器 ；
+N  vu32 RLR;	// IWDG重装载寄存器 ；
+N  vu32 SR;	// IWDG状态寄存器 ；
+N} IWDG_TypeDef;
+N
+N/*------------------------ Nested Vectored Interrupt Controller --------------*/
+Ntypedef struct
+N{
+N  vu32 ISER[2];		  //
+N  u32  RESERVED0[30]; //
+N  vu32 ICER[2];		  //
+N  u32  RSERVED1[30];  //
+N  vu32 ISPR[2];		  //
+N  u32  RESERVED2[30];
+N  vu32 ICPR[2];
+N  u32  RESERVED3[30];
+N  vu32 IABR[2];
+N  u32  RESERVED4[62];
+N  vu32 IPR[15];
+N} NVIC_TypeDef;
+N
+Ntypedef struct
+N{
+N  vuc32 CPUID;	 // CPU ID 基寄存器 ;
+N  vu32 ICSR;	 //
+N  vu32 VTOR;	 //
+N  vu32 AIRCR;	 //
+N  vu32 SCR;
+N  vu32 CCR;
+N  vu32 SHPR[3];
+N  vu32 SHCSR;
+N  vu32 CFSR;
+N  vu32 HFSR;
+N  vu32 DFSR;
+N  vu32 MMFAR;
+N  vu32 BFAR;
+N  vu32 AFSR;
+N} SCB_TypeDef;
+N
+N/*------------------------ Power Control -------------------------------------*/
+Ntypedef struct
+N{
+N  vu32 CR;
+N  vu32 CSR;
+N} PWR_TypeDef;
+N
+N/*------------------------ Reset and Clock Control ---------------------------*/
+Ntypedef struct
+N{
+N  vu32 CR;	     // 时钟控制寄存器 ；
+N  vu32 CFGR;	 // 时钟配置寄存器 ；
+N  vu32 CIR;		 // 时钟中断寄存器 ；
+N  vu32 APB2RSTR; // APB2外设复位寄存器 ；
+N  vu32 APB1RSTR; // APB1外设复位寄存器 ；
+N  vu32 AHBENR;	 // AHB外设时钟使能寄存器 ；
+N  vu32 APB2ENR;	 // APB2外设时钟使能寄存器 ；
+N  vu32 APB1ENR;	 // APB1外设时钟使能寄存器 ；
+N  vu32 BDCR;	 // 备份域控制寄存器 ；
+N  vu32 CSR;		 // 控制/状态寄存器 ；
+N} RCC_TypeDef;
+N
+N/*------------------------ Real-Time Clock -----------------------------------*/
+Ntypedef struct
+N{
+N  vu16 CRH;	      // 控制寄存器高位 ；
+N  u16  RESERVED0; //
+N  vu16 CRL;		  // 控制寄存器低位 ；
+N  u16  RESERVED1; //
+N  vu16 PRLH;	  // 预分频装载寄存器高位 ；
+N  u16  RESERVED2; //
+N  vu16 PRLL;	  // 预分频装载寄存器低位 ；
+N  u16  RESERVED3; //
+N  vu16 DIVH;	  // 预分频分频因子寄存器高位 ；
+N  u16  RESERVED4; //
+N  vu16 DIVL;	  // 预分频分频因子寄存器低位 ；
+N  u16  RESERVED5; //
+N  vu16 CNTH;	  // 计数器寄存器高位 ；
+N  u16  RESERVED6; //
+N  vu16 CNTL;	  // 计数器寄存器低位 ；
+N  u16  RESERVED7; //
+N  vu16 ALRH;	  // 闹钟寄存器高位 ；
+N  u16  RESERVED8; //
+N  vu16 ALRL;	  // 闹钟寄存器低位 ；
+N  u16  RESERVED9; //
+N} RTC_TypeDef;
+N
+N/*------------------------ SD host Interface ---------------------------------*/
+Ntypedef struct
+N{
+N  vu32 POWER;
+N  vu32 CLKCR;
+N  vu32 ARG;
+N  vu32 CMD;
+N  vuc32 RESPCMD;
+N  vuc32 RESP1;
+N  vuc32 RESP2;
+N  vuc32 RESP3;
+N  vuc32 RESP4;
+N  vu32 DTIMER;
+N  vu32 DLEN;
+N  vu32 DCTRL;
+N  vuc32 DCOUNT;
+N  vuc32 STA;
+N  vu32 ICR;
+N  vu32 MASK;
+N  u32  RESERVED0[2];
+N  vuc32 FIFOCNT;
+N  u32  RESERVED1[13];
+N  vu32 FIFO;
+N} SDIO_TypeDef;
+N
+N/*------------------------ Serial Peripheral Interface -----------------------*/
+Ntypedef struct
+N{
+N  vu16 CR1;	      // SPI控制寄存器1 ；
+N  u16  RESERVED0;
+N  vu16 CR2;		  // SPI控制寄存器2 ；
+N  u16  RESERVED1;
+N  vu16 SR;		  // SPI状态寄存器 ；
+N  u16  RESERVED2;
+N  vu16 DR;		  // SPI数据寄存器 ；
+N  u16  RESERVED3;
+N  vu16 CRCPR;	  // SPI CRC多项式寄存器 ；
+N  u16  RESERVED4;
+N  vu16 RXCRCR;	  // SPI接收CRC寄存器 ；
+N  u16  RESERVED5;
+N  vu16 TXCRCR;	  // SPI发送CRC寄存器 ；
+N  u16  RESERVED6;
+N  vu16 I2SCFGR;
+N  u16  RESERVED7;
+N  vu16 I2SPR;
+N  u16  RESERVED8;  
+N} SPI_TypeDef;
+N
+N/*------------------------ SystemTick ----------------------------------------*/
+Ntypedef struct
+N{
+N  vu32 CTRL;   // SysTick控制和状态寄存器 ；
+N  vu32 LOAD;   // SysTick重装载值寄存器 ；
+N  vu32 VAL;	   // SysTick当前值寄存器 ；
+N  vuc32 CALIB; // SysTick校准值寄存器 ；
+N} SysTick_TypeDef;
+N
+N/*------------------------ Advanced Control Timer ----------------------------*/
+Ntypedef struct
+N{
+N  vu16 CR1;		  // 控制寄存器1 ；
+N  u16  RESERVED0; 
+N  vu16 CR2;		  // 控制寄存器2 ；
+N  u16  RESERVED1; 
+N  vu16 SMCR;	  // 从模式控制寄存器 ；
+N  u16  RESERVED2;
+N  vu16 DIER;	  // DMA/中断使能寄存器 ；
+N  u16  RESERVED3;
+N  vu16 SR;		  // 状态寄存器 ；
+N  u16  RESERVED4;
+N  vu16 EGR;		  // 事件产生寄存器 ；
+N  u16  RESERVED5;
+N  vu16 CCMR1;	  // 捕获/比较模式寄存器1 ；
+N  u16  RESERVED6;
+N  vu16 CCMR2;	  // 捕获/比较模式寄存器2 ；
+N  u16  RESERVED7;
+N  vu16 CCER;	  // 捕获/比较使能寄存器 ；
+N  u16  RESERVED8;
+N  vu16 CNT;		  // 计数器寄存器 ；
+N  u16  RESERVED9;
+N  vu16 PSC;		  // 预分频寄存器 ；
+N  u16  RESERVED10;
+N  vu16 ARR;		  // 自动重装载寄存器 ；
+N  u16  RESERVED11;
+N  vu16 RCR;		  // 周期计数寄存器 ；
+N  u16  RESERVED12;
+N  vu16 CCR1;	  // 捕获/比较寄存器1 ；
+N  u16  RESERVED13;
+N  vu16 CCR2;	  // 捕获/比较寄存器2 ；
+N  u16  RESERVED14;
+N  vu16 CCR3;	  // 捕获/比较寄存器3 ；
+N  u16  RESERVED15;
+N  vu16 CCR4;	  // 捕获/比较寄存器4 ；
+N  u16  RESERVED16;
+N  vu16 BDTR;	  // 刹车和死区寄存器 ；
+N  u16  RESERVED17;
+N  vu16 DCR;		  // DMA控制寄存器 ；
+N  u16  RESERVED18;
+N  vu16 DMAR;	  // 连续模式的DMA地址寄存器 ；
+N  u16  RESERVED19;
+N} TIM1_TypeDef;
+N
+N/*------------------------ TIM -----------------------------------------------*/
+Ntypedef struct
+N{
+N  vu16 CR1;		// 控制寄存器1 ；
+N  u16 RESERVED0;
+N  vu16 CR2;	   // 控制寄存器2 ；
+N  u16 RESERVED1;
+N  vu16 SMCR;   // 从模式控制寄存器 ；
+N  u16 RESERVED2;
+N  vu16 DIER;   // DMA/中断使能寄存器 ；
+N  u16 RESERVED3;
+N  vu16 SR;		// 状态寄存器 ；
+N  u16 RESERVED4;
+N  vu16 EGR;		// 事件产生寄存器 ；
+N  u16 RESERVED5;
+N  vu16 CCMR1;  // 捕获/比较模式寄存器1 ；
+N  u16 RESERVED6;
+N  vu16 CCMR2;  // 捕获/比较模式寄存器2 ；
+N  u16 RESERVED7;
+N  vu16 CCER;  // 捕获/比较使能寄存器 ；
+N  u16 RESERVED8;
+N  vu16 CNT;	  // 计数器寄存器 ；
+N  u16 RESERVED9;
+N  vu16 PSC;	  // 预分频寄存器 ；
+N  u16 RESERVED10;
+N  vu16 ARR;	  // 自动重装载寄存器 ；
+N  u16 RESERVED11[3];
+N  vu16 CCR1;  // 捕获/比较寄存器1 ；
+N  u16 RESERVED12;
+N  vu16 CCR2;  // 捕获/比较寄存器2 ；
+N  u16 RESERVED13;
+N  vu16 CCR3;  // 捕获/比较寄存器3 ；
+N  u16 RESERVED14;
+N  vu16 CCR4;  // 捕获/比较寄存器4 ；
+N  u16 RESERVED15[3];
+N  vu16 DCR;	  // DMA控制寄存器 ；
+N  u16 RESERVED16;
+N  vu16 DMAR;  // 连续模式的DMA地址寄存器 ；
+N  u16 RESERVED17; 
+N 
+N  vu16 RCR;		  // 周期计数寄存器 ；
+N  vu16 BDTR;	  // 刹车和死区寄存器 ；
+N} TIM_TypeDef;
+N
+N/*----------------- Universal Synchronous Asynchronous Receiver Transmitter --*/
+Ntypedef struct
+N{
+N  vu16 SR;		 // USART状态寄存器 ；
+N  u16  RESERVED0;
+N  vu16 DR;		 // USART数据寄存器 ；
+N  u16  RESERVED1;
+N  vu16 BRR;		 // USART波特率寄存器 ；
+N  u16  RESERVED2;
+N  vu16 CR1;		 // USART控制寄存器1 ；
+N  u16  RESERVED3;
+N  vu16 CR2;		 // USART控制寄存器2 ；
+N  u16  RESERVED4;
+N  vu16 CR3;		 // USART控制寄存器3 ；
+N  u16  RESERVED5;
+N  vu16 GTPR;	 // USART保护时间和预分频寄存器 ；
+N  u16  RESERVED6;
+N} USART_TypeDef;
+N
+N/*------------------------ Window WATCHDOG -----------------------------------*/
+Ntypedef struct
+N{
+N  vu32 CR;	// WWDG控制寄存器 ；
+N  vu32 CFR;	// WWDG设置寄存器 ；
+N  vu32 SR;  // WWDG状态寄存器 ；
+N} WWDG_TypeDef;
+N
+N/******************************************************************************/
+N/*                         Peripheral memory map                              */
+N/******************************************************************************/
+N/* Peripheral and SRAM base address in the alias region */
+N#define PERIPH_BB_BASE        ((u32)0x42000000)
+N#define SRAM_BB_BASE          ((u32)0x22000000)
+N
+N/* Peripheral and SRAM base address in the bit-band region */
+N#define SRAM_BASE             ((u32)0x20000000)
+N#define PERIPH_BASE           ((u32)0x40000000)
+N
+N/* FSMC registers base address */
+N#define FSMC_R_BASE           ((u32)0xA0000000)
+N
+N/* Peripheral memory map */
+N#define APB1PERIPH_BASE       PERIPH_BASE
+N#define APB2PERIPH_BASE       (PERIPH_BASE + 0x10000)
+N#define AHBPERIPH_BASE        (PERIPH_BASE + 0x20000)
+N
+N#define TIM2_BASE             (APB1PERIPH_BASE + 0x0000)
+N#define TIM3_BASE             (APB1PERIPH_BASE + 0x0400)
+N#define TIM4_BASE             (APB1PERIPH_BASE + 0x0800)
+N#define TIM5_BASE             (APB1PERIPH_BASE + 0x0C00)
+N#define TIM6_BASE             (APB1PERIPH_BASE + 0x1000)
+N#define TIM7_BASE             (APB1PERIPH_BASE + 0x1400)
+N#define RTC_BASE              (APB1PERIPH_BASE + 0x2800)
+N#define WWDG_BASE             (APB1PERIPH_BASE + 0x2C00)
+N#define IWDG_BASE             (APB1PERIPH_BASE + 0x3000)
+N#define SPI2_BASE             (APB1PERIPH_BASE + 0x3800)
+N#define SPI3_BASE             (APB1PERIPH_BASE + 0x3C00)
+N#define USART2_BASE           (APB1PERIPH_BASE + 0x4400)
+N#define USART3_BASE           (APB1PERIPH_BASE + 0x4800)
+N#define UART4_BASE            (APB1PERIPH_BASE + 0x4C00)
+N#define UART5_BASE            (APB1PERIPH_BASE + 0x5000)
+N#define I2C1_BASE             (APB1PERIPH_BASE + 0x5400)
+N#define I2C2_BASE             (APB1PERIPH_BASE + 0x5800)
+N#define CAN_BASE              (APB1PERIPH_BASE + 0x6400)
+N#define BKP_BASE              (APB1PERIPH_BASE + 0x6C00)
+N#define PWR_BASE              (APB1PERIPH_BASE + 0x7000)
+N#define DAC_BASE              (APB1PERIPH_BASE + 0x7400)
+N
+N#define AFIO_BASE             (APB2PERIPH_BASE + 0x0000)
+N#define EXTI_BASE             (APB2PERIPH_BASE + 0x0400)
+N#define GPIOA_BASE            (APB2PERIPH_BASE + 0x0800)
+N#define GPIOB_BASE            (APB2PERIPH_BASE + 0x0C00)
+N#define GPIOC_BASE            (APB2PERIPH_BASE + 0x1000)
+N#define GPIOD_BASE            (APB2PERIPH_BASE + 0x1400)
+N#define GPIOE_BASE            (APB2PERIPH_BASE + 0x1800)
+N#define GPIOF_BASE            (APB2PERIPH_BASE + 0x1C00)
+N#define GPIOG_BASE            (APB2PERIPH_BASE + 0x2000)
+N#define ADC1_BASE             (APB2PERIPH_BASE + 0x2400)
+N#define ADC2_BASE             (APB2PERIPH_BASE + 0x2800)
+N#define TIM1_BASE             (APB2PERIPH_BASE + 0x2C00)
+N#define SPI1_BASE             (APB2PERIPH_BASE + 0x3000)
+N#define TIM8_BASE             (APB2PERIPH_BASE + 0x3400)
+N#define USART1_BASE           (APB2PERIPH_BASE + 0x3800)
+N#define ADC3_BASE             (APB2PERIPH_BASE + 0x3C00)
+N
+N#define SDIO_BASE             (PERIPH_BASE + 0x18000)
+N
+N#define DMA1_BASE             (AHBPERIPH_BASE + 0x0000)
+N#define DMA1_Channel1_BASE    (AHBPERIPH_BASE + 0x0008)
+N#define DMA1_Channel2_BASE    (AHBPERIPH_BASE + 0x001C)
+N#define DMA1_Channel3_BASE    (AHBPERIPH_BASE + 0x0030)
+N#define DMA1_Channel4_BASE    (AHBPERIPH_BASE + 0x0044)
+N#define DMA1_Channel5_BASE    (AHBPERIPH_BASE + 0x0058)
+N#define DMA1_Channel6_BASE    (AHBPERIPH_BASE + 0x006C)
+N#define DMA1_Channel7_BASE    (AHBPERIPH_BASE + 0x0080)
+N#define DMA2_BASE             (AHBPERIPH_BASE + 0x0400)
+N#define DMA2_Channel1_BASE    (AHBPERIPH_BASE + 0x0408)
+N#define DMA2_Channel2_BASE    (AHBPERIPH_BASE + 0x041C)
+N#define DMA2_Channel3_BASE    (AHBPERIPH_BASE + 0x0430)
+N#define DMA2_Channel4_BASE    (AHBPERIPH_BASE + 0x0444)
+N#define DMA2_Channel5_BASE    (AHBPERIPH_BASE + 0x0458)
+N#define RCC_BASE              (AHBPERIPH_BASE + 0x1000)
+N#define CRC_BASE              (AHBPERIPH_BASE + 0x3000)
+N
+N/* Flash registers base address */
+N#define FLASH_R_BASE          (AHBPERIPH_BASE + 0x2000)
+N/* Flash Option Bytes base address */
+N#define OB_BASE               ((u32)0x1FFFF800)
+N
+N/* FSMC Bankx registers base address */
+N#define FSMC_Bank1_R_BASE     (FSMC_R_BASE + 0x0000)
+N#define FSMC_Bank1E_R_BASE    (FSMC_R_BASE + 0x0104)
+N#define FSMC_Bank2_R_BASE     (FSMC_R_BASE + 0x0060)
+N#define FSMC_Bank3_R_BASE     (FSMC_R_BASE + 0x0080)
+N#define FSMC_Bank4_R_BASE     (FSMC_R_BASE + 0x00A0)
+N
+N/* Debug MCU registers base address */
+N#define DBGMCU_BASE          ((u32)0xE0042000)
+N
+N/* System Control Space memory map */
+N#define SCS_BASE              ((u32)0xE000E000)
+N
+N#define SysTick_BASE          (SCS_BASE + 0x0010)
+N#define NVIC_BASE             (SCS_BASE + 0x0100)
+N#define SCB_BASE              (SCS_BASE + 0x0D00)
+N
+N/******************************************************************************/
+N/*                         Peripheral declaration                             */
+N/******************************************************************************/
+N
+N/*------------------------ Non Debug Mode ------------------------------------*/
+N#ifndef DEBUG
+N#ifdef _TIM2
+N  #define TIM2                ((TIM_TypeDef *) TIM2_BASE)
+N#endif /*_TIM2 */
+N
+N#ifdef _TIM3
+N  #define TIM3                ((TIM_TypeDef *) TIM3_BASE)
+N#endif /*_TIM3 */
+N
+N#ifdef _TIM4
+N  #define TIM4                ((TIM_TypeDef *) TIM4_BASE)
+N#endif /*_TIM4 */
+N
+N#ifdef _TIM5
+N  #define TIM5                ((TIM_TypeDef *) TIM5_BASE)
+N#endif /*_TIM5 */
+N
+N#ifdef _TIM6
+N  #define TIM6                ((TIM_TypeDef *) TIM6_BASE)
+N#endif /*_TIM6 */
+N
+N#ifdef _TIM7
+N  #define TIM7                ((TIM_TypeDef *) TIM7_BASE)
+N#endif /*_TIM7 */
+N
+N#ifdef _RTC
+N  #define RTC                 ((RTC_TypeDef *) RTC_BASE)
+N#endif /*_RTC */
+N
+N#ifdef _WWDG
+N  #define WWDG                ((WWDG_TypeDef *) WWDG_BASE)
+N#endif /*_WWDG */
+N
+N#ifdef _IWDG
+N  #define IWDG                ((IWDG_TypeDef *) IWDG_BASE)
+N#endif /*_IWDG */
+N
+N#ifdef _SPI2
+N  #define SPI2                ((SPI_TypeDef *) SPI2_BASE)
+N#endif /*_SPI2 */
+N
+N#ifdef _SPI3
+N  #define SPI3                ((SPI_TypeDef *) SPI3_BASE)
+N#endif /*_SPI3 */
+N
+N#ifdef _USART2
+N  #define USART2              ((USART_TypeDef *) USART2_BASE)
+N#endif /*_USART2 */
+N
+N#ifdef _USART3
+N  #define USART3              ((USART_TypeDef *) USART3_BASE)
+N#endif /*_USART3 */
+N
+N#ifdef _UART4
+N  #define UART4              ((USART_TypeDef *) UART4_BASE)
+N#endif /*_UART4 */
+N
+N#ifdef _UART5
+N  #define UART5              ((USART_TypeDef *) UART5_BASE)
+N#endif /*_USART5 */
+N
+N#ifdef _I2C1
+N  #define I2C1                ((I2C_TypeDef *) I2C1_BASE)
+N#endif /*_I2C1 */
+N
+N#ifdef _I2C2
+N  #define I2C2                ((I2C_TypeDef *) I2C2_BASE)
+N#endif /*_I2C2 */
+N
+N#ifdef _CAN
+N  #define CAN                 ((CAN_TypeDef *) CAN_BASE)
+N#endif /*_CAN */
+N
+N#ifdef _BKP
+N  #define BKP                 ((BKP_TypeDef *) BKP_BASE)
+N#endif /*_BKP */
+N
+N#ifdef _PWR
+N  #define PWR                 ((PWR_TypeDef *) PWR_BASE)
+N#endif /*_PWR */
+N
+N#ifdef _DAC
+N  #define DAC                 ((DAC_TypeDef *) DAC_BASE)
+N#endif /*_DAC */
+N
+N#ifdef _AFIO
+N  #define AFIO                ((AFIO_TypeDef *) AFIO_BASE)
+N#endif /*_AFIO */
+N
+N#ifdef _EXTI
+N  #define EXTI                ((EXTI_TypeDef *) EXTI_BASE)
+N#endif /*_EXTI */
+N
+N#ifdef _GPIOA
+N  #define GPIOA               ((GPIO_TypeDef *) GPIOA_BASE)
+N#endif /*_GPIOA */
+N
+N#ifdef _GPIOB
+N  #define GPIOB               ((GPIO_TypeDef *) GPIOB_BASE)
+N#endif /*_GPIOB */
+N
+N#ifdef _GPIOC
+N  #define GPIOC               ((GPIO_TypeDef *) GPIOC_BASE)
+N#endif /*_GPIOC */
+N
+N#ifdef _GPIOD
+N  #define GPIOD               ((GPIO_TypeDef *) GPIOD_BASE)
+N#endif /*_GPIOD */
+N
+N#ifdef _GPIOE
+N  #define GPIOE               ((GPIO_TypeDef *) GPIOE_BASE)
+N#endif /*_GPIOE */
+N
+N#ifdef _GPIOF
+N  #define GPIOF               ((GPIO_TypeDef *) GPIOF_BASE)
+N#endif /*_GPIOF */
+N
+N#ifdef _GPIOG
+N  #define GPIOG               ((GPIO_TypeDef *) GPIOG_BASE)
+N#endif /*_GPIOG */
+N
+N#ifdef _ADC1
+N  #define ADC1                ((ADC_TypeDef *) ADC1_BASE)
+N#endif /*_ADC1 */
+N
+N#ifdef _ADC2
+N  #define ADC2                ((ADC_TypeDef *) ADC2_BASE)
+N#endif /*_ADC2 */
+N
+N#ifdef _TIM1
+N  #define TIM1                ((TIM1_TypeDef *) TIM1_BASE)
+N#endif /*_TIM1 */
+N
+N#ifdef _SPI1
+N  #define SPI1                ((SPI_TypeDef *) SPI1_BASE)
+N#endif /*_SPI1 */
+N
+N#ifdef _TIM8
+N  #define TIM8                ((TIM_TypeDef *) TIM8_BASE)
+N#endif /*_TIM8 */
+N
+N#ifdef _USART1
+N  #define USART1              ((USART_TypeDef *) USART1_BASE)
+N#endif /*_USART1 */
+N
+N#ifdef _ADC3
+N  #define ADC3                ((ADC_TypeDef *) ADC3_BASE)
+N#endif /*_ADC3 */
+N
+N#ifdef _SDIO
+N  #define SDIO                ((SDIO_TypeDef *) SDIO_BASE)
+N#endif /*_SDIO */
+N
+N#ifdef _DMA
+N  #define DMA1                ((DMA_TypeDef *) DMA1_BASE)
+N  #define DMA2                ((DMA_TypeDef *) DMA2_BASE)
+N#endif /*_DMA */
+N
+N#ifdef _DMA1_Channel1
+N  #define DMA1_Channel1       ((DMA_Channel_TypeDef *) DMA1_Channel1_BASE)
+N#endif /*_DMA1_Channel1 */
+N
+N#ifdef _DMA1_Channel2
+N  #define DMA1_Channel2       ((DMA_Channel_TypeDef *) DMA1_Channel2_BASE)
+N#endif /*_DMA1_Channel2 */
+N
+N#ifdef _DMA1_Channel3
+N  #define DMA1_Channel3       ((DMA_Channel_TypeDef *) DMA1_Channel3_BASE)
+N#endif /*_DMA1_Channel3 */
+N
+N#ifdef _DMA1_Channel4
+N  #define DMA1_Channel4       ((DMA_Channel_TypeDef *) DMA1_Channel4_BASE)
+N#endif /*_DMA1_Channel4 */
+N
+N#ifdef _DMA1_Channel5
+N  #define DMA1_Channel5       ((DMA_Channel_TypeDef *) DMA1_Channel5_BASE)
+N#endif /*_DMA1_Channel5 */
+N
+N#ifdef _DMA1_Channel6
+N  #define DMA1_Channel6       ((DMA_Channel_TypeDef *) DMA1_Channel6_BASE)
+N#endif /*_DMA1_Channel6 */
+N
+N#ifdef _DMA1_Channel7
+N  #define DMA1_Channel7       ((DMA_Channel_TypeDef *) DMA1_Channel7_BASE)
+N#endif /*_DMA1_Channel7 */
+N
+N#ifdef _DMA2_Channel1
+N  #define DMA2_Channel1       ((DMA_Channel_TypeDef *) DMA2_Channel1_BASE)
+N#endif /*_DMA2_Channel1 */
+N
+N#ifdef _DMA2_Channel2
+N  #define DMA2_Channel2       ((DMA_Channel_TypeDef *) DMA2_Channel2_BASE)
+N#endif /*_DMA2_Channel2 */
+N
+N#ifdef _DMA2_Channel3
+N  #define DMA2_Channel3       ((DMA_Channel_TypeDef *) DMA2_Channel3_BASE)
+N#endif /*_DMA2_Channel3 */
+N
+N#ifdef _DMA2_Channel4
+N  #define DMA2_Channel4       ((DMA_Channel_TypeDef *) DMA2_Channel4_BASE)
+N#endif /*_DMA2_Channel4 */
+N
+N#ifdef _DMA2_Channel5
+N  #define DMA2_Channel5       ((DMA_Channel_TypeDef *) DMA2_Channel5_BASE)
+N#endif /*_DMA2_Channel5 */
+N
+N#ifdef _RCC
+N  #define RCC                 ((RCC_TypeDef *) RCC_BASE)
+N#endif /*_RCC */
+N
+N#ifdef _CRC
+N  #define CRC                 ((CRC_TypeDef *) CRC_BASE)
+N#endif /*_CRC */
+N
+N#ifdef _FLASH
+N  #define FLASH               ((FLASH_TypeDef *) FLASH_R_BASE)
+N  #define OB                  ((OB_TypeDef *) OB_BASE) 
+N#endif /*_FLASH */
+N
+N#ifdef _FSMC
+N  #define FSMC_Bank1          ((FSMC_Bank1_TypeDef *) FSMC_Bank1_R_BASE)
+N  #define FSMC_Bank1E         ((FSMC_Bank1E_TypeDef *) FSMC_Bank1E_R_BASE)
+N  #define FSMC_Bank2          ((FSMC_Bank2_TypeDef *) FSMC_Bank2_R_BASE)
+N  #define FSMC_Bank3          ((FSMC_Bank3_TypeDef *) FSMC_Bank3_R_BASE)
+N  #define FSMC_Bank4          ((FSMC_Bank4_TypeDef *) FSMC_Bank4_R_BASE)
+N#endif /*_FSMC */
+N
+N#ifdef _DBGMCU
+N  #define DBGMCU              ((DBGMCU_TypeDef *) DBGMCU_BASE)
+N#endif /*_DBGMCU */
+N
+N#ifdef _SysTick
+N  #define SysTick             ((SysTick_TypeDef *) SysTick_BASE)
+N#endif /*_SysTick */
+N
+N#ifdef _NVIC
+N  #define NVIC                ((NVIC_TypeDef *) NVIC_BASE)
+N  #define SCB                 ((SCB_TypeDef *) SCB_BASE)  
+N#endif /*_NVIC */
+N
+N/*------------------------ Debug Mode ----------------------------------------*/
+N#else   /* DEBUG */
+S#ifdef _TIM2
+S  EXT TIM_TypeDef             *TIM2;
+S#endif /*_TIM2 */
+S
+S#ifdef _TIM3
+S  EXT TIM_TypeDef             *TIM3;
+S#endif /*_TIM3 */
+S
+S#ifdef _TIM4
+S  EXT TIM_TypeDef             *TIM4;
+S#endif /*_TIM4 */
+S
+S#ifdef _TIM5
+S  EXT TIM_TypeDef             *TIM5;
+S#endif /*_TIM5 */
+S
+S#ifdef _TIM6
+S  EXT TIM_TypeDef             *TIM6;
+S#endif /*_TIM6 */
+S
+S#ifdef _TIM7
+S  EXT TIM_TypeDef             *TIM7;
+S#endif /*_TIM7 */
+S
+S#ifdef _RTC
+S  EXT RTC_TypeDef             *RTC;
+S#endif /*_RTC */
+S
+S#ifdef _WWDG
+S  EXT WWDG_TypeDef            *WWDG;
+S#endif /*_WWDG */
+S
+S#ifdef _IWDG
+S  EXT IWDG_TypeDef            *IWDG;
+S#endif /*_IWDG */
+S
+S#ifdef _SPI2
+S  EXT SPI_TypeDef             *SPI2;
+S#endif /*_SPI2 */
+S
+S#ifdef _SPI3
+S  EXT SPI_TypeDef             *SPI3;
+S#endif /*_SPI3 */
+S
+S#ifdef _USART2
+S  EXT USART_TypeDef           *USART2;
+S#endif /*_USART2 */
+S
+S#ifdef _USART3
+S  EXT USART_TypeDef           *USART3;
+S#endif /*_USART3 */
+S
+S#ifdef _UART4
+S  EXT USART_TypeDef           *UART4;
+S#endif /*_UART4 */
+S
+S#ifdef _UART5
+S  EXT USART_TypeDef           *UART5;
+S#endif /*_UART5 */
+S
+S#ifdef _I2C1
+S  EXT I2C_TypeDef             *I2C1;
+S#endif /*_I2C1 */
+S
+S#ifdef _I2C2
+S  EXT I2C_TypeDef             *I2C2;
+S#endif /*_I2C2 */
+S
+S#ifdef _CAN
+S  EXT CAN_TypeDef             *CAN;
+S#endif /*_CAN */
+S
+S#ifdef _BKP
+S  EXT BKP_TypeDef             *BKP;
+S#endif /*_BKP */
+S
+S#ifdef _PWR
+S  EXT PWR_TypeDef             *PWR;
+S#endif /*_PWR */
+S
+S#ifdef _DAC
+S  EXT DAC_TypeDef             *DAC;
+S#endif /*_DAC */
+S
+S#ifdef _AFIO
+S  EXT AFIO_TypeDef            *AFIO;
+S#endif /*_AFIO */
+S
+S#ifdef _EXTI
+S  EXT EXTI_TypeDef            *EXTI;
+S#endif /*_EXTI */
+S
+S#ifdef _GPIOA
+S  EXT GPIO_TypeDef            *GPIOA;
+S#endif /*_GPIOA */
+S
+S#ifdef _GPIOB
+S  EXT GPIO_TypeDef            *GPIOB;
+S#endif /*_GPIOB */
+S
+S#ifdef _GPIOC
+S  EXT GPIO_TypeDef            *GPIOC;
+S#endif /*_GPIOC */
+S
+S#ifdef _GPIOD
+S  EXT GPIO_TypeDef            *GPIOD;
+S#endif /*_GPIOD */
+S
+S#ifdef _GPIOE
+S  EXT GPIO_TypeDef            *GPIOE;
+S#endif /*_GPIOE */
+S
+S#ifdef _GPIOF
+S  EXT GPIO_TypeDef            *GPIOF;
+S#endif /*_GPIOF */
+S
+S#ifdef _GPIOG
+S  EXT GPIO_TypeDef            *GPIOG;
+S#endif /*_GPIOG */
+S
+S#ifdef _ADC1
+S  EXT ADC_TypeDef             *ADC1;
+S#endif /*_ADC1 */
+S
+S#ifdef _ADC2
+S  EXT ADC_TypeDef             *ADC2;
+S#endif /*_ADC2 */
+S
+S#ifdef _TIM1
+S  EXT TIM_TypeDef             *TIM1;
+S#endif /*_TIM1 */
+S
+S#ifdef _SPI1
+S  EXT SPI_TypeDef             *SPI1;
+S#endif /*_SPI1 */
+S
+S#ifdef _TIM8
+S  EXT TIM_TypeDef             *TIM8;
+S#endif /*_TIM8 */
+S
+S#ifdef _USART1
+S  EXT USART_TypeDef           *USART1;
+S#endif /*_USART1 */
+S
+S#ifdef _ADC3
+S  EXT ADC_TypeDef             *ADC3;
+S#endif /*_ADC3 */
+S
+S#ifdef _SDIO
+S  EXT SDIO_TypeDef            *SDIO;
+S#endif /*_SDIO */
+S
+S#ifdef _DMA
+S  EXT DMA_TypeDef             *DMA1;
+S  EXT DMA_TypeDef             *DMA2;
+S#endif /*_DMA */
+S
+S#ifdef _DMA1_Channel1
+S  EXT DMA_Channel_TypeDef     *DMA1_Channel1;
+S#endif /*_DMA1_Channel1 */
+S
+S#ifdef _DMA1_Channel2
+S  EXT DMA_Channel_TypeDef     *DMA1_Channel2;
+S#endif /*_DMA1_Channel2 */
+S
+S#ifdef _DMA1_Channel3
+S  EXT DMA_Channel_TypeDef     *DMA1_Channel3;
+S#endif /*_DMA1_Channel3 */
+S
+S#ifdef _DMA1_Channel4
+S  EXT DMA_Channel_TypeDef     *DMA1_Channel4;
+S#endif /*_DMA1_Channel4 */
+S
+S#ifdef _DMA1_Channel5
+S  EXT DMA_Channel_TypeDef     *DMA1_Channel5;
+S#endif /*_DMA1_Channel5 */
+S
+S#ifdef _DMA1_Channel6
+S  EXT DMA_Channel_TypeDef     *DMA1_Channel6;
+S#endif /*_DMA1_Channel6 */
+S
+S#ifdef _DMA1_Channel7
+S  EXT DMA_Channel_TypeDef     *DMA1_Channel7;
+S#endif /*_DMA1_Channel7 */
+S
+S#ifdef _DMA2_Channel1
+S  EXT DMA_Channel_TypeDef     *DMA2_Channel1;
+S#endif /*_DMA2_Channel1 */
+S
+S#ifdef _DMA2_Channel2
+S  EXT DMA_Channel_TypeDef     *DMA2_Channel2;
+S#endif /*_DMA2_Channel2 */
+S
+S#ifdef _DMA2_Channel3
+S  EXT DMA_Channel_TypeDef     *DMA2_Channel3;
+S#endif /*_DMA2_Channel3 */
+S
+S#ifdef _DMA2_Channel4
+S  EXT DMA_Channel_TypeDef     *DMA2_Channel4;
+S#endif /*_DMA2_Channel4 */
+S
+S#ifdef _DMA2_Channel5
+S  EXT DMA_Channel_TypeDef     *DMA2_Channel5;
+S#endif /*_DMA2_Channel5 */
+S
+S#ifdef _RCC
+S  EXT RCC_TypeDef             *RCC;
+S#endif /*_RCC */
+S
+S#ifdef _CRC
+S  EXT CRC_TypeDef             *CRC;
+S#endif /*_CRC */
+S
+S#ifdef _FLASH
+S  EXT FLASH_TypeDef            *FLASH;
+S  EXT OB_TypeDef               *OB;  
+S#endif /*_FLASH */
+S
+S#ifdef _FSMC
+S  EXT FSMC_Bank1_TypeDef      *FSMC_Bank1;
+S  EXT FSMC_Bank1E_TypeDef     *FSMC_Bank1E;
+S  EXT FSMC_Bank2_TypeDef      *FSMC_Bank2;
+S  EXT FSMC_Bank3_TypeDef      *FSMC_Bank3;
+S  EXT FSMC_Bank4_TypeDef      *FSMC_Bank4;
+S#endif /*_FSMC */
+S
+S#ifdef _DBGMCU
+S  EXT DBGMCU_TypeDef          *DBGMCU;
+S#endif /*_DBGMCU */
+S
+S#ifdef _SysTick
+S  EXT SysTick_TypeDef         *SysTick;
+S#endif /*_SysTick */
+S
+S#ifdef _NVIC
+S  EXT NVIC_TypeDef            *NVIC;
+S  EXT SCB_TypeDef             *SCB;
+S#endif /*_NVIC */
+S
+N#endif  /* DEBUG */
+N
+N/* Exported constants --------------------------------------------------------*/
+N/* Exported macro ------------------------------------------------------------*/
+N/* Exported functions ------------------------------------------------------- */
+N
+N#endif /* __STM32F10x_MAP_H */
+N
+N/******************* (C) COPYRIGHT 2008 STMicroelectronics *****END OF FILE****/
+L 25 ".\lib\inc\stm32f10x_can.h" 2
+N
+N/* Exported types ------------------------------------------------------------*/
+N/* CAN init structure definition */
+Ntypedef struct
+N{
+N  FunctionalState CAN_TTCM;
+N  FunctionalState CAN_ABOM;
+N  FunctionalState CAN_AWUM;
+N  FunctionalState CAN_NART;
+N  FunctionalState CAN_RFLM;
+N  FunctionalState CAN_TXFP;
+N  u8 CAN_Mode;
+N  u8 CAN_SJW;
+N  u8 CAN_BS1;
+N  u8 CAN_BS2;
+N  u16 CAN_Prescaler;
+N} CAN_InitTypeDef;
+N
+N/* CAN filter init structure definition */
+Ntypedef struct
+N{
+N  u8 CAN_FilterNumber;
+N  u8 CAN_FilterMode;
+N  u8 CAN_FilterScale;
+N  u16 CAN_FilterIdHigh;
+N  u16 CAN_FilterIdLow;
+N  u16 CAN_FilterMaskIdHigh;
+N  u16 CAN_FilterMaskIdLow;
+N  u16 CAN_FilterFIFOAssignment;
+N  FunctionalState CAN_FilterActivation;
+N} CAN_FilterInitTypeDef;
+N
+N/* CAN Tx message structure definition */
+Ntypedef struct
+N{
+N  u32 StdId;
+N  u32 ExtId;
+N  u8 IDE;
+N  u8 RTR;
+N  u8 DLC;
+N  u8 Data[8];
+N} CanTxMsg;
+N
+N/* CAN Rx message structure definition */
+Ntypedef struct
+N{
+N  u32 StdId;
+N  u32 ExtId;
+N  u8 IDE;
+N  u8 RTR;
+N  u8 DLC;
+N  u8 Data[8];
+N  u8 FMI;
+N} CanRxMsg;
+N
+N/* Exported constants --------------------------------------------------------*/
+N
+N/* CAN sleep constants */
+N#define CANINITFAILED              ((u8)0x00) /* CAN initialization failed */
+N#define CANINITOK                  ((u8)0x01) /* CAN initialization failed */
+N
+N/* CAN operating mode */
+N#define CAN_Mode_Normal             ((u8)0x00)  /* normal mode */
+N#define CAN_Mode_LoopBack           ((u8)0x01)  /* loopback mode */
+N#define CAN_Mode_Silent             ((u8)0x02)  /* silent mode */
+N#define CAN_Mode_Silent_LoopBack    ((u8)0x03)  /* loopback combined with silent mode */
+N
+N#define IS_CAN_MODE(MODE) (((MODE) == CAN_Mode_Normal) || ((MODE) == CAN_Mode_LoopBack)|| \
+N                           ((MODE) == CAN_Mode_Silent) || ((MODE) == CAN_Mode_Silent_LoopBack))
+X#define IS_CAN_MODE(MODE) (((MODE) == CAN_Mode_Normal) || ((MODE) == CAN_Mode_LoopBack)||                            ((MODE) == CAN_Mode_Silent) || ((MODE) == CAN_Mode_Silent_LoopBack))
+N
+N/* CAN synchronisation jump width */
+N#define CAN_SJW_1tq                 ((u8)0x00)  /* 1 time quantum */
+N#define CAN_SJW_2tq                 ((u8)0x01)  /* 2 time quantum */
+N#define CAN_SJW_3tq                 ((u8)0x02)  /* 3 time quantum */
+N#define CAN_SJW_4tq                 ((u8)0x03)  /* 4 time quantum */
+N
+N#define IS_CAN_SJW(SJW) (((SJW) == CAN_SJW_1tq) || ((SJW) == CAN_SJW_2tq)|| \
+N                         ((SJW) == CAN_SJW_3tq) || ((SJW) == CAN_SJW_4tq))
+X#define IS_CAN_SJW(SJW) (((SJW) == CAN_SJW_1tq) || ((SJW) == CAN_SJW_2tq)||                          ((SJW) == CAN_SJW_3tq) || ((SJW) == CAN_SJW_4tq))
+N
+N/* time quantum in bit segment 1 */
+N#define CAN_BS1_1tq                 ((u8)0x00)  /* 1 time quantum */
+N#define CAN_BS1_2tq                 ((u8)0x01)  /* 2 time quantum */
+N#define CAN_BS1_3tq                 ((u8)0x02)  /* 3 time quantum */
+N#define CAN_BS1_4tq                 ((u8)0x03)  /* 4 time quantum */
+N#define CAN_BS1_5tq                 ((u8)0x04)  /* 5 time quantum */
+N#define CAN_BS1_6tq                 ((u8)0x05)  /* 6 time quantum */
+N#define CAN_BS1_7tq                 ((u8)0x06)  /* 7 time quantum */
+N#define CAN_BS1_8tq                 ((u8)0x07)  /* 8 time quantum */
+N#define CAN_BS1_9tq                 ((u8)0x08)  /* 9 time quantum */
+N#define CAN_BS1_10tq                ((u8)0x09)  /* 10 time quantum */
+N#define CAN_BS1_11tq                ((u8)0x0A)  /* 11 time quantum */
+N#define CAN_BS1_12tq                ((u8)0x0B)  /* 12 time quantum */
+N#define CAN_BS1_13tq                ((u8)0x0C)  /* 13 time quantum */
+N#define CAN_BS1_14tq                ((u8)0x0D)  /* 14 time quantum */
+N#define CAN_BS1_15tq                ((u8)0x0E)  /* 15 time quantum */
+N#define CAN_BS1_16tq                ((u8)0x0F)  /* 16 time quantum */
+N
+N#define IS_CAN_BS1(BS1) ((BS1) <= CAN_BS1_16tq)
+N
+N/* time quantum in bit segment 2 */
+N#define CAN_BS2_1tq                 ((u8)0x00)  /* 1 time quantum */
+N#define CAN_BS2_2tq                 ((u8)0x01)  /* 2 time quantum */
+N#define CAN_BS2_3tq                 ((u8)0x02)  /* 3 time quantum */
+N#define CAN_BS2_4tq                 ((u8)0x03)  /* 4 time quantum */
+N#define CAN_BS2_5tq                 ((u8)0x04)  /* 5 time quantum */
+N#define CAN_BS2_6tq                 ((u8)0x05)  /* 6 time quantum */
+N#define CAN_BS2_7tq                 ((u8)0x06)  /* 7 time quantum */
+N#define CAN_BS2_8tq                 ((u8)0x07)  /* 8 time quantum */
+N
+N#define IS_CAN_BS2(BS2) ((BS2) <= CAN_BS2_8tq)
+N
+N/* CAN clock prescaler */
+N#define IS_CAN_PRESCALER(PRESCALER) (((PRESCALER) >= 1) && ((PRESCALER) <= 1024))
+N
+N/* CAN filter number */
+N#define IS_CAN_FILTER_NUMBER(NUMBER) ((NUMBER) <= 13)
+N
+N/* CAN filter mode */
+N#define CAN_FilterMode_IdMask       ((u8)0x00)  /* id/mask mode */
+N#define CAN_FilterMode_IdList       ((u8)0x01)  /* identifier list mode */
+N
+N#define IS_CAN_FILTER_MODE(MODE) (((MODE) == CAN_FilterMode_IdMask) || \
+N                                  ((MODE) == CAN_FilterMode_IdList))
+X#define IS_CAN_FILTER_MODE(MODE) (((MODE) == CAN_FilterMode_IdMask) ||                                   ((MODE) == CAN_FilterMode_IdList))
+N
+N/* CAN filter scale */
+N#define CAN_FilterScale_16bit       ((u8)0x00) /* 16-bit filter scale */
+N#define CAN_FilterScale_32bit       ((u8)0x01) /* 2-bit filter scale */
+N
+N#define IS_CAN_FILTER_SCALE(SCALE) (((SCALE) == CAN_FilterScale_16bit) || \
+N                                    ((SCALE) == CAN_FilterScale_32bit))
+X#define IS_CAN_FILTER_SCALE(SCALE) (((SCALE) == CAN_FilterScale_16bit) ||                                     ((SCALE) == CAN_FilterScale_32bit))
+N
+N/* CAN filter FIFO assignation */
+N#define CAN_FilterFIFO0             ((u8)0x00)  /* Filter FIFO 0 assignment for filter x */
+N#define CAN_FilterFIFO1             ((u8)0x01)  /* Filter FIFO 1 assignment for filter x */
+N
+N#define IS_CAN_FILTER_FIFO(FIFO) (((FIFO) == CAN_FilterFIFO0) || \
+N                                  ((FIFO) == CAN_FilterFIFO1))
+X#define IS_CAN_FILTER_FIFO(FIFO) (((FIFO) == CAN_FilterFIFO0) ||                                   ((FIFO) == CAN_FilterFIFO1))
+N
+N/* CAN Tx */
+N#define IS_CAN_TRANSMITMAILBOX(TRANSMITMAILBOX) ((TRANSMITMAILBOX) <= ((u8)0x02))
+N#define IS_CAN_STDID(STDID)   ((STDID) <= ((u32)0x7FF))
+N#define IS_CAN_EXTID(EXTID)   ((EXTID) <= ((u32)0x1FFFFFFF))
+N#define IS_CAN_DLC(DLC)       ((DLC) <= ((u8)0x08))
+N
+N/* CAN identifier type */
+N#define CAN_ID_STD                 ((u32)0x00000000)  /* Standard Id */
+N#define CAN_ID_EXT                 ((u32)0x00000004)  /* Extended Id */
+N
+N#define IS_CAN_IDTYPE(IDTYPE) (((IDTYPE) == CAN_ID_STD) || ((IDTYPE) == CAN_ID_EXT))
+N
+N/* CAN remote transmission request */
+N#define CAN_RTR_DATA                ((u32)0x00000000)  /* Data frame */
+N#define CAN_RTR_REMOTE              ((u32)0x00000002)  /* Remote frame */
+N
+N#define IS_CAN_RTR(RTR) (((RTR) == CAN_RTR_DATA) || ((RTR) == CAN_RTR_REMOTE))
+N
+N/* CAN transmit constants */
+N#define CANTXFAILED                 ((u8)0x00) /* CAN transmission failed */
+N#define CANTXOK                     ((u8)0x01) /* CAN transmission succeeded */
+N#define CANTXPENDING                ((u8)0x02) /* CAN transmission pending */
+N#define CAN_NO_MB                   ((u8)0x04) /* CAN cell did not provide an empty mailbox */
+N
+N/* CAN receive FIFO number constants */
+N#define CAN_FIFO0                 ((u8)0x00) /* CAN FIFO0 used to receive */
+N#define CAN_FIFO1                 ((u8)0x01) /* CAN FIFO1 used to receive */
+N
+N#define IS_CAN_FIFO(FIFO) (((FIFO) == CAN_FIFO0) || ((FIFO) == CAN_FIFO1))
+N
+N/* CAN sleep constants */
+N#define CANSLEEPFAILED              ((u8)0x00) /* CAN did not enter the sleep mode */
+N#define CANSLEEPOK                  ((u8)0x01) /* CAN entered the sleep mode */
+N
+N/* CAN wake up constants */
+N#define CANWAKEUPFAILED             ((u8)0x00) /* CAN did not leave the sleep mode */
+N#define CANWAKEUPOK                 ((u8)0x01) /* CAN leaved the sleep mode */
+N
+N/* CAN flags */
+N#define CAN_FLAG_EWG                ((u32)0x00000001) /* Error Warning Flag */
+N#define CAN_FLAG_EPV                ((u32)0x00000002) /* Error Passive Flag */
+N#define CAN_FLAG_BOF                ((u32)0x00000004) /* Bus-Off Flag */
+N
+N#define IS_CAN_FLAG(FLAG) (((FLAG) == CAN_FLAG_EWG) || ((FLAG) == CAN_FLAG_EPV) ||\
+N                           ((FLAG) == CAN_FLAG_BOF))
+X#define IS_CAN_FLAG(FLAG) (((FLAG) == CAN_FLAG_EWG) || ((FLAG) == CAN_FLAG_EPV) ||                           ((FLAG) == CAN_FLAG_BOF))
+N
+N/* CAN interrupts */
+N#define CAN_IT_RQCP0                ((u32)0x00000005) /* Request completed mailbox 0 */
+N#define CAN_IT_RQCP1                ((u32)0x00000006) /* Request completed mailbox 1 */
+N#define CAN_IT_RQCP2                ((u32)0x00000007) /* Request completed mailbox 2 */
+N#define CAN_IT_TME                  ((u32)0x00000001) /* Transmit mailbox empty */
+N#define CAN_IT_FMP0                 ((u32)0x00000002) /* FIFO 0 message pending */
+N#define CAN_IT_FF0                  ((u32)0x00000004) /* FIFO 0 full */
+N#define CAN_IT_FOV0                 ((u32)0x00000008) /* FIFO 0 overrun */
+N#define CAN_IT_FMP1                 ((u32)0x00000010) /* FIFO 1 message pending */
+N#define CAN_IT_FF1                  ((u32)0x00000020) /* FIFO 1 full */
+N#define CAN_IT_FOV1                 ((u32)0x00000040) /* FIFO 1 overrun */
+N#define CAN_IT_EWG                  ((u32)0x00000100) /* Error warning */
+N#define CAN_IT_EPV                  ((u32)0x00000200) /* Error passive */
+N#define CAN_IT_BOF                  ((u32)0x00000400) /* Bus-off */
+N#define CAN_IT_LEC                  ((u32)0x00000800) /* Last error code */
+N#define CAN_IT_ERR                  ((u32)0x00008000) /* Error */
+N#define CAN_IT_WKU                  ((u32)0x00010000) /* Wake-up */
+N#define CAN_IT_SLK                  ((u32)0x00020000) /* Sleep */
+N
+N#define IS_CAN_ITConfig(IT) (((IT) == CAN_IT_TME)   || ((IT) == CAN_IT_FMP0)  ||\
+N                             ((IT) == CAN_IT_FF0)   || ((IT) == CAN_IT_FOV0)  ||\
+N                             ((IT) == CAN_IT_FMP1)  || ((IT) == CAN_IT_FF1)   ||\
+N                             ((IT) == CAN_IT_FOV1)  || ((IT) == CAN_IT_EWG)   ||\
+N                             ((IT) == CAN_IT_EPV)   || ((IT) == CAN_IT_BOF)   ||\
+N                             ((IT) == CAN_IT_LEC)   || ((IT) == CAN_IT_ERR)   ||\
+N                             ((IT) == CAN_IT_WKU)   || ((IT) == CAN_IT_SLK))
+X#define IS_CAN_ITConfig(IT) (((IT) == CAN_IT_TME)   || ((IT) == CAN_IT_FMP0)  ||                             ((IT) == CAN_IT_FF0)   || ((IT) == CAN_IT_FOV0)  ||                             ((IT) == CAN_IT_FMP1)  || ((IT) == CAN_IT_FF1)   ||                             ((IT) == CAN_IT_FOV1)  || ((IT) == CAN_IT_EWG)   ||                             ((IT) == CAN_IT_EPV)   || ((IT) == CAN_IT_BOF)   ||                             ((IT) == CAN_IT_LEC)   || ((IT) == CAN_IT_ERR)   ||                             ((IT) == CAN_IT_WKU)   || ((IT) == CAN_IT_SLK))
+N
+N#define IS_CAN_ITStatus(IT) (((IT) == CAN_IT_RQCP0)  || ((IT) == CAN_IT_RQCP1)  ||\
+N                             ((IT) == CAN_IT_RQCP2)  || ((IT) == CAN_IT_FF0)    ||\
+N                             ((IT) == CAN_IT_FOV0)   || ((IT) == CAN_IT_FF1)    ||\
+N                             ((IT) == CAN_IT_FOV1)   || ((IT) == CAN_IT_EWG)    ||\
+N                             ((IT) == CAN_IT_EPV)    || ((IT) == CAN_IT_BOF)    ||\
+N                             ((IT) == CAN_IT_WKU)    || ((IT) == CAN_IT_SLK))
+X#define IS_CAN_ITStatus(IT) (((IT) == CAN_IT_RQCP0)  || ((IT) == CAN_IT_RQCP1)  ||                             ((IT) == CAN_IT_RQCP2)  || ((IT) == CAN_IT_FF0)    ||                             ((IT) == CAN_IT_FOV0)   || ((IT) == CAN_IT_FF1)    ||                             ((IT) == CAN_IT_FOV1)   || ((IT) == CAN_IT_EWG)    ||                             ((IT) == CAN_IT_EPV)    || ((IT) == CAN_IT_BOF)    ||                             ((IT) == CAN_IT_WKU)    || ((IT) == CAN_IT_SLK))
+N
+N/* Exported macro ------------------------------------------------------------*/
+N/* Exported function protypes ----------------------------------------------- */
+Nvoid CAN_DeInit(void);
+Nu8 CAN_Init(CAN_InitTypeDef* CAN_InitStruct);
+Nvoid CAN_FilterInit(CAN_FilterInitTypeDef* CAN_FilterInitStruct);
+Nvoid CAN_StructInit(CAN_InitTypeDef* CAN_InitStruct);
+Nvoid CAN_ITConfig(u32 CAN_IT, FunctionalState NewState);
+Nu8 CAN_Transmit(CanTxMsg* TxMessage);
+Nu8 CAN_TransmitStatus(u8 TransmitMailbox);
+Nvoid CAN_CancelTransmit(u8 Mailbox);
+Nvoid CAN_FIFORelease(u8 FIFONumber);
+Nu8 CAN_MessagePending(u8 FIFONumber);
+Nvoid CAN_Receive(u8 FIFONumber, CanRxMsg* RxMessage);
+Nu8 CAN_Sleep(void);
+Nu8 CAN_WakeUp(void);
+NFlagStatus CAN_GetFlagStatus(u32 CAN_FLAG);
+Nvoid CAN_ClearFlag(u32 CAN_FLAG);
+NITStatus CAN_GetITStatus(u32 CAN_IT);
+Nvoid CAN_ClearITPendingBit(u32 CAN_IT);
+N
+N#endif /* __STM32F10x_CAN_H */
+N
+N/******************* (C) COPYRIGHT 2008 STMicroelectronics *****END OF FILE****/
+L 20 "lib\src\stm32f10x_can.c" 2
+N#include "stm32f10x_rcc.h"
+L 1 ".\lib\inc\stm32f10x_rcc.h" 1
+N/******************** (C) COPYRIGHT 2008 STMicroelectronics ********************
+N* File Name          : stm32f10x_rcc.h
+N* Author             : MCD Application Team
+N* Version            : V2.0
+N* Date               : 05/23/2008
+N* Description        : This file contains all the functions prototypes for the
+N*                      RCC firmware library.
+N********************************************************************************
+N* THE PRESENT FIRMWARE WHICH IS FOR GUIDANCE ONLY AIMS AT PROVIDING CUSTOMERS
+N* WITH CODING INFORMATION REGARDING THEIR PRODUCTS IN ORDER FOR THEM TO SAVE TIME.
+N* AS A RESULT, STMICROELECTRONICS SHALL NOT BE HELD LIABLE FOR ANY DIRECT,
+N* INDIRECT OR CONSEQUENTIAL DAMAGES WITH RESPECT TO ANY CLAIMS ARISING FROM THE
+N* CONTENT OF SUCH SOFTWARE AND/OR THE USE MADE BY CUSTOMERS OF THE CODING
+N* INFORMATION CONTAINED HEREIN IN CONNECTION WITH THEIR PRODUCTS.
+N* FOR MORE INFORMATION PLEASE CAREFULLY READ THE LICENSE AGREEMENT FILE LOCATED 
+N* IN THE ROOT DIRECTORY OF THIS FIRMWARE PACKAGE.
+N*******************************************************************************/
+N
+N/* Define to prevent recursive inclusion -------------------------------------*/
+N#ifndef __STM32F10x_RCC_H
+N#define __STM32F10x_RCC_H
+N
+N/* Includes ------------------------------------------------------------------*/
+N#include "stm32f10x_map.h"
+N
+N/* Exported types ------------------------------------------------------------*/
+Ntypedef struct
+N{
+N  u32 SYSCLK_Frequency;
+N  u32 HCLK_Frequency;
+N  u32 PCLK1_Frequency;
+N  u32 PCLK2_Frequency;
+N  u32 ADCCLK_Frequency;
+N}RCC_ClocksTypeDef;
+N
+N/* Exported constants --------------------------------------------------------*/
+N/* HSE configuration */
+N#define RCC_HSE_OFF                      ((u32)0x00000000)
+N#define RCC_HSE_ON                       ((u32)0x00010000)
+N#define RCC_HSE_Bypass                   ((u32)0x00040000)
+N
+N#define IS_RCC_HSE(HSE) (((HSE) == RCC_HSE_OFF) || ((HSE) == RCC_HSE_ON) || \
+N                         ((HSE) == RCC_HSE_Bypass))
+X#define IS_RCC_HSE(HSE) (((HSE) == RCC_HSE_OFF) || ((HSE) == RCC_HSE_ON) ||                          ((HSE) == RCC_HSE_Bypass))
+N
+N/* PLL entry clock source */
+N#define RCC_PLLSource_HSI_Div2           ((u32)0x00000000)	// PLL的输入时钟 = HSI时钟频率除以2 ；
+N#define RCC_PLLSource_HSE_Div1           ((u32)0x00010000)	// PLL的输入时钟 = HSE时钟频率 ；
+N#define RCC_PLLSource_HSE_Div2           ((u32)0x00030000)	// PLL的输入时钟 = HSE时钟频率除以2 ；
+N
+N#define IS_RCC_PLL_SOURCE(SOURCE) (((SOURCE) == RCC_PLLSource_HSI_Div2) || \
+N                                   ((SOURCE) == RCC_PLLSource_HSE_Div1) || \
+N                                   ((SOURCE) == RCC_PLLSource_HSE_Div2))
+X#define IS_RCC_PLL_SOURCE(SOURCE) (((SOURCE) == RCC_PLLSource_HSI_Div2) ||                                    ((SOURCE) == RCC_PLLSource_HSE_Div1) ||                                    ((SOURCE) == RCC_PLLSource_HSE_Div2))
+N
+N/* PLL multiplication factor */
+N#define RCC_PLLMul_2                     ((u32)0x00000000)	// PLL 输入时钟 * 2
+N#define RCC_PLLMul_3                     ((u32)0x00040000)	// PLL 输入时钟 * 3
+N#define RCC_PLLMul_4                     ((u32)0x00080000)	// PLL 输入时钟 * 4
+N#define RCC_PLLMul_5                     ((u32)0x000C0000)	// PLL 输入时钟 * 5
+N#define RCC_PLLMul_6                     ((u32)0x00100000)	// PLL 输入时钟 * 6
+N#define RCC_PLLMul_7                     ((u32)0x00140000)	// PLL 输入时钟 * 7
+N#define RCC_PLLMul_8                     ((u32)0x00180000)	// PLL 输入时钟 * 8
+N#define RCC_PLLMul_9                     ((u32)0x001C0000)	// PLL 输入时钟 * 9
+N#define RCC_PLLMul_10                    ((u32)0x00200000)	// PLL 输入时钟 * 10
+N#define RCC_PLLMul_11                    ((u32)0x00240000)	// PLL 输入时钟 * 11
+N#define RCC_PLLMul_12                    ((u32)0x00280000)	// PLL 输入时钟 * 12
+N#define RCC_PLLMul_13                    ((u32)0x002C0000)	// PLL 输入时钟 * 13
+N#define RCC_PLLMul_14                    ((u32)0x00300000)	// PLL 输入时钟 * 14
+N#define RCC_PLLMul_15                    ((u32)0x00340000)	// PLL 输入时钟 * 15
+N#define RCC_PLLMul_16                    ((u32)0x00380000)	// PLL 输入时钟 * 16
+N
+N#define IS_RCC_PLL_MUL(MUL) (((MUL) == RCC_PLLMul_2) || ((MUL) == RCC_PLLMul_3)   || \
+N                             ((MUL) == RCC_PLLMul_4) || ((MUL) == RCC_PLLMul_5)   || \
+N                             ((MUL) == RCC_PLLMul_6) || ((MUL) == RCC_PLLMul_7)   || \
+N                             ((MUL) == RCC_PLLMul_8) || ((MUL) == RCC_PLLMul_9)   || \
+N                             ((MUL) == RCC_PLLMul_10) || ((MUL) == RCC_PLLMul_11) || \
+N                             ((MUL) == RCC_PLLMul_12) || ((MUL) == RCC_PLLMul_13) || \
+N                             ((MUL) == RCC_PLLMul_14) || ((MUL) == RCC_PLLMul_15) || \
+N                             ((MUL) == RCC_PLLMul_16))
+X#define IS_RCC_PLL_MUL(MUL) (((MUL) == RCC_PLLMul_2) || ((MUL) == RCC_PLLMul_3)   ||                              ((MUL) == RCC_PLLMul_4) || ((MUL) == RCC_PLLMul_5)   ||                              ((MUL) == RCC_PLLMul_6) || ((MUL) == RCC_PLLMul_7)   ||                              ((MUL) == RCC_PLLMul_8) || ((MUL) == RCC_PLLMul_9)   ||                              ((MUL) == RCC_PLLMul_10) || ((MUL) == RCC_PLLMul_11) ||                              ((MUL) == RCC_PLLMul_12) || ((MUL) == RCC_PLLMul_13) ||                              ((MUL) == RCC_PLLMul_14) || ((MUL) == RCC_PLLMul_15) ||                              ((MUL) == RCC_PLLMul_16))
+N
+N/* System clock source */
+N#define RCC_SYSCLKSource_HSI             ((u32)0x00000000)
+N#define RCC_SYSCLKSource_HSE             ((u32)0x00000001)
+N#define RCC_SYSCLKSource_PLLCLK          ((u32)0x00000002)
+N
+N#define IS_RCC_SYSCLK_SOURCE(SOURCE) (((SOURCE) == RCC_SYSCLKSource_HSI) || \
+N                                      ((SOURCE) == RCC_SYSCLKSource_HSE) || \
+N                                      ((SOURCE) == RCC_SYSCLKSource_PLLCLK))
+X#define IS_RCC_SYSCLK_SOURCE(SOURCE) (((SOURCE) == RCC_SYSCLKSource_HSI) ||                                       ((SOURCE) == RCC_SYSCLKSource_HSE) ||                                       ((SOURCE) == RCC_SYSCLKSource_PLLCLK))
+N
+N/* AHB clock source */
+N#define RCC_SYSCLK_Div1                  ((u32)0x00000000) // AHB 时钟 = 系统时钟 ；
+N#define RCC_SYSCLK_Div2                  ((u32)0x00000080) // AHB 时钟 = 系统时钟/2 ；
+N#define RCC_SYSCLK_Div4                  ((u32)0x00000090) // AHB 时钟 = 系统时钟/4 ；
+N#define RCC_SYSCLK_Div8                  ((u32)0x000000A0) // AHB 时钟 = 系统时钟/8 ；
+N#define RCC_SYSCLK_Div16                 ((u32)0x000000B0) // AHB 时钟 = 系统时钟/16 ；
+N#define RCC_SYSCLK_Div64                 ((u32)0x000000C0) // AHB 时钟 = 系统时钟/64 ；
+N#define RCC_SYSCLK_Div128                ((u32)0x000000D0) // AHB 时钟 = 系统时钟/128 ；
+N#define RCC_SYSCLK_Div256                ((u32)0x000000E0) // AHB 时钟 = 系统时钟/256 ；
+N#define RCC_SYSCLK_Div512                ((u32)0x000000F0) // AHB 时钟 = 系统时钟/512 ；
+N
+N#define IS_RCC_HCLK(HCLK) (((HCLK) == RCC_SYSCLK_Div1) || ((HCLK) == RCC_SYSCLK_Div2) || \
+N                           ((HCLK) == RCC_SYSCLK_Div4) || ((HCLK) == RCC_SYSCLK_Div8) || \
+N                           ((HCLK) == RCC_SYSCLK_Div16) || ((HCLK) == RCC_SYSCLK_Div64) || \
+N                           ((HCLK) == RCC_SYSCLK_Div128) || ((HCLK) == RCC_SYSCLK_Div256) || \
+N                           ((HCLK) == RCC_SYSCLK_Div512))
+X#define IS_RCC_HCLK(HCLK) (((HCLK) == RCC_SYSCLK_Div1) || ((HCLK) == RCC_SYSCLK_Div2) ||                            ((HCLK) == RCC_SYSCLK_Div4) || ((HCLK) == RCC_SYSCLK_Div8) ||                            ((HCLK) == RCC_SYSCLK_Div16) || ((HCLK) == RCC_SYSCLK_Div64) ||                            ((HCLK) == RCC_SYSCLK_Div128) || ((HCLK) == RCC_SYSCLK_Div256) ||                            ((HCLK) == RCC_SYSCLK_Div512))
+N
+N/* APB1/APB2 clock source */
+N#define RCC_HCLK_Div1                    ((u32)0x00000000) // APBx 时钟 = HCLK ；
+N#define RCC_HCLK_Div2                    ((u32)0x00000400) // APBx 时钟 = HCLK/2 ；
+N#define RCC_HCLK_Div4                    ((u32)0x00000500) // APBx 时钟 = HCLK/4 ；
+N#define RCC_HCLK_Div8                    ((u32)0x00000600) // APBx 时钟 = HCLK/8 ；
+N#define RCC_HCLK_Div16                   ((u32)0x00000700) // APBx 时钟 = HCLK/16 ；
+N
+N#define IS_RCC_PCLK(PCLK) (((PCLK) == RCC_HCLK_Div1) || ((PCLK) == RCC_HCLK_Div2) || \
+N                           ((PCLK) == RCC_HCLK_Div4) || ((PCLK) == RCC_HCLK_Div8) || \
+N                           ((PCLK) == RCC_HCLK_Div16))
+X#define IS_RCC_PCLK(PCLK) (((PCLK) == RCC_HCLK_Div1) || ((PCLK) == RCC_HCLK_Div2) ||                            ((PCLK) == RCC_HCLK_Div4) || ((PCLK) == RCC_HCLK_Div8) ||                            ((PCLK) == RCC_HCLK_Div16))
+N
+N/* RCC Interrupt source */
+N#define RCC_IT_LSIRDY                    ((u8)0x01)	 // LSI晶振就绪中断 ；
+N#define RCC_IT_LSERDY                    ((u8)0x02)	 // LSE晶振就绪中断 ；
+N#define RCC_IT_HSIRDY                    ((u8)0x04)	 // HSI晶振就绪中断 ；
+N#define RCC_IT_HSERDY                    ((u8)0x08)	 // HSE晶振就绪中断 ；
+N#define RCC_IT_PLLRDY                    ((u8)0x10)	 // PLL就绪中断 ；
+N#define RCC_IT_CSS                       ((u8)0x80)	 // 时钟安全系统时钟 ；
+N
+N#define IS_RCC_IT(IT) ((((IT) & (u8)0xE0) == 0x00) && ((IT) != 0x00))
+N#define IS_RCC_GET_IT(IT) (((IT) == RCC_IT_LSIRDY) || ((IT) == RCC_IT_LSERDY) || \
+N                           ((IT) == RCC_IT_HSIRDY) || ((IT) == RCC_IT_HSERDY) || \
+N                           ((IT) == RCC_IT_PLLRDY) || ((IT) == RCC_IT_CSS))
+X#define IS_RCC_GET_IT(IT) (((IT) == RCC_IT_LSIRDY) || ((IT) == RCC_IT_LSERDY) ||                            ((IT) == RCC_IT_HSIRDY) || ((IT) == RCC_IT_HSERDY) ||                            ((IT) == RCC_IT_PLLRDY) || ((IT) == RCC_IT_CSS))
+N#define IS_RCC_CLEAR_IT(IT) ((((IT) & (u8)0x60) == 0x00) && ((IT) != 0x00))
+N
+N/* USB clock source */
+N#define RCC_USBCLKSource_PLLCLK_1Div5    ((u8)0x00)	 // USB 时钟 = PLL时钟除以1.5 ；
+N#define RCC_USBCLKSource_PLLCLK_Div1     ((u8)0x01)	 // USB 时钟 = PLL时钟	；
+N
+N#define IS_RCC_USBCLK_SOURCE(SOURCE) (((SOURCE) == RCC_USBCLKSource_PLLCLK_1Div5) || \
+N                                      ((SOURCE) == RCC_USBCLKSource_PLLCLK_Div1))
+X#define IS_RCC_USBCLK_SOURCE(SOURCE) (((SOURCE) == RCC_USBCLKSource_PLLCLK_1Div5) ||                                       ((SOURCE) == RCC_USBCLKSource_PLLCLK_Div1))
+N
+N/* ADC clock source */
+N#define RCC_PCLK2_Div2                   ((u32)0x00000000) // ADC 时钟 = PCLK/2 ；
+N#define RCC_PCLK2_Div4                   ((u32)0x00004000) // ADC 时钟 = PCLK/4 ；
+N#define RCC_PCLK2_Div6                   ((u32)0x00008000) // ADC 时钟 = PCLK/6 ；
+N#define RCC_PCLK2_Div8                   ((u32)0x0000C000) // ADC 时钟 = PCLK/8 ；
+N
+N#define IS_RCC_ADCCLK(ADCCLK) (((ADCCLK) == RCC_PCLK2_Div2) || ((ADCCLK) == RCC_PCLK2_Div4) || \
+N                               ((ADCCLK) == RCC_PCLK2_Div6) || ((ADCCLK) == RCC_PCLK2_Div8))
+X#define IS_RCC_ADCCLK(ADCCLK) (((ADCCLK) == RCC_PCLK2_Div2) || ((ADCCLK) == RCC_PCLK2_Div4) ||                                ((ADCCLK) == RCC_PCLK2_Div6) || ((ADCCLK) == RCC_PCLK2_Div8))
+N
+N/* LSE configuration */
+N#define RCC_LSE_OFF                      ((u8)0x00)	  // LSE晶振 OFF ；
+N#define RCC_LSE_ON                       ((u8)0x01)	  // LSE晶振 ON  ；
+N#define RCC_LSE_Bypass                   ((u8)0x04)	  // LSE晶振被外部时钟旁路 ；
+N
+N#define IS_RCC_LSE(LSE) (((LSE) == RCC_LSE_OFF) || ((LSE) == RCC_LSE_ON) || \
+N                         ((LSE) == RCC_LSE_Bypass))
+X#define IS_RCC_LSE(LSE) (((LSE) == RCC_LSE_OFF) || ((LSE) == RCC_LSE_ON) ||                          ((LSE) == RCC_LSE_Bypass))
+N
+N/* RTC clock source */
+N#define RCC_RTCCLKSource_LSE             ((u32)0x00000100) // 选者LSE作为RTC时钟 ；
+N#define RCC_RTCCLKSource_LSI             ((u32)0x00000200) // 选者LSI作为RTC时钟 ；
+N#define RCC_RTCCLKSource_HSE_Div128      ((u32)0x00000300) // 选择HSE时钟频率除以128作为RTC时钟 ；
+N
+N#define IS_RCC_RTCCLK_SOURCE(SOURCE) (((SOURCE) == RCC_RTCCLKSource_LSE) || \
+N                                      ((SOURCE) == RCC_RTCCLKSource_LSI) || \
+N                                      ((SOURCE) == RCC_RTCCLKSource_HSE_Div128))
+X#define IS_RCC_RTCCLK_SOURCE(SOURCE) (((SOURCE) == RCC_RTCCLKSource_LSE) ||                                       ((SOURCE) == RCC_RTCCLKSource_LSI) ||                                       ((SOURCE) == RCC_RTCCLKSource_HSE_Div128))
+N
+N/* AHB peripheral */
+N#define RCC_AHBPeriph_DMA1               ((u32)0x00000001)	// DMA时钟 ；
+N#define RCC_AHBPeriph_DMA2               ((u32)0x00000002)
+N#define RCC_AHBPeriph_SRAM               ((u32)0x00000004)	// SRAM时钟 ；
+N#define RCC_AHBPeriph_FLITF              ((u32)0x00000010)	// FLITF时钟 ；
+N#define RCC_AHBPeriph_CRC                ((u32)0x00000040)
+N#define RCC_AHBPeriph_FSMC               ((u32)0x00000100)
+N#define RCC_AHBPeriph_SDIO               ((u32)0x00000400)
+N
+N#define IS_RCC_AHB_PERIPH(PERIPH) ((((PERIPH) & 0xFFFFFAA8) == 0x00) && ((PERIPH) != 0x00))
+N
+N/* APB2 peripheral */
+N#define RCC_APB2Periph_AFIO              ((u32)0x00000001)  // 功能复用IO时钟 ；
+N#define RCC_APB2Periph_GPIOA             ((u32)0x00000004)	// GPIOA 时钟 ；
+N#define RCC_APB2Periph_GPIOB             ((u32)0x00000008)	// GPIOB 时钟 ；
+N#define RCC_APB2Periph_GPIOC             ((u32)0x00000010)	// GPIOC 时钟 ；
+N#define RCC_APB2Periph_GPIOD             ((u32)0x00000020)	// GPIOD 时钟 ；
+N#define RCC_APB2Periph_GPIOE             ((u32)0x00000040)	// GPIOE 时钟 ；
+N#define RCC_APB2Periph_GPIOF             ((u32)0x00000080)	// GPIOF 时钟 ；
+N#define RCC_APB2Periph_GPIOG             ((u32)0x00000100)	// GPIOG 时钟 ；
+N#define RCC_APB2Periph_ADC1              ((u32)0x00000200)	// ADC1 时钟 ；
+N#define RCC_APB2Periph_ADC2              ((u32)0x00000400)	// ADC2 时钟 ；
+N#define RCC_APB2Periph_TIM1              ((u32)0x00000800)	// TIM1 时钟 ；
+N#define RCC_APB2Periph_SPI1              ((u32)0x00001000)	// SPI1 时钟 ；
+N#define RCC_APB2Periph_TIM8              ((u32)0x00002000)	// TIM8 时钟 ；
+N#define RCC_APB2Periph_USART1            ((u32)0x00004000)	// USART1 时钟 ；
+N#define RCC_APB2Periph_ADC3              ((u32)0x00008000)	// ADC3 时钟 ；
+N#define RCC_APB2Periph_ALL               ((u32)0x0000FFFD)	// 全部APB2外设时钟 ；
+N
+N#define IS_RCC_APB2_PERIPH(PERIPH) ((((PERIPH) & 0xFFFF0002) == 0x00) && ((PERIPH) != 0x00))
+N
+N/* APB1 peripheral */
+N#define RCC_APB1Periph_TIM2              ((u32)0x00000001)  // TIM2 时钟 ；
+N#define RCC_APB1Periph_TIM3              ((u32)0x00000002)	// TIM3 时钟 ；
+N#define RCC_APB1Periph_TIM4              ((u32)0x00000004)	// TIM4 时钟 ；
+N#define RCC_APB1Periph_TIM5              ((u32)0x00000008)  // TIM5 时钟 ；
+N#define RCC_APB1Periph_TIM6              ((u32)0x00000010)	// TIM6 时钟 ；
+N#define RCC_APB1Periph_TIM7              ((u32)0x00000020)	// TIM7 时钟 ；
+N#define RCC_APB1Periph_WWDG              ((u32)0x00000800)	// WWDG 时钟 ；
+N#define RCC_APB1Periph_SPI2              ((u32)0x00004000)	// SPI2 时钟 ；
+N#define RCC_APB1Periph_SPI3              ((u32)0x00008000)	// SPI3 时钟 ；
+N#define RCC_APB1Periph_USART2            ((u32)0x00020000)	// USART2 时钟 ；
+N#define RCC_APB1Periph_USART3            ((u32)0x00040000)	// USART3 时钟 ；
+N#define RCC_APB1Periph_UART4             ((u32)0x00080000)	// UART4 时钟 ；
+N#define RCC_APB1Periph_UART5             ((u32)0x00100000)	// UART5 时钟 ；
+N#define RCC_APB1Periph_I2C1              ((u32)0x00200000)  // I2C1 时钟 ；
+N#define RCC_APB1Periph_I2C2              ((u32)0x00400000)	// I2C2 时钟 ；
+N#define RCC_APB1Periph_USB               ((u32)0x00800000)	// USB 时钟 ；
+N#define RCC_APB1Periph_CAN               ((u32)0x02000000)	// CAN 时钟 ；
+N#define RCC_APB1Periph_BKP               ((u32)0x08000000)	// BKP 时钟 ；
+N#define RCC_APB1Periph_PWR               ((u32)0x10000000)	// PWR 时钟 ；
+N#define RCC_APB1Periph_DAC               ((u32)0x20000000)  // DAC 时钟 ；
+N#define RCC_APB1Periph_ALL               ((u32)0x3AFEC83F)	// 全部APB1外设时钟 ；
+N
+N#define IS_RCC_APB1_PERIPH(PERIPH) ((((PERIPH) & 0xC50137C0) == 0x00) && ((PERIPH) != 0x00))
+N
+N/* Clock source to output on MCO pin */
+N#define RCC_MCO_NoClock                  ((u8)0x00)	 // 无时钟被选中 ；
+N#define RCC_MCO_SYSCLK                   ((u8)0x04)	 // 选中系统时钟 ；
+N#define RCC_MCO_HSI                      ((u8)0x05)	 // 选中HSI ；
+N#define RCC_MCO_HSE                      ((u8)0x06)	 // 选中HSE ；
+N#define RCC_MCO_PLLCLK_Div2              ((u8)0x07)	 // 选中PLL时钟除以2 ；
+N
+N#define IS_RCC_MCO(MCO) (((MCO) == RCC_MCO_NoClock) || ((MCO) == RCC_MCO_HSI) || \
+N                         ((MCO) == RCC_MCO_SYSCLK)  || ((MCO) == RCC_MCO_HSE) || \
+N                         ((MCO) == RCC_MCO_PLLCLK_Div2))
+X#define IS_RCC_MCO(MCO) (((MCO) == RCC_MCO_NoClock) || ((MCO) == RCC_MCO_HSI) ||                          ((MCO) == RCC_MCO_SYSCLK)  || ((MCO) == RCC_MCO_HSE) ||                          ((MCO) == RCC_MCO_PLLCLK_Div2))
+N
+N/* RCC Flag */
+N#define RCC_FLAG_HSIRDY                  ((u8)0x20)	 // HSI晶振就绪 ；
+N#define RCC_FLAG_HSERDY                  ((u8)0x31)	 // HSE晶振就绪 ；
+N#define RCC_FLAG_PLLRDY                  ((u8)0x39)	 // PLL 就绪 ；
+N#define RCC_FLAG_LSERDY                  ((u8)0x41)	 // LSI晶振就绪 ；
+N#define RCC_FLAG_LSIRDY                  ((u8)0x61)	 // LSE晶振就绪 ；
+N#define RCC_FLAG_PINRST                  ((u8)0x7A)	 // 管脚复位 ；
+N#define RCC_FLAG_PORRST                  ((u8)0x7B)	 // POR/PDR复位 ；
+N#define RCC_FLAG_SFTRST                  ((u8)0x7C)	 // 软件复位 ；
+N#define RCC_FLAG_IWDGRST                 ((u8)0x7D)	 // IWDG复位 ；
+N#define RCC_FLAG_WWDGRST                 ((u8)0x7E)	 // WWDG复位 ；
+N#define RCC_FLAG_LPWRRST                 ((u8)0x7F)	 // 低功耗复位 ；
+N
+N#define IS_RCC_FLAG(FLAG) (((FLAG) == RCC_FLAG_HSIRDY) || ((FLAG) == RCC_FLAG_HSERDY) || \
+N                           ((FLAG) == RCC_FLAG_PLLRDY) || ((FLAG) == RCC_FLAG_LSERDY) || \
+N                           ((FLAG) == RCC_FLAG_LSIRDY) || ((FLAG) == RCC_FLAG_PINRST) || \
+N                           ((FLAG) == RCC_FLAG_PORRST) || ((FLAG) == RCC_FLAG_SFTRST) || \
+N                           ((FLAG) == RCC_FLAG_IWDGRST)|| ((FLAG) == RCC_FLAG_WWDGRST)|| \
+N                           ((FLAG) == RCC_FLAG_LPWRRST))
+X#define IS_RCC_FLAG(FLAG) (((FLAG) == RCC_FLAG_HSIRDY) || ((FLAG) == RCC_FLAG_HSERDY) ||                            ((FLAG) == RCC_FLAG_PLLRDY) || ((FLAG) == RCC_FLAG_LSERDY) ||                            ((FLAG) == RCC_FLAG_LSIRDY) || ((FLAG) == RCC_FLAG_PINRST) ||                            ((FLAG) == RCC_FLAG_PORRST) || ((FLAG) == RCC_FLAG_SFTRST) ||                            ((FLAG) == RCC_FLAG_IWDGRST)|| ((FLAG) == RCC_FLAG_WWDGRST)||                            ((FLAG) == RCC_FLAG_LPWRRST))
+N
+N#define IS_RCC_CALIBRATION_VALUE(VALUE) ((VALUE) <= 0x1F)
+N
+N/* Exported macro ------------------------------------------------------------*/
+N/* Exported functions ------------------------------------------------------- */
+Nvoid RCC_DeInit(void);
+Nvoid RCC_HSEConfig(u32 RCC_HSE);
+NErrorStatus RCC_WaitForHSEStartUp(void);
+Nvoid RCC_AdjustHSICalibrationValue(u8 HSICalibrationValue);
+Nvoid RCC_HSICmd(FunctionalState NewState);
+Nvoid RCC_PLLConfig(u32 RCC_PLLSource, u32 RCC_PLLMul);
+Nvoid RCC_PLLCmd(FunctionalState NewState);
+Nvoid RCC_SYSCLKConfig(u32 RCC_SYSCLKSource);
+Nu8 RCC_GetSYSCLKSource(void);
+Nvoid RCC_HCLKConfig(u32 RCC_SYSCLK);
+Nvoid RCC_PCLK1Config(u32 RCC_HCLK);
+Nvoid RCC_PCLK2Config(u32 RCC_HCLK);
+Nvoid RCC_ITConfig(u8 RCC_IT, FunctionalState NewState);
+Nvoid RCC_USBCLKConfig(u32 RCC_USBCLKSource);
+Nvoid RCC_ADCCLKConfig(u32 RCC_PCLK2);
+Nvoid RCC_LSEConfig(u8 RCC_LSE);
+Nvoid RCC_LSICmd(FunctionalState NewState);
+Nvoid RCC_RTCCLKConfig(u32 RCC_RTCCLKSource);
+Nvoid RCC_RTCCLKCmd(FunctionalState NewState);
+Nvoid RCC_GetClocksFreq(RCC_ClocksTypeDef* RCC_Clocks);
+Nvoid RCC_AHBPeriphClockCmd(u32 RCC_AHBPeriph, FunctionalState NewState);
+Nvoid RCC_APB2PeriphClockCmd(u32 RCC_APB2Periph, FunctionalState NewState);
+Nvoid RCC_APB1PeriphClockCmd(u32 RCC_APB1Periph, FunctionalState NewState);
+Nvoid RCC_APB2PeriphResetCmd(u32 RCC_APB2Periph, FunctionalState NewState);
+Nvoid RCC_APB1PeriphResetCmd(u32 RCC_APB1Periph, FunctionalState NewState);
+Nvoid RCC_BackupResetCmd(FunctionalState NewState);
+Nvoid RCC_ClockSecuritySystemCmd(FunctionalState NewState);
+Nvoid RCC_MCOConfig(u8 RCC_MCO);
+NFlagStatus RCC_GetFlagStatus(u8 RCC_FLAG);
+Nvoid RCC_ClearFlag(void);
+NITStatus RCC_GetITStatus(u8 RCC_IT);
+Nvoid RCC_ClearITPendingBit(u8 RCC_IT);
+N
+N#endif /* __STM32F10x_RCC_H */
+N
+N/******************* (C) COPYRIGHT 2008 STMicroelectronics *****END OF FILE****/
+L 21 "lib\src\stm32f10x_can.c" 2
+N
+N/* Private typedef -----------------------------------------------------------*/
+N
+N/* Private define ------------------------------------------------------------*/
+N/* CAN Master Control Register bits */
+N#define CAN_MCR_INRQ     ((u32)0x00000001) /* Initialization request */
+N#define CAN_MCR_SLEEP    ((u32)0x00000002) /* Sleep mode request */
+N#define CAN_MCR_TXFP     ((u32)0x00000004) /* Transmit FIFO priority */
+N#define CAN_MCR_RFLM     ((u32)0x00000008) /* Receive FIFO locked mode */
+N#define CAN_MCR_NART     ((u32)0x00000010) /* No automatic retransmission */
+N#define CAN_MCR_AWUM     ((u32)0x00000020) /* Automatic wake up mode */
+N#define CAN_MCR_ABOM     ((u32)0x00000040) /* Automatic bus-off management */
+N#define CAN_MCR_TTCM     ((u32)0x00000080) /* time triggered communication */
+N
+N/* CAN Master Status Register bits */
+N#define CAN_MSR_INAK     ((u32)0x00000001)    /* Initialization acknowledge */
+N#define CAN_MSR_WKUI     ((u32)0x00000008)    /* Wake-up interrupt */
+N#define CAN_MSR_SLAKI    ((u32)0x00000010)    /* Sleep acknowledge interrupt */
+N
+N/* CAN Transmit Status Register bits */
+N#define CAN_TSR_RQCP0    ((u32)0x00000001)    /* Request completed mailbox0 */
+N#define CAN_TSR_TXOK0    ((u32)0x00000002)    /* Transmission OK of mailbox0 */
+N#define CAN_TSR_ABRQ0    ((u32)0x00000080)    /* Abort request for mailbox0 */
+N#define CAN_TSR_RQCP1    ((u32)0x00000100)    /* Request completed mailbox1 */
+N#define CAN_TSR_TXOK1    ((u32)0x00000200)    /* Transmission OK of mailbox1 */
+N#define CAN_TSR_ABRQ1    ((u32)0x00008000)    /* Abort request for mailbox1 */
+N#define CAN_TSR_RQCP2    ((u32)0x00010000)    /* Request completed mailbox2 */
+N#define CAN_TSR_TXOK2    ((u32)0x00020000)    /* Transmission OK of mailbox2 */
+N#define CAN_TSR_ABRQ2    ((u32)0x00800000)    /* Abort request for mailbox2 */
+N#define CAN_TSR_TME0     ((u32)0x04000000)    /* Transmit mailbox 0 empty */
+N#define CAN_TSR_TME1     ((u32)0x08000000)    /* Transmit mailbox 1 empty */
+N#define CAN_TSR_TME2     ((u32)0x10000000)    /* Transmit mailbox 2 empty */
+N
+N/* CAN Receive FIFO 0 Register bits */
+N#define CAN_RF0R_FULL0   ((u32)0x00000008)    /* FIFO 0 full */
+N#define CAN_RF0R_FOVR0   ((u32)0x00000010)    /* FIFO 0 overrun */
+N#define CAN_RF0R_RFOM0   ((u32)0x00000020)    /* Release FIFO 0 output mailbox */
+N
+N/* CAN Receive FIFO 1 Register bits */
+N#define CAN_RF1R_FULL1   ((u32)0x00000008)    /* FIFO 1 full */
+N#define CAN_RF1R_FOVR1   ((u32)0x00000010)    /* FIFO 1 overrun */
+N#define CAN_RF1R_RFOM1   ((u32)0x00000020)    /* Release FIFO 1 output mailbox */
+N
+N/* CAN Error Status Register bits */
+N#define CAN_ESR_EWGF     ((u32)0x00000001)    /* Error warning flag */
+N#define CAN_ESR_EPVF     ((u32)0x00000002)    /* Error passive flag */
+N#define CAN_ESR_BOFF     ((u32)0x00000004)    /* Bus-off flag */
+N
+N/* CAN Mailbox Transmit Request */
+N#define CAN_TMIDxR_TXRQ    ((u32)0x00000001) /* Transmit mailbox request */
+N
+N/* CAN Filter Master Register bits */
+N#define CAN_FMR_FINIT ((u32)0x00000001) /* Filter init mode */
+N
+N
+N/* Private macro -------------------------------------------------------------*/
+N/* Private variables ---------------------------------------------------------*/
+N/* Private function prototypes -----------------------------------------------*/
+Nstatic ITStatus CheckITStatus(u32 CAN_Reg, u32 It_Bit);
+N
+N/* Private functions ---------------------------------------------------------*/
+N/*******************************************************************************
+N* Function Name  : CAN_DeInit
+N* Description    : Deinitializes the CAN peripheral registers to their default
+N*                  reset values.
+N* Input          : None.
+N* Output         : None.
+N* Return         : None.
+N*******************************************************************************/
+Nvoid CAN_DeInit(void)
+N{
+N  /* Enable CAN reset state */
+N  RCC_APB1PeriphResetCmd(RCC_APB1Periph_CAN, ENABLE);
+X  RCC_APB1PeriphResetCmd(((u32)0x02000000), ENABLE);
+N  /* Release CAN from reset state */
+N  RCC_APB1PeriphResetCmd(RCC_APB1Periph_CAN, DISABLE);
+X  RCC_APB1PeriphResetCmd(((u32)0x02000000), DISABLE);
+N}
+N
+N/*******************************************************************************
+N* Function Name  : CAN_Init
+N* Description    : Initializes the CAN peripheral according to the specified
+N*                  parameters in the CAN_InitStruct.
+N* Input          : CAN_InitStruct: pointer to a CAN_InitTypeDef structure that
+N                   contains the configuration information for the CAN peripheral.
+N* Output         : None.
+N* Return         : Constant indicates initialization succeed which will be 
+N*                  CANINITFAILED or CANINITOK.
+N*******************************************************************************/
+Nu8 CAN_Init(CAN_InitTypeDef* CAN_InitStruct)
+N{
+N  u8 InitStatus = 0;
+N  u16 WaitAck;
+N
+N  /* Check the parameters */
+N  assert_param(IS_FUNCTIONAL_STATE(CAN_InitStruct->CAN_TTCM));
+X  ((void)0);
+N  assert_param(IS_FUNCTIONAL_STATE(CAN_InitStruct->CAN_ABOM));
+X  ((void)0);
+N  assert_param(IS_FUNCTIONAL_STATE(CAN_InitStruct->CAN_AWUM));
+X  ((void)0);
+N  assert_param(IS_FUNCTIONAL_STATE(CAN_InitStruct->CAN_NART));
+X  ((void)0);
+N  assert_param(IS_FUNCTIONAL_STATE(CAN_InitStruct->CAN_RFLM));
+X  ((void)0);
+N  assert_param(IS_FUNCTIONAL_STATE(CAN_InitStruct->CAN_TXFP));
+X  ((void)0);
+N  assert_param(IS_CAN_MODE(CAN_InitStruct->CAN_Mode));
+X  ((void)0);
+N  assert_param(IS_CAN_SJW(CAN_InitStruct->CAN_SJW));
+X  ((void)0);
+N  assert_param(IS_CAN_BS1(CAN_InitStruct->CAN_BS1));
+X  ((void)0);
+N  assert_param(IS_CAN_BS2(CAN_InitStruct->CAN_BS2));
+X  ((void)0);
+N  assert_param(IS_CAN_PRESCALER(CAN_InitStruct->CAN_Prescaler));
+X  ((void)0);
+N
+N  /* Request initialisation */
+N  CAN->MCR = CAN_MCR_INRQ;
+X  ((CAN_TypeDef *) (((u32)0x40000000) + 0x6400))->MCR = ((u32)0x00000001);
+N
+N  /* ...and check acknowledged */
+N  if ((CAN->MSR & CAN_MSR_INAK) == 0)
+X  if ((((CAN_TypeDef *) (((u32)0x40000000) + 0x6400))->MSR & ((u32)0x00000001)) == 0)
+N  {
+N    InitStatus = CANINITFAILED;
+X    InitStatus = ((u8)0x00);
+N  }
+N  else
+N  {
+N    /* Set the time triggered communication mode */
+N    if (CAN_InitStruct->CAN_TTCM == ENABLE)
+N    {
+N      CAN->MCR |= CAN_MCR_TTCM;
+X      ((CAN_TypeDef *) (((u32)0x40000000) + 0x6400))->MCR |= ((u32)0x00000080);
+N    }
+N    else
+N    {
+N      CAN->MCR &= ~CAN_MCR_TTCM;
+X      ((CAN_TypeDef *) (((u32)0x40000000) + 0x6400))->MCR &= ~((u32)0x00000080);
+N    }
+N
+N    /* Set the automatic bus-off management */
+N    if (CAN_InitStruct->CAN_ABOM == ENABLE)
+N    {
+N      CAN->MCR |= CAN_MCR_ABOM;
+X      ((CAN_TypeDef *) (((u32)0x40000000) + 0x6400))->MCR |= ((u32)0x00000040);
+N    }
+N    else
+N    {
+N      CAN->MCR &= ~CAN_MCR_ABOM;
+X      ((CAN_TypeDef *) (((u32)0x40000000) + 0x6400))->MCR &= ~((u32)0x00000040);
+N    }
+N
+N    /* Set the automatic wake-up mode */
+N    if (CAN_InitStruct->CAN_AWUM == ENABLE)
+N    {
+N      CAN->MCR |= CAN_MCR_AWUM;
+X      ((CAN_TypeDef *) (((u32)0x40000000) + 0x6400))->MCR |= ((u32)0x00000020);
+N    }
+N    else
+N    {
+N      CAN->MCR &= ~CAN_MCR_AWUM;
+X      ((CAN_TypeDef *) (((u32)0x40000000) + 0x6400))->MCR &= ~((u32)0x00000020);
+N    }
+N
+N    /* Set the no automatic retransmission */
+N    if (CAN_InitStruct->CAN_NART == ENABLE)
+N    {
+N      CAN->MCR |= CAN_MCR_NART;
+X      ((CAN_TypeDef *) (((u32)0x40000000) + 0x6400))->MCR |= ((u32)0x00000010);
+N    }
+N    else
+N    {
+N      CAN->MCR &= ~CAN_MCR_NART;
+X      ((CAN_TypeDef *) (((u32)0x40000000) + 0x6400))->MCR &= ~((u32)0x00000010);
+N    }
+N
+N    /* Set the receive FIFO locked mode */
+N    if (CAN_InitStruct->CAN_RFLM == ENABLE)
+N    {
+N      CAN->MCR |= CAN_MCR_RFLM;
+X      ((CAN_TypeDef *) (((u32)0x40000000) + 0x6400))->MCR |= ((u32)0x00000008);
+N    }
+N    else
+N    {
+N      CAN->MCR &= ~CAN_MCR_RFLM;
+X      ((CAN_TypeDef *) (((u32)0x40000000) + 0x6400))->MCR &= ~((u32)0x00000008);
+N    }
+N
+N    /* Set the transmit FIFO priority */
+N    if (CAN_InitStruct->CAN_TXFP == ENABLE)
+N    {
+N      CAN->MCR |= CAN_MCR_TXFP;
+X      ((CAN_TypeDef *) (((u32)0x40000000) + 0x6400))->MCR |= ((u32)0x00000004);
+N    }
+N    else
+N    {
+N      CAN->MCR &= ~CAN_MCR_TXFP;
+X      ((CAN_TypeDef *) (((u32)0x40000000) + 0x6400))->MCR &= ~((u32)0x00000004);
+N    }
+N
+N    /* Set the bit timing register */
+N    CAN->BTR = (u32)((u32)CAN_InitStruct->CAN_Mode << 30) | ((u32)CAN_InitStruct->CAN_SJW << 24) |
+X    ((CAN_TypeDef *) (((u32)0x40000000) + 0x6400))->BTR = (u32)((u32)CAN_InitStruct->CAN_Mode << 30) | ((u32)CAN_InitStruct->CAN_SJW << 24) |
+N               ((u32)CAN_InitStruct->CAN_BS1 << 16) | ((u32)CAN_InitStruct->CAN_BS2 << 20) |
+N               ((u32)CAN_InitStruct->CAN_Prescaler - 1);
+N
+N    InitStatus = CANINITOK;
+X    InitStatus = ((u8)0x01);
+N
+N    /* Request leave initialisation */
+N    CAN->MCR &= ~CAN_MCR_INRQ;
+X    ((CAN_TypeDef *) (((u32)0x40000000) + 0x6400))->MCR &= ~((u32)0x00000001);
+N
+N    /* Wait the acknowledge */
+N    for(WaitAck = 0x400; WaitAck > 0x0; WaitAck--)
+N    {
+N    }
+N    
+N    /* ...and check acknowledged */
+N    if ((CAN->MSR & CAN_MSR_INAK) == CAN_MSR_INAK)
+X    if ((((CAN_TypeDef *) (((u32)0x40000000) + 0x6400))->MSR & ((u32)0x00000001)) == ((u32)0x00000001))
+N    {
+N      InitStatus = CANINITFAILED;
+X      InitStatus = ((u8)0x00);
+N    }
+N  }
+N
+N  /* At this step, return the status of initialization */
+N  return InitStatus;
+N}
+N
+N/*******************************************************************************
+N* Function Name  : CAN_FilterInit
+N* Description    : Initializes the CAN peripheral according to the specified
+N*                  parameters in the CAN_FilterInitStruct.
+N* Input          : CAN_FilterInitStruct: pointer to a CAN_FilterInitTypeDef
+N*                  structure that contains the configuration information.
+N* Output         : None.
+N* Return         : None.
+N*******************************************************************************/
+Nvoid CAN_FilterInit(CAN_FilterInitTypeDef* CAN_FilterInitStruct)
+N{
+N  u16 FilterNumber_BitPos = 0;
+N
+N  /* Check the parameters */
+N  assert_param(IS_CAN_FILTER_NUMBER(CAN_FilterInitStruct->CAN_FilterNumber));
+X  ((void)0);
+N  assert_param(IS_CAN_FILTER_MODE(CAN_FilterInitStruct->CAN_FilterMode));
+X  ((void)0);
+N  assert_param(IS_CAN_FILTER_SCALE(CAN_FilterInitStruct->CAN_FilterScale));
+X  ((void)0);
+N  assert_param(IS_CAN_FILTER_FIFO(CAN_FilterInitStruct->CAN_FilterFIFOAssignment));
+X  ((void)0);
+N  assert_param(IS_FUNCTIONAL_STATE(CAN_FilterInitStruct->CAN_FilterActivation));
+X  ((void)0);
+N
+N  FilterNumber_BitPos = 
+N  (u16)((u16)0x0001 << ((u16)CAN_FilterInitStruct->CAN_FilterNumber));
+N
+N  /* Initialisation mode for the filter */
+N  CAN->FMR |= CAN_FMR_FINIT;
+X  ((CAN_TypeDef *) (((u32)0x40000000) + 0x6400))->FMR |= ((u32)0x00000001);
+N
+N  /* Filter Deactivation */
+N  CAN->FA1R &= ~(u32)FilterNumber_BitPos;
+X  ((CAN_TypeDef *) (((u32)0x40000000) + 0x6400))->FA1R &= ~(u32)FilterNumber_BitPos;
+N
+N  /* Filter Scale */
+N  if (CAN_FilterInitStruct->CAN_FilterScale == CAN_FilterScale_16bit)
+X  if (CAN_FilterInitStruct->CAN_FilterScale == ((u8)0x00))
+N  {
+N    /* 16-bit scale for the filter */
+N    CAN->FS1R &= ~(u32)FilterNumber_BitPos;
+X    ((CAN_TypeDef *) (((u32)0x40000000) + 0x6400))->FS1R &= ~(u32)FilterNumber_BitPos;
+N
+N    /* First 16-bit identifier and First 16-bit mask */
+N    /* Or First 16-bit identifier and Second 16-bit identifier */
+N    CAN->sFilterRegister[CAN_FilterInitStruct->CAN_FilterNumber].FR1 = 
+X    ((CAN_TypeDef *) (((u32)0x40000000) + 0x6400))->sFilterRegister[CAN_FilterInitStruct->CAN_FilterNumber].FR1 = 
+N    ((u32)((u32)0x0000FFFF & CAN_FilterInitStruct->CAN_FilterMaskIdLow) << 16) |
+N        ((u32)0x0000FFFF & CAN_FilterInitStruct->CAN_FilterIdLow);
+N
+N    /* Second 16-bit identifier and Second 16-bit mask */
+N    /* Or Third 16-bit identifier and Fourth 16-bit identifier */
+N    CAN->sFilterRegister[CAN_FilterInitStruct->CAN_FilterNumber].FR2 = 
+X    ((CAN_TypeDef *) (((u32)0x40000000) + 0x6400))->sFilterRegister[CAN_FilterInitStruct->CAN_FilterNumber].FR2 = 
+N    ((u32)((u32)0x0000FFFF & CAN_FilterInitStruct->CAN_FilterMaskIdHigh) << 16) |
+N        ((u32)0x0000FFFF & CAN_FilterInitStruct->CAN_FilterIdHigh);
+N  }
+N  if (CAN_FilterInitStruct->CAN_FilterScale == CAN_FilterScale_32bit)
+X  if (CAN_FilterInitStruct->CAN_FilterScale == ((u8)0x01))
+N  {
+N    /* 32-bit scale for the filter */
+N    CAN->FS1R |= FilterNumber_BitPos;
+X    ((CAN_TypeDef *) (((u32)0x40000000) + 0x6400))->FS1R |= FilterNumber_BitPos;
+N
+N    /* 32-bit identifier or First 32-bit identifier */
+N    CAN->sFilterRegister[CAN_FilterInitStruct->CAN_FilterNumber].FR1 = 
+X    ((CAN_TypeDef *) (((u32)0x40000000) + 0x6400))->sFilterRegister[CAN_FilterInitStruct->CAN_FilterNumber].FR1 = 
+N    ((u32)((u32)0x0000FFFF & CAN_FilterInitStruct->CAN_FilterIdHigh) << 16) |
+N        ((u32)0x0000FFFF & CAN_FilterInitStruct->CAN_FilterIdLow);
+N
+N    /* 32-bit mask or Second 32-bit identifier */
+N    CAN->sFilterRegister[CAN_FilterInitStruct->CAN_FilterNumber].FR2 = 
+X    ((CAN_TypeDef *) (((u32)0x40000000) + 0x6400))->sFilterRegister[CAN_FilterInitStruct->CAN_FilterNumber].FR2 = 
+N    ((u32)((u32)0x0000FFFF & CAN_FilterInitStruct->CAN_FilterMaskIdHigh) << 16) |
+N        ((u32)0x0000FFFF & CAN_FilterInitStruct->CAN_FilterMaskIdLow);
+N
+N  }
+N
+N  /* Filter Mode */
+N  if (CAN_FilterInitStruct->CAN_FilterMode == CAN_FilterMode_IdMask)
+X  if (CAN_FilterInitStruct->CAN_FilterMode == ((u8)0x00))
+N  {
+N    /*Id/Mask mode for the filter*/
+N    CAN->FM1R &= ~(u32)FilterNumber_BitPos;
+X    ((CAN_TypeDef *) (((u32)0x40000000) + 0x6400))->FM1R &= ~(u32)FilterNumber_BitPos;
+N  }
+N  else /* CAN_FilterInitStruct->CAN_FilterMode == CAN_FilterMode_IdList */
+N  {
+N    /*Identifier list mode for the filter*/
+N    CAN->FM1R |= (u32)FilterNumber_BitPos;
+X    ((CAN_TypeDef *) (((u32)0x40000000) + 0x6400))->FM1R |= (u32)FilterNumber_BitPos;
+N  }
+N
+N  /* Filter FIFO assignment */
+N  if (CAN_FilterInitStruct->CAN_FilterFIFOAssignment == CAN_FilterFIFO0)
+X  if (CAN_FilterInitStruct->CAN_FilterFIFOAssignment == ((u8)0x00))
+N  {
+N    /* FIFO 0 assignation for the filter */
+N    CAN->FFA1R &= ~(u32)FilterNumber_BitPos;
+X    ((CAN_TypeDef *) (((u32)0x40000000) + 0x6400))->FFA1R &= ~(u32)FilterNumber_BitPos;
+N  }
+N  if (CAN_FilterInitStruct->CAN_FilterFIFOAssignment == CAN_FilterFIFO1)
+X  if (CAN_FilterInitStruct->CAN_FilterFIFOAssignment == ((u8)0x01))
+N  {
+N    /* FIFO 1 assignation for the filter */
+N    CAN->FFA1R |= (u32)FilterNumber_BitPos;
+X    ((CAN_TypeDef *) (((u32)0x40000000) + 0x6400))->FFA1R |= (u32)FilterNumber_BitPos;
+N  }
+N  
+N  /* Filter activation */
+N  if (CAN_FilterInitStruct->CAN_FilterActivation == ENABLE)
+N  {
+N    CAN->FA1R |= FilterNumber_BitPos;
+X    ((CAN_TypeDef *) (((u32)0x40000000) + 0x6400))->FA1R |= FilterNumber_BitPos;
+N  }
+N
+N  /* Leave the initialisation mode for the filter */
+N  CAN->FMR &= ~CAN_FMR_FINIT;
+X  ((CAN_TypeDef *) (((u32)0x40000000) + 0x6400))->FMR &= ~((u32)0x00000001);
+N}
+N
+N/*******************************************************************************
+N* Function Name  : CAN_StructInit
+N* Description    : Fills each CAN_InitStruct member with its default value.
+N* Input          : CAN_InitStruct: pointer to a CAN_InitTypeDef structure which
+N*                  will be initialized.
+N* Output         : None.
+N* Return         : None.
+N*******************************************************************************/
+Nvoid CAN_StructInit(CAN_InitTypeDef* CAN_InitStruct)
+N{
+N  /* Reset CAN init structure parameters values */
+N
+N  /* Initialize the time triggered communication mode */
+N  CAN_InitStruct->CAN_TTCM = DISABLE;
+N
+N  /* Initialize the automatic bus-off management */
+N  CAN_InitStruct->CAN_ABOM = DISABLE;
+N
+N  /* Initialize the automatic wake-up mode */
+N  CAN_InitStruct->CAN_AWUM = DISABLE;
+N
+N  /* Initialize the no automatic retransmission */
+N  CAN_InitStruct->CAN_NART = DISABLE;
+N
+N  /* Initialize the receive FIFO locked mode */
+N  CAN_InitStruct->CAN_RFLM = DISABLE;
+N
+N  /* Initialize the transmit FIFO priority */
+N  CAN_InitStruct->CAN_TXFP = DISABLE;
+N
+N  /* Initialize the CAN_Mode member */
+N  CAN_InitStruct->CAN_Mode = CAN_Mode_Normal;
+X  CAN_InitStruct->CAN_Mode = ((u8)0x00);
+N
+N  /* Initialize the CAN_SJW member */
+N  CAN_InitStruct->CAN_SJW = CAN_SJW_1tq;
+X  CAN_InitStruct->CAN_SJW = ((u8)0x00);
+N
+N  /* Initialize the CAN_BS1 member */
+N  CAN_InitStruct->CAN_BS1 = CAN_BS1_4tq;
+X  CAN_InitStruct->CAN_BS1 = ((u8)0x03);
+N
+N  /* Initialize the CAN_BS2 member */
+N  CAN_InitStruct->CAN_BS2 = CAN_BS2_3tq;
+X  CAN_InitStruct->CAN_BS2 = ((u8)0x02);
+N
+N  /* Initialize the CAN_Prescaler member */
+N  CAN_InitStruct->CAN_Prescaler = 1;
+N}
+N
+N/*******************************************************************************
+N* Function Name  : CAN_ITConfig
+N* Description    : Enables or disables the specified CAN interrupts.
+N* Input          : - CAN_IT: specifies the CAN interrupt sources to be enabled or
+N*                    disabled.
+N*                    This parameter can be: CAN_IT_TME, CAN_IT_FMP0, CAN_IT_FF0,
+N*                                           CAN_IT_FOV0, CAN_IT_FMP1, CAN_IT_FF1,
+N*                                           CAN_IT_FOV1, CAN_IT_EWG, CAN_IT_EPV,
+N*                                           CAN_IT_LEC, CAN_IT_ERR, CAN_IT_WKU or
+N*                                           CAN_IT_SLK.
+N*                  - NewState: new state of the CAN interrupts.
+N*                    This parameter can be: ENABLE or DISABLE.
+N* Output         : None.
+N* Return         : None.
+N*******************************************************************************/
+Nvoid CAN_ITConfig(u32 CAN_IT, FunctionalState NewState)
+N{
+N  /* Check the parameters */
+N  assert_param(IS_CAN_ITConfig(CAN_IT));
+X  ((void)0);
+N  assert_param(IS_FUNCTIONAL_STATE(NewState));
+X  ((void)0);
+N
+N  if (NewState != DISABLE)
+N  {
+N    /* Enable the selected CAN interrupt */
+N    CAN->IER |= CAN_IT;
+X    ((CAN_TypeDef *) (((u32)0x40000000) + 0x6400))->IER |= CAN_IT;
+N  }
+N  else
+N  {
+N    /* Disable the selected CAN interrupt */
+N    CAN->IER &= ~CAN_IT;
+X    ((CAN_TypeDef *) (((u32)0x40000000) + 0x6400))->IER &= ~CAN_IT;
+N  }
+N}
+N
+N/*******************************************************************************
+N* Function Name  : CAN_Transmit
+N* Description    : Initiates the transmission of a message.
+N* Input          : TxMessage: pointer to a structure which contains CAN Id, CAN
+N*                  DLC and CAN datas.
+N* Output         : None.
+N* Return         : The number of the mailbox that is used for transmission
+N*                  or CAN_NO_MB if there is no empty mailbox.
+N*******************************************************************************/
+Nu8 CAN_Transmit(CanTxMsg* TxMessage)
+N{
+N  u8 TransmitMailbox = 0;
+N
+N  /* Check the parameters */
+N  assert_param(IS_CAN_STDID(TxMessage->StdId));
+X  ((void)0);
+N  assert_param(IS_CAN_EXTID(TxMessage->StdId));
+X  ((void)0);
+N  assert_param(IS_CAN_IDTYPE(TxMessage->IDE));
+X  ((void)0);
+N  assert_param(IS_CAN_RTR(TxMessage->RTR));
+X  ((void)0);
+N  assert_param(IS_CAN_DLC(TxMessage->DLC));
+X  ((void)0);
+N
+N  /* Select one empty transmit mailbox */
+N  if ((CAN->TSR&CAN_TSR_TME0) == CAN_TSR_TME0)
+X  if ((((CAN_TypeDef *) (((u32)0x40000000) + 0x6400))->TSR&((u32)0x04000000)) == ((u32)0x04000000))
+N  {
+N    TransmitMailbox = 0;
+N  }
+N  else if ((CAN->TSR&CAN_TSR_TME1) == CAN_TSR_TME1)
+X  else if ((((CAN_TypeDef *) (((u32)0x40000000) + 0x6400))->TSR&((u32)0x08000000)) == ((u32)0x08000000))
+N  {
+N    TransmitMailbox = 1;
+N  }
+N  else if ((CAN->TSR&CAN_TSR_TME2) == CAN_TSR_TME2)
+X  else if ((((CAN_TypeDef *) (((u32)0x40000000) + 0x6400))->TSR&((u32)0x10000000)) == ((u32)0x10000000))
+N  {
+N    TransmitMailbox = 2;
+N  }
+N  else
+N  {
+N    TransmitMailbox = CAN_NO_MB;
+X    TransmitMailbox = ((u8)0x04);
+N  }
+N
+N  if (TransmitMailbox != CAN_NO_MB)
+X  if (TransmitMailbox != ((u8)0x04))
+N  {
+N    /* Set up the Id */
+N    CAN->sTxMailBox[TransmitMailbox].TIR &= CAN_TMIDxR_TXRQ;
+X    ((CAN_TypeDef *) (((u32)0x40000000) + 0x6400))->sTxMailBox[TransmitMailbox].TIR &= ((u32)0x00000001);
+N    if (TxMessage->IDE == CAN_ID_STD)
+X    if (TxMessage->IDE == ((u32)0x00000000))
+N    {
+N      TxMessage->StdId &= (u32)0x000007FF;
+N      TxMessage->StdId = TxMessage->StdId << 21;
+N      
+N      CAN->sTxMailBox[TransmitMailbox].TIR |= (TxMessage->StdId | TxMessage->IDE |
+X      ((CAN_TypeDef *) (((u32)0x40000000) + 0x6400))->sTxMailBox[TransmitMailbox].TIR |= (TxMessage->StdId | TxMessage->IDE |
+N                                               TxMessage->RTR);
+N    }
+N    else
+N    {
+N      TxMessage->ExtId &= (u32)0x1FFFFFFF;
+N      TxMessage->ExtId <<= 3;
+N
+N      CAN->sTxMailBox[TransmitMailbox].TIR |= (TxMessage->ExtId | TxMessage->IDE | 
+X      ((CAN_TypeDef *) (((u32)0x40000000) + 0x6400))->sTxMailBox[TransmitMailbox].TIR |= (TxMessage->ExtId | TxMessage->IDE | 
+N                                               TxMessage->RTR);
+N    }
+N    
+N    /* Set up the DLC */
+N    TxMessage->DLC &= (u8)0x0000000F;
+N    CAN->sTxMailBox[TransmitMailbox].TDTR &= (u32)0xFFFFFFF0;
+X    ((CAN_TypeDef *) (((u32)0x40000000) + 0x6400))->sTxMailBox[TransmitMailbox].TDTR &= (u32)0xFFFFFFF0;
+N    CAN->sTxMailBox[TransmitMailbox].TDTR |= TxMessage->DLC;
+X    ((CAN_TypeDef *) (((u32)0x40000000) + 0x6400))->sTxMailBox[TransmitMailbox].TDTR |= TxMessage->DLC;
+N
+N    /* Set up the data field */
+N    CAN->sTxMailBox[TransmitMailbox].TDLR = (((u32)TxMessage->Data[3] << 24) | 
+X    ((CAN_TypeDef *) (((u32)0x40000000) + 0x6400))->sTxMailBox[TransmitMailbox].TDLR = (((u32)TxMessage->Data[3] << 24) | 
+N                                             ((u32)TxMessage->Data[2] << 16) |
+N                                             ((u32)TxMessage->Data[1] << 8) | 
+N                                             ((u32)TxMessage->Data[0]));
+N    CAN->sTxMailBox[TransmitMailbox].TDHR = (((u32)TxMessage->Data[7] << 24) | 
+X    ((CAN_TypeDef *) (((u32)0x40000000) + 0x6400))->sTxMailBox[TransmitMailbox].TDHR = (((u32)TxMessage->Data[7] << 24) | 
+N                                             ((u32)TxMessage->Data[6] << 16) |
+N                                             ((u32)TxMessage->Data[5] << 8) |
+N                                             ((u32)TxMessage->Data[4]));
+N
+N    /* Request transmission */
+N    CAN->sTxMailBox[TransmitMailbox].TIR |= CAN_TMIDxR_TXRQ;
+X    ((CAN_TypeDef *) (((u32)0x40000000) + 0x6400))->sTxMailBox[TransmitMailbox].TIR |= ((u32)0x00000001);
+N  }
+N
+N  return TransmitMailbox;
+N}
+N
+N/*******************************************************************************
+N* Function Name  : CAN_TransmitStatus
+N* Description    : Checks the transmission of a message.
+N* Input          : TransmitMailbox: the number of the mailbox that is used for
+N*                  transmission.
+N* Output         : None.
+N* Return         : CANTXOK if the CAN driver transmits the message, CANTXFAILED
+N*                  in an other case.
+N*******************************************************************************/
+Nu8 CAN_TransmitStatus(u8 TransmitMailbox)
+N{
+N  /* RQCP, TXOK and TME bits */
+N  u8 State = 0;
+N
+N  /* Check the parameters */
+N  assert_param(IS_CAN_TRANSMITMAILBOX(TransmitMailbox));
+X  ((void)0);
+N
+N  switch (TransmitMailbox)
+N  {
+N    case (0): State |= (u8)((CAN->TSR & CAN_TSR_RQCP0) << 2);
+X    case (0): State |= (u8)((((CAN_TypeDef *) (((u32)0x40000000) + 0x6400))->TSR & ((u32)0x00000001)) << 2);
+N      State |= (u8)((CAN->TSR & CAN_TSR_TXOK0) >> 0);
+X      State |= (u8)((((CAN_TypeDef *) (((u32)0x40000000) + 0x6400))->TSR & ((u32)0x00000002)) >> 0);
+N      State |= (u8)((CAN->TSR & CAN_TSR_TME0) >> 26);
+X      State |= (u8)((((CAN_TypeDef *) (((u32)0x40000000) + 0x6400))->TSR & ((u32)0x04000000)) >> 26);
+N      break;
+N    case (1): State |= (u8)((CAN->TSR & CAN_TSR_RQCP1) >> 6);
+X    case (1): State |= (u8)((((CAN_TypeDef *) (((u32)0x40000000) + 0x6400))->TSR & ((u32)0x00000100)) >> 6);
+N      State |= (u8)((CAN->TSR & CAN_TSR_TXOK1) >> 8);
+X      State |= (u8)((((CAN_TypeDef *) (((u32)0x40000000) + 0x6400))->TSR & ((u32)0x00000200)) >> 8);
+N      State |= (u8)((CAN->TSR & CAN_TSR_TME1) >> 27);
+X      State |= (u8)((((CAN_TypeDef *) (((u32)0x40000000) + 0x6400))->TSR & ((u32)0x08000000)) >> 27);
+N      break;
+N    case (2): State |= (u8)((CAN->TSR & CAN_TSR_RQCP2) >> 14);
+X    case (2): State |= (u8)((((CAN_TypeDef *) (((u32)0x40000000) + 0x6400))->TSR & ((u32)0x00010000)) >> 14);
+N      State |= (u8)((CAN->TSR & CAN_TSR_TXOK2) >> 16);
+X      State |= (u8)((((CAN_TypeDef *) (((u32)0x40000000) + 0x6400))->TSR & ((u32)0x00020000)) >> 16);
+N      State |= (u8)((CAN->TSR & CAN_TSR_TME2) >> 28);
+X      State |= (u8)((((CAN_TypeDef *) (((u32)0x40000000) + 0x6400))->TSR & ((u32)0x10000000)) >> 28);
+N      break;
+N    default:
+N      State = CANTXFAILED;
+X      State = ((u8)0x00);
+N      break;
+N  }
+N
+N  switch (State)
+N  {
+N      /* transmit pending  */
+N    case (0x0): State = CANTXPENDING;
+X    case (0x0): State = ((u8)0x02);
+N      break;
+N      /* transmit failed  */
+N    case (0x5): State = CANTXFAILED;
+X    case (0x5): State = ((u8)0x00);
+N      break;
+N      /* transmit succedeed  */
+N    case (0x7): State = CANTXOK;
+X    case (0x7): State = ((u8)0x01);
+N      break;
+N    default:
+N      State = CANTXFAILED;
+X      State = ((u8)0x00);
+N      break;
+N  }
+N
+N  return State;
+N}
+N
+N/*******************************************************************************
+N* Function Name  : CAN_CancelTransmit
+N* Description    : Cancels a transmit request.
+N* Input          : Mailbox number.
+N* Output         : None.
+N* Return         : None.
+N*******************************************************************************/
+Nvoid CAN_CancelTransmit(u8 Mailbox)
+N{
+N  /* Check the parameters */
+N  assert_param(IS_CAN_TRANSMITMAILBOX(Mailbox));
+X  ((void)0);
+N
+N  /* abort transmission */
+N  switch (Mailbox)
+N  {
+N    case (0): CAN->TSR |= CAN_TSR_ABRQ0;
+X    case (0): ((CAN_TypeDef *) (((u32)0x40000000) + 0x6400))->TSR |= ((u32)0x00000080);
+N      break;
+N    case (1): CAN->TSR |= CAN_TSR_ABRQ1;
+X    case (1): ((CAN_TypeDef *) (((u32)0x40000000) + 0x6400))->TSR |= ((u32)0x00008000);
+N      break;
+N    case (2): CAN->TSR |= CAN_TSR_ABRQ2;
+X    case (2): ((CAN_TypeDef *) (((u32)0x40000000) + 0x6400))->TSR |= ((u32)0x00800000);
+N      break;
+N    default:
+N      break;
+N  }
+N}
+N
+N/*******************************************************************************
+N* Function Name  : CAN_FIFORelease
+N* Description    : Releases a FIFO.
+N* Input          : FIFONumber: FIFO to release, CAN_FIFO0 or CAN_FIFO1.
+N* Output         : None.
+N* Return         : None.
+N*******************************************************************************/
+Nvoid CAN_FIFORelease(u8 FIFONumber)
+N{
+N  /* Check the parameters */
+N  assert_param(IS_CAN_FIFO(FIFONumber));
+X  ((void)0);
+N
+N  /* Release FIFO0 */
+N  if (FIFONumber == CAN_FIFO0)
+X  if (FIFONumber == ((u8)0x00))
+N  {
+N    CAN->RF0R = CAN_RF0R_RFOM0;
+X    ((CAN_TypeDef *) (((u32)0x40000000) + 0x6400))->RF0R = ((u32)0x00000020);
+N  }
+N  /* Release FIFO1 */
+N  else /* FIFONumber == CAN_FIFO1 */
+N  {
+N    CAN->RF1R = CAN_RF1R_RFOM1;
+X    ((CAN_TypeDef *) (((u32)0x40000000) + 0x6400))->RF1R = ((u32)0x00000020);
+N  }
+N}
+N
+N/*******************************************************************************
+N* Function Name  : CAN_MessagePending
+N* Description    : Returns the number of pending messages.
+N* Input          : FIFONumber: Receive FIFO number, CAN_FIFO0 or CAN_FIFO1.
+N* Output         : None.
+N* Return         : NbMessage which is the number of pending message.
+N*******************************************************************************/
+Nu8 CAN_MessagePending(u8 FIFONumber)
+N{
+N  u8 MessagePending=0;
+N
+N  /* Check the parameters */
+N  assert_param(IS_CAN_FIFO(FIFONumber));
+X  ((void)0);
+N
+N  if (FIFONumber == CAN_FIFO0)
+X  if (FIFONumber == ((u8)0x00))
+N  {
+N    MessagePending = (u8)(CAN->RF0R&(u32)0x03);
+X    MessagePending = (u8)(((CAN_TypeDef *) (((u32)0x40000000) + 0x6400))->RF0R&(u32)0x03);
+N  }
+N  else if (FIFONumber == CAN_FIFO1)
+X  else if (FIFONumber == ((u8)0x01))
+N  {
+N    MessagePending = (u8)(CAN->RF1R&(u32)0x03);
+X    MessagePending = (u8)(((CAN_TypeDef *) (((u32)0x40000000) + 0x6400))->RF1R&(u32)0x03);
+N  }
+N  else
+N  {
+N    MessagePending = 0;
+N  }
+N  return MessagePending;
+N}
+N
+N/*******************************************************************************
+N* Function Name  : CAN_Receive
+N* Description    : Receives a message.
+N* Input          : FIFONumber: Receive FIFO number, CAN_FIFO0 or CAN_FIFO1.
+N* Output         : RxMessage: pointer to a structure which contains CAN Id,
+N*                  CAN DLC, CAN datas and FMI number.
+N* Return         : None.
+N*******************************************************************************/
+Nvoid CAN_Receive(u8 FIFONumber, CanRxMsg* RxMessage)
+N{
+N  /* Check the parameters */
+N  assert_param(IS_CAN_FIFO(FIFONumber));
+X  ((void)0);
+N
+N  /* Get the Id */
+N  RxMessage->IDE = (u8)0x04 & CAN->sFIFOMailBox[FIFONumber].RIR;
+X  RxMessage->IDE = (u8)0x04 & ((CAN_TypeDef *) (((u32)0x40000000) + 0x6400))->sFIFOMailBox[FIFONumber].RIR;
+N  if (RxMessage->IDE == CAN_ID_STD)
+X  if (RxMessage->IDE == ((u32)0x00000000))
+N  {
+N    RxMessage->StdId = (u32)0x000007FF & (CAN->sFIFOMailBox[FIFONumber].RIR >> 21);
+X    RxMessage->StdId = (u32)0x000007FF & (((CAN_TypeDef *) (((u32)0x40000000) + 0x6400))->sFIFOMailBox[FIFONumber].RIR >> 21);
+N  }
+N  else
+N  {
+N    RxMessage->ExtId = (u32)0x1FFFFFFF & (CAN->sFIFOMailBox[FIFONumber].RIR >> 3);
+X    RxMessage->ExtId = (u32)0x1FFFFFFF & (((CAN_TypeDef *) (((u32)0x40000000) + 0x6400))->sFIFOMailBox[FIFONumber].RIR >> 3);
+N  }
+N  
+N  RxMessage->RTR = (u8)0x02 & CAN->sFIFOMailBox[FIFONumber].RIR;
+X  RxMessage->RTR = (u8)0x02 & ((CAN_TypeDef *) (((u32)0x40000000) + 0x6400))->sFIFOMailBox[FIFONumber].RIR;
+N
+N  /* Get the DLC */
+N  RxMessage->DLC = (u8)0x0F & CAN->sFIFOMailBox[FIFONumber].RDTR;
+X  RxMessage->DLC = (u8)0x0F & ((CAN_TypeDef *) (((u32)0x40000000) + 0x6400))->sFIFOMailBox[FIFONumber].RDTR;
+N
+N  /* Get the FMI */
+N  RxMessage->FMI = (u8)0xFF & (CAN->sFIFOMailBox[FIFONumber].RDTR >> 8);
+X  RxMessage->FMI = (u8)0xFF & (((CAN_TypeDef *) (((u32)0x40000000) + 0x6400))->sFIFOMailBox[FIFONumber].RDTR >> 8);
+N
+N  /* Get the data field */
+N  RxMessage->Data[0] = (u8)0xFF & CAN->sFIFOMailBox[FIFONumber].RDLR;
+X  RxMessage->Data[0] = (u8)0xFF & ((CAN_TypeDef *) (((u32)0x40000000) + 0x6400))->sFIFOMailBox[FIFONumber].RDLR;
+N  RxMessage->Data[1] = (u8)0xFF & (CAN->sFIFOMailBox[FIFONumber].RDLR >> 8);
+X  RxMessage->Data[1] = (u8)0xFF & (((CAN_TypeDef *) (((u32)0x40000000) + 0x6400))->sFIFOMailBox[FIFONumber].RDLR >> 8);
+N  RxMessage->Data[2] = (u8)0xFF & (CAN->sFIFOMailBox[FIFONumber].RDLR >> 16);
+X  RxMessage->Data[2] = (u8)0xFF & (((CAN_TypeDef *) (((u32)0x40000000) + 0x6400))->sFIFOMailBox[FIFONumber].RDLR >> 16);
+N  RxMessage->Data[3] = (u8)0xFF & (CAN->sFIFOMailBox[FIFONumber].RDLR >> 24);
+X  RxMessage->Data[3] = (u8)0xFF & (((CAN_TypeDef *) (((u32)0x40000000) + 0x6400))->sFIFOMailBox[FIFONumber].RDLR >> 24);
+N
+N  RxMessage->Data[4] = (u8)0xFF & CAN->sFIFOMailBox[FIFONumber].RDHR;
+X  RxMessage->Data[4] = (u8)0xFF & ((CAN_TypeDef *) (((u32)0x40000000) + 0x6400))->sFIFOMailBox[FIFONumber].RDHR;
+N  RxMessage->Data[5] = (u8)0xFF & (CAN->sFIFOMailBox[FIFONumber].RDHR >> 8);
+X  RxMessage->Data[5] = (u8)0xFF & (((CAN_TypeDef *) (((u32)0x40000000) + 0x6400))->sFIFOMailBox[FIFONumber].RDHR >> 8);
+N  RxMessage->Data[6] = (u8)0xFF & (CAN->sFIFOMailBox[FIFONumber].RDHR >> 16);
+X  RxMessage->Data[6] = (u8)0xFF & (((CAN_TypeDef *) (((u32)0x40000000) + 0x6400))->sFIFOMailBox[FIFONumber].RDHR >> 16);
+N  RxMessage->Data[7] = (u8)0xFF & (CAN->sFIFOMailBox[FIFONumber].RDHR >> 24);
+X  RxMessage->Data[7] = (u8)0xFF & (((CAN_TypeDef *) (((u32)0x40000000) + 0x6400))->sFIFOMailBox[FIFONumber].RDHR >> 24);
+N
+N  /* Release the FIFO */
+N  CAN_FIFORelease(FIFONumber);
+N}
+N
+N/*******************************************************************************
+N* Function Name  : CAN_Sleep
+N* Description    : Enters the low power mode.
+N* Input          : None.
+N* Output         : None.
+N* Return         : CANSLEEPOK if sleep entered, CANSLEEPFAILED in an other case.
+N*******************************************************************************/
+Nu8 CAN_Sleep(void)
+N{
+N  u8 SleepStatus = 0;
+N
+N  /* Sleep mode entering request */
+N  CAN->MCR |= CAN_MCR_SLEEP;
+X  ((CAN_TypeDef *) (((u32)0x40000000) + 0x6400))->MCR |= ((u32)0x00000002);
+N  SleepStatus = CANSLEEPOK;
+X  SleepStatus = ((u8)0x01);
+N
+N  /* Sleep mode status */
+N  if ((CAN->MCR&CAN_MCR_SLEEP) == 0)
+X  if ((((CAN_TypeDef *) (((u32)0x40000000) + 0x6400))->MCR&((u32)0x00000002)) == 0)
+N  {
+N    /* Sleep mode not entered */
+N    SleepStatus = CANSLEEPFAILED;
+X    SleepStatus = ((u8)0x00);
+N  }
+N
+N  /* At this step, sleep mode status */
+N  return SleepStatus;
+N}
+N
+N/*******************************************************************************
+N* Function Name  : CAN_WakeUp
+N* Description    : Wakes the CAN up.
+N* Input          : None.
+N* Output         : None.
+N* Return         : CANWAKEUPOK if sleep mode left, CANWAKEUPFAILED in an other
+N*                  case.
+N*******************************************************************************/
+Nu8 CAN_WakeUp(void)
+N{
+N  u8 WakeUpStatus = 0;
+N
+N  /* Wake up request */
+N  CAN->MCR &= ~CAN_MCR_SLEEP;
+X  ((CAN_TypeDef *) (((u32)0x40000000) + 0x6400))->MCR &= ~((u32)0x00000002);
+N  WakeUpStatus = CANWAKEUPFAILED;
+X  WakeUpStatus = ((u8)0x00);
+N
+N  /* Sleep mode status */
+N  if ((CAN->MCR&CAN_MCR_SLEEP) == 0)
+X  if ((((CAN_TypeDef *) (((u32)0x40000000) + 0x6400))->MCR&((u32)0x00000002)) == 0)
+N  {
+N    /* Sleep mode exited */
+N    WakeUpStatus = CANWAKEUPOK;
+X    WakeUpStatus = ((u8)0x01);
+N  }
+N
+N  /* At this step, sleep mode status */
+N  return WakeUpStatus;
+N}
+N
+N/*******************************************************************************
+N* Function Name  : CAN_GetFlagStatus
+N* Description    : Checks whether the specified CAN flag is set or not.
+N* Input          : CAN_FLAG: specifies the flag to check.
+N*                  This parameter can be: CAN_FLAG_EWG, CAN_FLAG_EPV or
+N*                                         CAN_FLAG_BOF.
+N* Output         : None.
+N* Return         : The new state of CAN_FLAG (SET or RESET).
+N*******************************************************************************/
+NFlagStatus CAN_GetFlagStatus(u32 CAN_FLAG)
+N{
+N  FlagStatus bitstatus = RESET;
+N
+N  /* Check the parameters */
+N  assert_param(IS_CAN_FLAG(CAN_FLAG));
+X  ((void)0);
+N
+N  /* Check the status of the specified CAN flag */
+N  if ((CAN->ESR & CAN_FLAG) != (u32)RESET)
+X  if ((((CAN_TypeDef *) (((u32)0x40000000) + 0x6400))->ESR & CAN_FLAG) != (u32)RESET)
+N  {
+N    /* CAN_FLAG is set */
+N    bitstatus = SET;
+N  }
+N  else
+N  {
+N    /* CAN_FLAG is reset */
+N    bitstatus = RESET;
+N  }
+N  /* Return the CAN_FLAG status */
+N  return  bitstatus;
+N}
+N
+N/*******************************************************************************
+N* Function Name  : CAN_ClearFlag
+N* Description    : Clears the CAN's pending flags.
+N* Input          : CAN_FLAG: specifies the flag to clear.
+N* Output         : None.
+N* Return         : None.
+N*******************************************************************************/
+Nvoid CAN_ClearFlag(u32 CAN_FLAG)
+N{
+N  /* Check the parameters */
+N  assert_param(IS_CAN_FLAG(CAN_FLAG));
+X  ((void)0);
+N
+N  /* Clear the selected CAN flags */
+N  CAN->ESR &= ~CAN_FLAG;
+X  ((CAN_TypeDef *) (((u32)0x40000000) + 0x6400))->ESR &= ~CAN_FLAG;
+N}
+N
+N/*******************************************************************************
+N* Function Name  : CAN_GetITStatus
+N* Description    : Checks whether the specified CAN interrupt has occurred or 
+N*                  not.
+N* Input          : CAN_IT: specifies the CAN interrupt source to check.
+N*                  This parameter can be: CAN_IT_RQCP0, CAN_IT_RQCP1, CAN_IT_RQCP2,
+N*                                         CAN_IT_FF0, CAN_IT_FOV0, CAN_IT_FF1,
+N*                                         CAN_IT_FOV1, CAN_IT_EWG, CAN_IT_EPV, 
+N*                                         CAN_IT_BOF, CAN_IT_WKU or CAN_IT_SLK.
+N* Output         : None.
+N* Return         : The new state of CAN_IT (SET or RESET).
+N*******************************************************************************/
+NITStatus CAN_GetITStatus(u32 CAN_IT)
+N{
+N  ITStatus pendingbitstatus = RESET;
+N
+N  /* Check the parameters */
+N  assert_param(IS_CAN_ITStatus(CAN_IT));
+X  ((void)0);
+N
+N  switch (CAN_IT)
+N  {
+N    case CAN_IT_RQCP0:
+X    case ((u32)0x00000005):
+N      pendingbitstatus = CheckITStatus(CAN->TSR, CAN_TSR_RQCP0);
+X      pendingbitstatus = CheckITStatus(((CAN_TypeDef *) (((u32)0x40000000) + 0x6400))->TSR, ((u32)0x00000001));
+N      break;
+N    case CAN_IT_RQCP1:
+X    case ((u32)0x00000006):
+N      pendingbitstatus = CheckITStatus(CAN->TSR, CAN_TSR_RQCP1);
+X      pendingbitstatus = CheckITStatus(((CAN_TypeDef *) (((u32)0x40000000) + 0x6400))->TSR, ((u32)0x00000100));
+N      break;
+N    case CAN_IT_RQCP2:
+X    case ((u32)0x00000007):
+N      pendingbitstatus = CheckITStatus(CAN->TSR, CAN_TSR_RQCP2);
+X      pendingbitstatus = CheckITStatus(((CAN_TypeDef *) (((u32)0x40000000) + 0x6400))->TSR, ((u32)0x00010000));
+N      break;
+N    case CAN_IT_FF0:
+X    case ((u32)0x00000004):
+N      pendingbitstatus = CheckITStatus(CAN->RF0R, CAN_RF0R_FULL0);
+X      pendingbitstatus = CheckITStatus(((CAN_TypeDef *) (((u32)0x40000000) + 0x6400))->RF0R, ((u32)0x00000008));
+N      break;
+N    case CAN_IT_FOV0:
+X    case ((u32)0x00000008):
+N      pendingbitstatus = CheckITStatus(CAN->RF0R, CAN_RF0R_FOVR0);
+X      pendingbitstatus = CheckITStatus(((CAN_TypeDef *) (((u32)0x40000000) + 0x6400))->RF0R, ((u32)0x00000010));
+N      break;
+N    case CAN_IT_FF1:
+X    case ((u32)0x00000020):
+N      pendingbitstatus = CheckITStatus(CAN->RF1R, CAN_RF1R_FULL1);
+X      pendingbitstatus = CheckITStatus(((CAN_TypeDef *) (((u32)0x40000000) + 0x6400))->RF1R, ((u32)0x00000008));
+N      break;
+N    case CAN_IT_FOV1:
+X    case ((u32)0x00000040):
+N      pendingbitstatus = CheckITStatus(CAN->RF1R, CAN_RF1R_FOVR1);
+X      pendingbitstatus = CheckITStatus(((CAN_TypeDef *) (((u32)0x40000000) + 0x6400))->RF1R, ((u32)0x00000010));
+N      break;
+N    case CAN_IT_EWG:
+X    case ((u32)0x00000100):
+N      pendingbitstatus = CheckITStatus(CAN->ESR, CAN_ESR_EWGF);
+X      pendingbitstatus = CheckITStatus(((CAN_TypeDef *) (((u32)0x40000000) + 0x6400))->ESR, ((u32)0x00000001));
+N      break;
+N    case CAN_IT_EPV:
+X    case ((u32)0x00000200):
+N      pendingbitstatus = CheckITStatus(CAN->ESR, CAN_ESR_EPVF);
+X      pendingbitstatus = CheckITStatus(((CAN_TypeDef *) (((u32)0x40000000) + 0x6400))->ESR, ((u32)0x00000002));
+N      break;
+N    case CAN_IT_BOF:
+X    case ((u32)0x00000400):
+N      pendingbitstatus = CheckITStatus(CAN->ESR, CAN_ESR_BOFF);
+X      pendingbitstatus = CheckITStatus(((CAN_TypeDef *) (((u32)0x40000000) + 0x6400))->ESR, ((u32)0x00000004));
+N      break;
+N    case CAN_IT_SLK:
+X    case ((u32)0x00020000):
+N      pendingbitstatus = CheckITStatus(CAN->MSR, CAN_MSR_SLAKI);
+X      pendingbitstatus = CheckITStatus(((CAN_TypeDef *) (((u32)0x40000000) + 0x6400))->MSR, ((u32)0x00000010));
+N      break;
+N    case CAN_IT_WKU:
+X    case ((u32)0x00010000):
+N      pendingbitstatus = CheckITStatus(CAN->MSR, CAN_MSR_WKUI);
+X      pendingbitstatus = CheckITStatus(((CAN_TypeDef *) (((u32)0x40000000) + 0x6400))->MSR, ((u32)0x00000008));
+N      break;
+N
+N    default :
+N      pendingbitstatus = RESET;
+N      break;
+N  }
+N
+N  /* Return the CAN_IT status */
+N  return  pendingbitstatus;
+N}
+N
+N/*******************************************************************************
+N* Function Name  : CAN_ClearITPendingBit
+N* Description    : Clears the CAN抯 interrupt pending bits.
+N* Input          : CAN_IT: specifies the interrupt pending bit to clear.
+N* Output         : None.
+N* Return         : None.
+N*******************************************************************************/
+Nvoid CAN_ClearITPendingBit(u32 CAN_IT)
+N{
+N  /* Check the parameters */
+N  assert_param(IS_CAN_ITStatus(CAN_IT));
+X  ((void)0);
+N
+N  switch (CAN_IT)
+N  {
+N    case CAN_IT_RQCP0:
+X    case ((u32)0x00000005):
+N      CAN->TSR = CAN_TSR_RQCP0; /* rc_w1*/
+X      ((CAN_TypeDef *) (((u32)0x40000000) + 0x6400))->TSR = ((u32)0x00000001);  
+N      break;
+N    case CAN_IT_RQCP1:
+X    case ((u32)0x00000006):
+N      CAN->TSR = CAN_TSR_RQCP1; /* rc_w1*/
+X      ((CAN_TypeDef *) (((u32)0x40000000) + 0x6400))->TSR = ((u32)0x00000100);  
+N      break;
+N    case CAN_IT_RQCP2:
+X    case ((u32)0x00000007):
+N      CAN->TSR = CAN_TSR_RQCP2; /* rc_w1*/
+X      ((CAN_TypeDef *) (((u32)0x40000000) + 0x6400))->TSR = ((u32)0x00010000);  
+N      break;
+N    case CAN_IT_FF0:
+X    case ((u32)0x00000004):
+N      CAN->RF0R = CAN_RF0R_FULL0; /* rc_w1*/
+X      ((CAN_TypeDef *) (((u32)0x40000000) + 0x6400))->RF0R = ((u32)0x00000008);  
+N      break;
+N    case CAN_IT_FOV0:
+X    case ((u32)0x00000008):
+N      CAN->RF0R = CAN_RF0R_FOVR0; /* rc_w1*/
+X      ((CAN_TypeDef *) (((u32)0x40000000) + 0x6400))->RF0R = ((u32)0x00000010);  
+N      break;
+N    case CAN_IT_FF1:
+X    case ((u32)0x00000020):
+N      CAN->RF1R = CAN_RF1R_FULL1; /* rc_w1*/
+X      ((CAN_TypeDef *) (((u32)0x40000000) + 0x6400))->RF1R = ((u32)0x00000008);  
+N      break;
+N    case CAN_IT_FOV1:
+X    case ((u32)0x00000040):
+N      CAN->RF1R = CAN_RF1R_FOVR1; /* rc_w1*/
+X      ((CAN_TypeDef *) (((u32)0x40000000) + 0x6400))->RF1R = ((u32)0x00000010);  
+N      break;
+N    case CAN_IT_EWG:
+X    case ((u32)0x00000100):
+N      CAN->ESR &= ~ CAN_ESR_EWGF; /* rw */
+X      ((CAN_TypeDef *) (((u32)0x40000000) + 0x6400))->ESR &= ~ ((u32)0x00000001);  
+N      break;
+N    case CAN_IT_EPV:
+X    case ((u32)0x00000200):
+N      CAN->ESR &= ~ CAN_ESR_EPVF; /* rw */
+X      ((CAN_TypeDef *) (((u32)0x40000000) + 0x6400))->ESR &= ~ ((u32)0x00000002);  
+N      break;
+N    case CAN_IT_BOF:
+X    case ((u32)0x00000400):
+N      CAN->ESR &= ~ CAN_ESR_BOFF; /* rw */
+X      ((CAN_TypeDef *) (((u32)0x40000000) + 0x6400))->ESR &= ~ ((u32)0x00000004);  
+N      break;
+N    case CAN_IT_WKU:
+X    case ((u32)0x00010000):
+N      CAN->MSR = CAN_MSR_WKUI;  /* rc_w1*/
+X      ((CAN_TypeDef *) (((u32)0x40000000) + 0x6400))->MSR = ((u32)0x00000008);   
+N      break;
+N    case CAN_IT_SLK:
+X    case ((u32)0x00020000):
+N      CAN->MSR = CAN_MSR_SLAKI;  /* rc_w1*/
+X      ((CAN_TypeDef *) (((u32)0x40000000) + 0x6400))->MSR = ((u32)0x00000010);   
+N      break;
+N    default :
+N      break;
+N  }
+N}
+N
+N/*******************************************************************************
+N* Function Name  : CheckITStatus
+N* Description    : Checks whether the CAN interrupt has occurred or not.
+N* Input          : CAN_Reg: specifies the CAN interrupt register to check.
+N*                  It_Bit: specifies the interrupt source bit to check.
+N* Output         : None.
+N* Return         : The new state of the CAN Interrupt (SET or RESET).
+N*******************************************************************************/
+Nstatic ITStatus CheckITStatus(u32 CAN_Reg, u32 It_Bit)
+N{
+N  ITStatus pendingbitstatus = RESET;
+N
+N  if ((CAN_Reg & It_Bit) != (u32)RESET)
+N  {
+N    /* CAN_IT is set */
+N    pendingbitstatus = SET;
+N  }
+N  else
+N  {
+N    /* CAN_IT is reset */
+N    pendingbitstatus = RESET;
+N  }
+N
+N  return pendingbitstatus;
+N}
+N
+N/******************* (C) COPYRIGHT 2008 STMicroelectronics *****END OF FILE****/
